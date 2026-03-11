@@ -201,6 +201,19 @@
   .tech-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; border: 1px solid var(--mid); padding: 6px 14px; color: var(--text-dim); clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: all 0.3s; }
   .tech-tag:hover { border-color: var(--acid); color: var(--acid); background: rgba(62,204,0,0.05); }
 
+  /* MEMBER */
+  #member { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); }
+  .member-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 60px; }
+  .member-card { position: relative; overflow: hidden; background: var(--gray); border: 1px solid var(--mid); transition: all 0.4s; }
+  .member-card:hover { border-color: var(--acid); transform: translateY(-10px); }
+  .member-img-wrap { aspect-ratio: 3/4; overflow: hidden; position: relative; background: var(--mid); }
+  .member-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.6s; }
+  .member-card:hover .member-img { filter: grayscale(0%); transform: scale(1.05); }
+  .member-info { padding: 24px; }
+  .member-role { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--acid); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; display: block; }
+  .member-name { font-family: 'Noto Sans JP', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--white); margin-bottom: 12px; display: block; }
+  .member-desc { font-size: 0.8rem; line-height: 1.6; color: var(--text-dim); }
+
   /* BLOG */
   #blog { background: var(--black); }
   .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
@@ -261,6 +274,7 @@
     #about { grid-template-columns: 1fr; }
     .area-details-grid { grid-template-columns: 1fr; }
     .blog-grid { grid-template-columns: 1fr; }
+    .member-grid { grid-template-columns: 1fr 1fr; }
     .contact-info { flex-direction: column; gap: 40px; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
   }
@@ -625,6 +639,57 @@
       <a href="#" class="btn-archive">
         <span class="glitch-text">COMPANY PROFILE</span>
       </a>
+    </div>
+  </div>
+</section>
+
+<section id="member">
+  <div class="section-label reveal">-Employee Introduction-</div>
+  <h2 class="section-title reveal">MEMBER</h2>
+  <div class="member-grid">
+    <!-- Member 01 -->
+    <div class="member-card reveal">
+      <div class="member-img-wrap">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Member 01" class="member-img">
+      </div>
+      <div class="member-info">
+        <span class="member-role">CEO / Creative Director</span>
+        <span class="member-name">T. Nakamura</span>
+        <p class="member-desc">映像制作から戦略立案まで、プロジェクト全体を統括。テクノロジーとクリエイティブの融合を追求します。</p>
+      </div>
+    </div>
+    <!-- Member 02 -->
+    <div class="member-card reveal">
+      <div class="member-img-wrap">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80" alt="Member 02" class="member-img">
+      </div>
+      <div class="member-info">
+        <span class="member-role">Lead Designer</span>
+        <span class="member-name">A. Tanaka</span>
+        <p class="member-desc">UI/UXからグラフィックまで幅広く担当。ブランドの想いを視覚化し、ユーザーの心に響くデザインを提供します。</p>
+      </div>
+    </div>
+    <!-- Member 03 -->
+    <div class="member-card reveal">
+      <div class="member-img-wrap">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" alt="Member 03" class="member-img">
+      </div>
+      <div class="member-info">
+        <span class="member-role">Full Stack Developer</span>
+        <span class="member-name">S. Sato</span>
+        <p class="member-desc">最新の技術スタックを駆使し、高速でセキュアなシステムを構築。AI導入支援のテクニカルリードも務めます。</p>
+      </div>
+    </div>
+    <!-- Member 04 -->
+    <div class="member-card reveal">
+      <div class="member-img-wrap">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Member 04" class="member-img">
+      </div>
+      <div class="member-info">
+        <span class="member-role">Marketing Strategist</span>
+        <span class="member-name">M. Suzuki</span>
+        <p class="member-desc">データに基づいたマーケティング戦略を立案。広告運用からSNS戦略まで、クライアントの成長を最大化します。</p>
+      </div>
     </div>
   </div>
 </section>
