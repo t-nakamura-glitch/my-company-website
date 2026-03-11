@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS CREATIVE — クリエイティブ × テクノロジー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --white: #f5f0e8;
+    --acid: #c8ff00;
+    --red: #ff2d2d;
+    --gray: #1a1a1a;
+    --mid: #333;
+    --text-dim: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--acid); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; width: 40px; height: 40px;
+    border: 1px solid rgba(200,255,0,0.5);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9990; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 48px;
+    background: linear-gradient(to bottom, rgba(5,5,5,0.9), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 0.15em;
+    color: var(--white); text-decoration: none;
+  }
+  .nav-logo span { color: var(--acid); }
+  .nav-links { display: flex; gap: 40px; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--acid); }
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    border: 1px solid var(--acid); color: var(--acid);
+    padding: 10px 24px; text-decoration: none; transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .nav-cta:hover { background: var(--acid); color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, #1a2a00 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, #1a0000 0%, transparent 50%),
+                var(--black);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,255,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,0,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    transform: perspective(800px) rotateX(20deg) scale(1.5);
+    transform-origin: bottom;
+  }
+  .hero-ticker {
+    position: absolute; top: 50%; left: 0; right: 0;
+    transform: translateY(-50%);
+    overflow: hidden; white-space: nowrap;
+  }
+  .hero-ticker-inner {
+    display: inline-block;
+    animation: ticker 25s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18vw;
+    color: rgba(255,255,255,0.02);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--acid); margin-bottom: 24px;
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hero-tag::before {
+    content: ''; display: inline-block;
+    width: 40px; height: 1px; background: var(--acid);
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 13rem);
+    line-height: 0.9; letter-spacing: -0.02em;
+    position: relative; z-index: 1;
+  }
+  .hero-title .line2 {
+    -webkit-text-stroke: 1px var(--white);
+    color: transparent; display: block;
+  }
+  .hero-title .accent { color: var(--acid); }
+  .hero-sub {
+    margin-top: 40px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    position: relative; z-index: 1;
+  }
+  .hero-desc {
+    max-width: 420px; font-size: 0.95rem;
+    line-height: 1.8; color: var(--text-dim);
+  }
+  .hero-scroll {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text-dim);
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--acid), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* GLITCH */
+  @keyframes glitch {
+    0%   { clip-path: inset(0 0 95% 0); transform: translateX(-4px); }
+    10%  { clip-path: inset(0 0 85% 0); transform: translateX(4px); }
+    20%  { clip-path: inset(0 0 70% 0); transform: translateX(-2px); }
+    30%  { clip-path: inset(0 0 50% 0); transform: translateX(2px); }
+    40%  { clip-path: inset(0 0 30% 0); transform: translateX(-4px); }
+    50%  { clip-path: inset(0 0 10% 0); transform: translateX(0); }
+    100% { clip-path: inset(0 0 0% 0);  transform: translateX(0); }
+  }
+  .glitch-wrap { position: relative; display: inline-block; }
+  .glitch-wrap::before, .glitch-wrap::after {
+    content: attr(data-text);
+    position: absolute; inset: 0;
+    font-family: inherit; font-size: inherit;
+    line-height: inherit; letter-spacing: inherit;
+  }
+  .glitch-wrap::before {
+    color: var(--red);
+    animation: glitch 4s steps(1) infinite;
+    clip-path: inset(0);
+  }
+  .glitch-wrap::after {
+    color: var(--acid);
+    animation: glitch 4s steps(1) 0.1s infinite reverse;
+    clip-path: inset(0);
+  }
+
+  /* MARQUEE */
+  .marquee-bar {
+    background: var(--acid); padding: 14px 0;
+    overflow: hidden; white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.15em; color: var(--black);
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .marquee-sep { margin: 0 32px; color: var(--black); opacity: 0.3; }
+
+  /* SECTION BASE */
+  section { padding: 120px 48px; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--acid); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 1; letter-spacing: 0.02em; margin-bottom: 60px;
+  }
+
+  /* SERVICES */
+  #services { background: var(--black); }
+  .services-intro {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    margin-bottom: 80px;
+  }
+  .services-intro p { font-size: 1.05rem; line-height: 1.9; color: var(--text-dim); }
+  .services-intro p strong { color: var(--white); font-weight: 700; }
+
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--mid); border: 1px solid var(--mid);
+  }
+  .service-card {
+    background: var(--black); padding: 48px 40px;
+    position: relative; overflow: hidden; transition: background 0.4s; cursor: none;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--acid);
+    transform: translateY(101%);
+    transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .service-card:hover::before { transform: translateY(0); }
+  .service-card:hover .service-num,
+  .service-card:hover .service-name,
+  .service-card:hover .service-desc,
+  .service-card:hover .service-arrow { color: var(--black); }
+  .service-num {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    color: var(--text-dim); margin-bottom: 40px;
+    position: relative; z-index: 1; transition: color 0.3s;
+  }
+  .service-icon { font-size: 2.5rem; margin-bottom: 20px; position: relative; z-index: 1; }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+    letter-spacing: 0.05em; margin-bottom: 16px;
+    position: relative; z-index: 1; transition: color 0.3s;
+  }
+  .service-desc {
+    font-size: 0.85rem; line-height: 1.8; color: var(--text-dim);
+    position: relative; z-index: 1; transition: color 0.3s;
+  }
+  .service-arrow {
+    font-size: 1.5rem; color: var(--acid);
+    position: relative; z-index: 1; display: block; margin-top: 24px;
+    transition: color 0.3s, transform 0.3s;
+  }
+  .service-card:hover .service-arrow { transform: translate(4px, -4px); }
+
+  /* WORKS */
+  #works { background: var(--gray); }
+  .works-filter { display: flex; gap: 4px; margin-bottom: 48px; }
+  .filter-btn {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    border: 1px solid var(--mid); background: transparent;
+    color: var(--text-dim); padding: 8px 20px; cursor: none; transition: all 0.3s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--acid); color: var(--acid);
+    background: rgba(200,255,0,0.05);
+  }
+  .works-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
+  }
+  .work-item { position: relative; overflow: hidden; background: var(--mid); }
+  .work-item:nth-child(1) { grid-column: 1/8;  grid-row: 1; aspect-ratio: 16/9; }
+  .work-item:nth-child(2) { grid-column: 8/13; grid-row: 1; aspect-ratio: 4/3; }
+  .work-item:nth-child(3) { grid-column: 1/5;  grid-row: 2; aspect-ratio: 4/3; }
+  .work-item:nth-child(4) { grid-column: 5/9;  grid-row: 2; aspect-ratio: 4/3; }
+  .work-item:nth-child(5) { grid-column: 9/13; grid-row: 2; aspect-ratio: 4/3; }
+  .work-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--a,#111) 0%, var(--b,#222) 100%);
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .work-item:hover .work-bg { transform: scale(1.06); }
+  .work-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 28px; opacity: 0; transition: opacity 0.4s;
+  }
+  .work-item:hover .work-overlay { opacity: 1; }
+  .work-cat {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; color: var(--acid); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .work-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; }
+  .work-visual {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; opacity: 0.15;
+  }
+  .work-item:nth-child(1) .work-bg { --a:#0d1f0d; --b:#1a3d1a; }
+  .work-item:nth-child(2) .work-bg { --a:#1f0d0d; --b:#3d1a1a; }
+  .work-item:nth-child(3) .work-bg { --a:#0d0d1f; --b:#1a1a3d; }
+  .work-item:nth-child(4) .work-bg { --a:#1f1a0d; --b:#3d330d; }
+  .work-item:nth-child(5) .work-bg { --a:#0d1a1f; --b:#0d333d; }
+
+  /* NUMBERS */
+  .numbers-section { background: var(--acid); padding: 80px 48px; }
+  .numbers-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; }
+  .number-item { text-align: center; }
+  .number-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem,7vw,6rem); color: var(--black); line-height: 1; display: block;
+  }
+  .number-label {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.2em; color: rgba(0,0,0,0.5); text-transform: uppercase; margin-top: 8px;
+  }
+
+  /* ABOUT */
+  #about { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; }
+  .about-visual {
+    position: relative; min-height: 600px; background: var(--gray);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+  .about-grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,255,0,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,0,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .about-orb {
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--acid) 0%, rgba(200,255,0,0.3) 40%, transparent 70%);
+    animation: orbPulse 4s ease-in-out infinite; position: relative;
+  }
+  .about-orb::after {
+    content: ''; position: absolute; inset: -20px; border-radius: 50%;
+    border: 1px solid rgba(200,255,0,0.2);
+    animation: orbRing 4s ease-in-out infinite reverse;
+  }
+  @keyframes orbPulse { 0%,100%{transform:scale(1);opacity:0.8} 50%{transform:scale(1.1);opacity:1} }
+  @keyframes orbRing  { 0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.2) rotate(180deg)} }
+  .about-content {
+    padding: 100px 64px; background: var(--black);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .about-content p { font-size: 1rem; line-height: 2; color: var(--text-dim); margin-bottom: 24px; }
+  .about-content p strong { color: var(--white); font-weight: 700; }
+  .tech-stack { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em;
+    border: 1px solid var(--mid); padding: 6px 16px; color: var(--text-dim);
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: all 0.3s;
+  }
+  .tech-tag:hover { border-color: var(--acid); color: var(--acid); background: rgba(200,255,0,0.05); }
+
+  /* BLOG */
+  #blog { background: var(--black); }
+  .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .blog-card {
+    border: 1px solid var(--mid); position: relative; overflow: hidden;
+    transition: border-color 0.3s; cursor: none;
+  }
+  .blog-card:hover { border-color: var(--acid); }
+  .blog-thumb {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--a,#111), var(--b,#222));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; overflow: hidden; position: relative;
+  }
+  .blog-thumb-line {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--acid); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
+  }
+  .blog-card:hover .blog-thumb-line { transform: scaleX(1); }
+  .blog-body { padding: 28px 24px; }
+  .blog-cat {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; color: var(--acid); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .blog-title { font-size: 1.05rem; font-weight: 700; line-height: 1.6; margin-bottom: 16px; }
+  .blog-date { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; }
+  .blog-card:nth-child(1) .blog-thumb { --a:#0d1f0d; --b:#172e17; }
+  .blog-card:nth-child(2) .blog-thumb { --a:#1f1a0d; --b:#2e2617; }
+  .blog-card:nth-child(3) .blog-thumb { --a:#0d0d1f; --b:#17172e; }
+
+  .cms-loading {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--text-dim); font-family: 'Space Mono',monospace;
+    font-size: 0.75rem; margin-bottom: 32px;
+  }
+  .cms-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--acid);
+    animation: cmsBlink 1.2s ease-in-out infinite;
+  }
+  .cms-dot:nth-child(2) { animation-delay: 0.2s; }
+  .cms-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes cmsBlink { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1)} }
+
+  /* CONTACT */
+  #contact {
+    background: var(--gray); text-align: center;
+    padding: 160px 48px; position: relative; overflow: hidden;
+  }
+  .contact-bg-text {
+    position: absolute; font-family: 'Bebas Neue',sans-serif; font-size: 25vw;
+    color: rgba(255,255,255,0.02); white-space: nowrap;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none; letter-spacing: -0.05em;
+  }
+  #contact .section-title { font-size: clamp(4rem,10vw,9rem); margin-bottom: 24px; }
+  #contact p {
+    color: var(--text-dim); font-size: 1.05rem; line-height: 1.8;
+    max-width: 480px; margin: 0 auto 60px; position: relative;
+  }
+  .contact-btn {
+    display: inline-flex; align-items: center; gap: 16px;
+    font-family: 'Bebas Neue',sans-serif; font-size: 1.4rem; letter-spacing: 0.1em;
+    background: var(--acid); color: var(--black); padding: 20px 56px;
+    text-decoration: none; transition: all 0.3s;
+    clip-path: polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
+  }
+  .contact-btn:hover {
+    background: var(--white); transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(200,255,0,0.3);
+  }
+  .contact-btn-arrow { font-size: 1.2rem; transition: transform 0.3s; }
+  .contact-btn:hover .contact-btn-arrow { transform: translateX(6px); }
+  .contact-info { margin-top: 80px; display: flex; justify-content: center; gap: 80px; position: relative; }
+  .contact-item { font-family: 'Space Mono',monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-dim); }
+  .contact-item a { color: var(--white); text-decoration: none; }
+  .contact-item a:hover { color: var(--acid); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); border-top: 1px solid var(--mid);
+    padding: 40px 48px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo { font-family: 'Bebas Neue',sans-serif; font-size: 1.4rem; letter-spacing: 0.15em; color: var(--text-dim); }
+  .footer-logo span { color: var(--acid); }
+  .footer-copy { font-family: 'Space Mono',monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { font-family: 'Space Mono',monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--acid); }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* microCMS PANEL */
+  .cms-panel {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--gray); border: 1px solid var(--mid);
+    padding: 24px; width: 320px; z-index: 200;
+    transform: translateX(380px);
+    transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
+  }
+  .cms-panel.open { transform: translateX(0); }
+  .cms-panel-toggle {
+    position: fixed; bottom: 32px; right: 32px;
+    width: 56px; height: 56px; background: var(--acid); color: var(--black);
+    border: none; font-size: 1.4rem; cursor: none; z-index: 201;
+    display: flex; align-items: center; justify-content: center;
+    clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition: background 0.3s;
+  }
+  .cms-panel-toggle:hover { background: var(--white); }
+  .cms-panel h3 { font-family: 'Space Mono',monospace; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--acid); margin-bottom: 16px; }
+  .cms-input {
+    width: 100%; background: var(--black); border: 1px solid var(--mid);
+    color: var(--white); padding: 10px 14px; font-family: 'Space Mono',monospace;
+    font-size: 0.7rem; margin-bottom: 10px; outline: none; transition: border-color 0.3s;
+  }
+  .cms-input:focus { border-color: var(--acid); }
+  .cms-input::placeholder { color: var(--text-dim); }
+  .cms-btn {
+    width: 100%; background: var(--acid); color: var(--black); border: none;
+    padding: 12px; font-family: 'Space Mono',monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; cursor: none; transition: background 0.3s;
+  }
+  .cms-btn:hover { background: var(--white); }
+  .cms-status { margin-top: 12px; font-family: 'Space Mono',monospace; font-size: 0.65rem; color: var(--text-dim); min-height: 20px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px 60px; }
+    .services-intro { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .works-grid { grid-template-columns: 1fr; }
+    .works-grid .work-item { grid-column: 1 !important; grid-row: auto !important; }
+    .numbers-grid { grid-template-columns: repeat(2,1fr); }
+    #about { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .contact-info { flex-direction: column; gap: 24px; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    .cms-panel { width: calc(100vw - 64px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">NEX<span>.</span>US</a>
+  <div class="nav-links">
+    <a href="#services">サービス</a>
+    <a href="#works">実績</a>
+    <a href="#about">会社概要</a>
+    <a href="#blog">ブログ</a>
+  </div>
+  <a href="#contact" class="nav-cta">お問い合わせ</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-ticker">
+    <span class="hero-ticker-inner">CREATIVE × TECHNOLOGY × INNOVATION × AI × DIGITAL × CREATIVE × TECHNOLOGY × INNOVATION × AI × DIGITAL ×&nbsp;</span>
+  </div>
+  <div class="hero-tag reveal">
+    <span>CREATIVE STUDIO × DIGITAL AGENCY</span>
+  </div>
+  <h1 class="hero-title reveal">
+    <span class="glitch-wrap" data-text="CREATE">CREATE</span><br>
+    <span class="line2">THE <span class="accent">FUTURE</span></span>
+  </h1>
+  <div class="hero-sub reveal">
+    <p class="hero-desc">
+      映像制作・イベント撮影・WEB制作・広告運用・デジタルマーケティング・AI導入支援。
+      テクノロジーとクリエイティブの力で、あなたのビジネスを次のステージへ。
+    </p>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>SCROLL</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <span class="marquee-inner">
+    VIDEO PRODUCTION <span class="marquee-sep">✦</span> EVENT FILMING <span class="marquee-sep">✦</span> WEB DEVELOPMENT <span class="marquee-sep">✦</span> AD OPERATION <span class="marquee-sep">✦</span> DIGITAL MARKETING <span class="marquee-sep">✦</span> AI CONSULTING <span class="marquee-sep">✦</span>
+    VIDEO PRODUCTION <span class="marquee-sep">✦</span> EVENT FILMING <span class="marquee-sep">✦</span> WEB DEVELOPMENT <span class="marquee-sep">✦</span> AD OPERATION <span class="marquee-sep">✦</span> DIGITAL MARKETING <span class="marquee-sep">✦</span> AI CONSULTING <span class="marquee-sep">✦</span>
+  </span>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label reveal">— OUR SERVICES —</div>
+  <h2 class="section-title reveal">WHAT WE DO</h2>
+  <div class="services-intro reveal">
+    <p>私たちは、<strong>映像・WEB・AI・マーケティング</strong>の領域を横断するクリエイティブ集団です。単なる制作会社に留まらず、戦略立案から実行・改善まで一貫してサポートします。</p>
+    <p>最先端のテクノロジーと洗練されたクリエイティブを融合し、クライアントのビジネス成長を加速させる、<strong>唯一無二のソリューション</strong>を提供します。</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01 —</div>
+      <div class="service-icon">🎬</div>
+      <div class="service-name">VIDEO PRODUCTION</div>
+      <p class="service-desc">企業VP・CM・SNS動画・ドキュメンタリー。あらゆる映像ニーズに対応。4K撮影から最終編集まで一貫制作。</p>
+      <span class="service-arrow">↗</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02 —</div>
+      <div class="service-icon">📸</div>
+      <div class="service-name">EVENT FILMING</div>
+      <p class="service-desc">展示会・カンファレンス・発表会・記念行事。プロの機材と経験豊富なスタッフが最高の瞬間を記録します。</p>
+      <span class="service-arrow">↗</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03 —</div>
+      <div class="service-icon">💻</div>
+      <div class="service-name">WEB DEVELOPMENT</div>
+      <p class="service-desc">コーポレートサイト・ECサイト・Webアプリ。microCMSを活用した更新しやすいサイトから高機能システムまで。</p>
+      <span class="service-arrow">↗</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04 —</div>
+      <div class="service-icon">📊</div>
+      <div class="service-name">AD OPERATION</div>
+      <p class="service-desc">Google広告・Meta広告・YouTube広告。データドリブンな運用改善でROIを最大化。月次レポートで透明性を確保。</p>
+      <span class="service-arrow">↗</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05 —</div>
+      <div class="service-icon">📈</div>
+      <div class="service-name">DIGITAL MARKETING</div>
+      <p class="service-desc">SEO・SNSマーケティング・コンテンツ戦略・メールマーケティング。デジタル全方位からブランドの認知拡大を実現。</p>
+      <span class="service-arrow">↗</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06 —</div>
+      <div class="service-icon">🤖</div>
+      <div class="service-name">AI CONSULTING</div>
+      <p class="service-desc">ChatGPT・画像生成AI・業務自動化。最新AIツールの選定から導入・社内研修まで。あなたの会社のAI化を支援します。</p>
+      <span class="service-arrow">↗</span>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="section-label reveal">— PORTFOLIO —</div>
+  <h2 class="section-title reveal">SELECTED WORKS</h2>
+  <div class="works-filter reveal">
+    <button class="filter-btn active">ALL</button>
+    <button class="filter-btn">VIDEO</button>
+    <button class="filter-btn">WEB</button>
+    <button class="filter-btn">MARKETING</button>
+    <button class="filter-btn">AI</button>
+  </div>
+  <div class="works-grid reveal">
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🎥</div>
+      <div class="work-overlay"><div class="work-cat">VIDEO PRODUCTION</div><div class="work-title">BRAND FILM 2024</div></div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🌐</div>
+      <div class="work-overlay"><div class="work-cat">WEB DEVELOPMENT</div><div class="work-title">EC PLATFORM</div></div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">📸</div>
+      <div class="work-overlay"><div class="work-cat">EVENT FILMING</div><div class="work-title">TECH CONFERENCE</div></div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🤖</div>
+      <div class="work-overlay"><div class="work-cat">AI CONSULTING</div><div class="work-title">AI WORKFLOW</div></div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">📊</div>
+      <div class="work-overlay"><div class="work-cat">DIGITAL MARKETING</div><div class="work-title">GROWTH HACK</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<div class="numbers-section">
+  <div class="numbers-grid">
+    <div class="number-item reveal"><span class="number-val" data-target="500">0</span><span class="number-label">制作実績（件）</span></div>
+    <div class="number-item reveal"><span class="number-val" data-target="98">0</span><span class="number-label">顧客満足度（%）</span></div>
+    <div class="number-item reveal"><span class="number-val" data-target="150">0</span><span class="number-label">取引クライアント</span></div>
+    <div class="number-item reveal"><span class="number-val" data-target="8">0</span><span class="number-label">創業（年）</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual">
+    <div class="about-grid-lines"></div>
+    <div class="about-orb"></div>
+  </div>
+  <div class="about-content">
+    <div class="section-label">— ABOUT US —</div>
+    <h2 class="section-title" style="font-size:3rem;">OUR<br>PHILOSOPHY</h2>
+    <p>私たちは<strong>「テクノロジーで感動を創る」</strong>というフィロソフィーのもと、映像・デジタル・AIの領域でクライアントの課題を解決しています。</p>
+    <p>単なるツールとしてではなく、<strong>ビジネスパートナー</strong>として、長期的な成長を共に追求します。最先端技術と人間のクリエイティビティが交差するところに、私たちの仕事があります。</p>
+    <p>AIが急速に進化する時代だからこそ、<strong>人にしかできない感性と判断力</strong>が差別化の鍵となります。私たちはその両方を最大限に活用します。</p>
+    <div class="tech-stack">
+      <span class="tech-tag">microCMS</span>
+      <span class="tech-tag">Next.js</span>
+      <span class="tech-tag">React</span>
+      <span class="tech-tag">TypeScript</span>
+      <span class="tech-tag">Vercel</span>
+      <span class="tech-tag">ChatGPT API</span>
+      <span class="tech-tag">Midjourney</span>
+      <span class="tech-tag">Adobe CC</span>
+      <span class="tech-tag">DaVinci Resolve</span>
+      <span class="tech-tag">Google Ads</span>
+      <span class="tech-tag">Meta Ads</span>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-label reveal">— POWERED BY microCMS —</div>
+  <h2 class="section-title reveal">LATEST INSIGHTS</h2>
+  <div class="cms-loading" id="cmsLoading">
+    <div class="cms-dot"></div>
+    <div class="cms-dot"></div>
+    <div class="cms-dot"></div>
+    <span id="cmsLoadingText">microCMS APIキーを設定してコンテンツを読み込みます</span>
+  </div>
+  <div class="blog-grid" id="blogGrid">
+    <div class="blog-card">
+      <div class="blog-thumb"><span>🤖</span><div class="blog-thumb-line"></div></div>
+      <div class="blog-body">
+        <div class="blog-cat">AI CONSULTING</div>
+        <div class="blog-title">中小企業がAIを導入すべき5つの理由と始め方ガイド</div>
+        <div class="blog-date">2024.12.15</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-thumb"><span>🎬</span><div class="blog-thumb-line"></div></div>
+      <div class="blog-body">
+        <div class="blog-cat">VIDEO PRODUCTION</div>
+        <div class="blog-title">SNS動画で売上を3倍にした戦略を公開</div>
+        <div class="blog-date">2024.12.08</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-thumb"><span>📈</span><div class="blog-thumb-line"></div></div>
+      <div class="blog-body">
+        <div class="blog-cat">DIGITAL MARKETING</div>
+        <div class="blog-title">2024年最新！Google広告で成果を出すための完全攻略法</div>
+        <div class="blog-date">2024.12.01</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg-text">CONTACT</div>
+  <div class="section-label reveal">— GET IN TOUCH —</div>
+  <h2 class="section-title reveal">LET'S<br><span style="color:var(--acid)">WORK</span><br>TOGETHER</h2>
+  <p class="reveal">プロジェクトについてのご相談、お見積もりはお気軽にどうぞ。<br>24時間以内にご返信いたします。</p>
+  <a href="mailto:hello@nexus-creative.jp" class="contact-btn reveal">
+    お問い合わせはこちら
+    <span class="contact-btn-arrow">→</span>
+  </a>
+  <div class="contact-info reveal">
+    <div class="contact-item">EMAIL<br><a href="mailto:hello@nexus-creative.jp">hello@nexus-creative.jp</a></div>
+    <div class="contact-item">TEL<br><a href="tel:0312345678">03-1234-5678</a></div>
+    <div class="contact-item">ADDRESS<br>東京都渋谷区神宮前1-1-1</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NEX<span>.</span>US CREATIVE</div>
+  <div class="footer-copy">© 2024 NEXUS CREATIVE. ALL RIGHTS RESERVED.</div>
+  <div class="footer-links">
+    <a href="#">プライバシーポリシー</a>
+    <a href="#">利用規約</a>
+    <a href="#">採用情報</a>
+  </div>
+</footer>
+
+<!-- microCMS PANEL -->
+<button class="cms-panel-toggle" id="cmsPanelToggle" title="microCMS設定">⚙</button>
+<div class="cms-panel" id="cmsPanel">
+  <h3>⚡ microCMS SETTINGS</h3>
+  <input class="cms-input" id="cmsServiceId" type="text" placeholder="Service ID (例: your-service)">
+  <input class="cms-input" id="cmsApiKey" type="text" placeholder="API Key">
+  <input class="cms-input" id="cmsEndpoint" type="text" placeholder="Endpoint (例: blogs)">
+  <button class="cms-btn" id="cmsConnect">CONNECT →</button>
+  <div class="cms-status" id="cmsStatus">設定を入力してConnectを押してください</div>
+</div>
+
+<script>
+// CUSTOM CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button, .service-card, .work-item, .blog-card, .filter-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='60px'; ring.style.height='60px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='40px'; ring.style.height='40px'; });
+});
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// NUMBER COUNTER
+const numObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      const step = target / (2000 / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.floor(current) + (target >= 98 ? '' : '+');
+        if (current >= target) clearInterval(timer);
+      }, 16);
+      numObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.number-val').forEach(el => numObs.observe(el));
+
+// WORKS FILTER
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// microCMS PANEL
+const panelToggle = document.getElementById('cmsPanelToggle');
+const panel = document.getElementById('cmsPanel');
+let panelOpen = false;
+panelToggle.addEventListener('click', () => {
+  panelOpen = !panelOpen;
+  panel.classList.toggle('open', panelOpen);
+  panelToggle.textContent = panelOpen ? '✕' : '⚙';
+});
+
+// microCMS CONNECT
+document.getElementById('cmsConnect').addEventListener('click', async () => {
+  const serviceId = document.getElementById('cmsServiceId').value.trim();
+  const apiKey    = document.getElementById('cmsApiKey').value.trim();
+  const endpoint  = document.getElementById('cmsEndpoint').value.trim();
+  const status    = document.getElementById('cmsStatus');
+  if (!serviceId || !apiKey || !endpoint) {
+    status.textContent = '⚠ すべての項目を入力してください';
+    status.style.color = '#ff2d2d'; return;
+  }
+  status.textContent = '接続中...'; status.style.color = '#888';
+  try {
+    const res = await fetch(`https://${serviceId}.microcms.io/api/v1/${endpoint}?limit=3`, {
+      headers: { 'X-MICROCMS-API-KEY': apiKey }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    status.textContent = `✓ 接続成功！${data.contents?.length || 0}件取得`;
+    status.style.color = '#c8ff00';
+    if (data.contents?.length > 0) {
+      renderBlogCards(data.contents);
+      document.getElementById('cmsLoadingText').textContent = `microCMSから${data.contents.length}件のコンテンツを読み込みました`;
+    }
+  } catch(e) {
+    status.textContent = `✗ 接続失敗: ${e.message}`;
+    status.style.color = '#ff2d2d';
+  }
+});
+
+function renderBlogCards(contents) {
+  const grid   = document.getElementById('blogGrid');
+  const emojis = ['✨','📝','🚀','💡','🎯'];
+  const colors = [{a:'#0d1f0d',b:'#172e17'},{a:'#1f1a0d',b:'#2e2617'},{a:'#0d0d1f',b:'#17172e'}];
+  grid.innerHTML = contents.map((item, i) => {
+    const c    = colors[i % colors.length];
+    const date = item.publishedAt
+      ? new Date(item.publishedAt).toLocaleDateString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\//g,'.')
+      : '';
+    const cat = (item.category?.name || item.category || 'ARTICLE').toString().toUpperCase();
+    return `<div class="blog-card">
+      <div class="blog-thumb" style="--a:${c.a};--b:${c.b}"><span>${emojis[i%emojis.length]}</span><div class="blog-thumb-line"></div></div>
+      <div class="blog-body">
+        <div class="blog-cat">${cat}</div>
+        <div class="blog-title">${item.title || 'タイトルなし'}</div>
+        <div class="blog-date">${date}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// HERO INITIAL ANIMATION
+setTimeout(() => {
+  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 200 + 300);
+  });
+}, 100);
+</script>
+</body>
+</html>
