@@ -160,7 +160,7 @@
   .works-footer { margin-top: 60px; display: flex; justify-content: center; }
   .btn-archive { position: relative; padding: 15px 40px; font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--white); border: 1px solid var(--mid); overflow: hidden; transition: all 0.3s; text-decoration: none; display: inline-block; }
   .btn-archive::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--acid); transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1); z-index: -1; }
-  .btn-archive:hover { color: var(--black); border-color: var(--acid); }
+  .btn-archive:hover { color: var(--black) !important; border-color: var(--acid); }
   .btn-archive:hover::before { left: 0; }
   .btn-archive .glitch-text { position: relative; display: inline-block; }
   .btn-archive:hover .glitch-text { animation: glitch-mini 0.3s infinite; }
@@ -202,7 +202,7 @@
 
   /* MEMBER */
   #member { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); }
-  .member-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 60px; }
+  .member-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
   .member-card { position: relative; overflow: hidden; background: var(--gray); border: 1px solid var(--mid); transition: all 0.4s; }
   .member-card:hover { border-color: var(--acid); transform: translateY(-10px); }
   .member-img-wrap { aspect-ratio: 3/4; overflow: hidden; position: relative; background: var(--mid); }
@@ -273,7 +273,7 @@
     #about { grid-template-columns: 1fr; }
     .area-details-grid { grid-template-columns: 1fr; }
     .blog-grid { grid-template-columns: 1fr; }
-    .member-grid { grid-template-columns: 1fr 1fr; }
+    .member-grid { grid-template-columns: repeat(2, 1fr); }
     .contact-info { flex-direction: column; gap: 40px; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
   }
@@ -686,6 +686,28 @@
         <span class="member-role">Marketing Strategist</span>
         <span class="member-name">M. Suzuki</span>
         <p class="member-desc">データに基づいたマーケティング戦略を立案. 広告運用からSNS戦略まで、クライアントの成長を最大化します。</p>
+      </div>
+    </div>
+    <!-- Member 05 -->
+    <div class="member-card reveal">
+      <div class="member-img-wrap">
+        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80" alt="Member 05" class="member-img">
+      </div>
+      <div class="member-info">
+        <span class="member-role">Video Editor</span>
+        <span class="member-name">K. Yamamoto</span>
+        <p class="member-desc">リズムとストーリーを重視した編集で、視聴者の感情を揺さぶる映像作品を仕上げます。</p>
+      </div>
+    </div>
+    <!-- Member 06 -->
+    <div class="member-card reveal">
+      <div class="member-img-wrap">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80" alt="Member 06" class="member-img">
+      </div>
+      <div class="member-info">
+        <span class="member-role">AI Engineer</span>
+        <span class="member-name">Y. Ito</span>
+        <p class="member-desc">最新のAI技術を実務に落とし込み、業務効率化と新たな価値創造を技術面から支えます。</p>
       </div>
     </div>
   </div>
