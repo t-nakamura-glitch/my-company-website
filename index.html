@@ -36,7 +36,7 @@
   }
   .cursor-ring {
     position: fixed; width: 40px; height: 40px;
-    border: 1px solid rgba(200,255,0,0.5); border-radius: 50%;
+    border: 1px solid rgba(62,204,0,0.5); border-radius: 50%;
     pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%); transition: all 0.15s ease;
   }
@@ -66,8 +66,8 @@
 
   /* HERO */
   .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden; }
-  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, #1a2a00 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #1a0000 0%, transparent 50%), var(--black); }
-  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,255,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,0,0.04) 1px, transparent 1px); background-size: 80px 80px; transform: perspective(800px) rotateX(20deg) scale(1.5); transform-origin: bottom; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, #0a1a00 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #1a0000 0%, transparent 50%), var(--black); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(62,204,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(62,204,0,0.04) 1px, transparent 1px); background-size: 80px 80px; transform: perspective(800px) rotateX(20deg) scale(1.5); transform-origin: bottom; }
   .hero-ticker { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); overflow: hidden; white-space: nowrap; }
   .hero-ticker-inner { display: inline-block; animation: ticker 25s linear infinite; font-family: 'Bebas Neue', sans-serif; font-size: 18vw; color: rgba(255,255,255,0.02); letter-spacing: -0.02em; white-space: nowrap; }
   @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -111,7 +111,7 @@
   .services-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 80px; }
   .services-intro p { font-size: 1.05rem; line-height: 1.9; color: var(--text-dim); }
   .services-intro p strong { color: var(--white); font-weight: 700; }
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--mid); border: 1px solid var(--mid); }
+  .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--mid); border: 1px solid var(--mid); }
   .service-card { background: var(--black); padding: 0; position: relative; overflow: hidden; transition: background 0.4s; cursor: none; display: flex; flex-direction: column; min-height: 450px; }
   .service-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(100%) brightness(0.7); transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   .service-card:hover .service-img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
@@ -131,9 +131,13 @@
   #works { background: var(--gray); }
   .works-filter { display: flex; gap: 4px; margin-bottom: 48px; }
   .filter-btn { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--mid); background: transparent; color: var(--text-dim); padding: 8px 20px; cursor: none; transition: all 0.3s; }
-  .filter-btn.active, .filter-btn:hover { border-color: var(--acid); color: var(--acid); background: rgba(200,255,0,0.05); }
-  .works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-  .work-item { position: relative; overflow: hidden; background: var(--mid); cursor: none; aspect-ratio: 16/9; }
+  .filter-btn.active, .filter-btn:hover { border-color: var(--acid); color: var(--acid); background: rgba(62,204,0,0.05); }
+  .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+  .work-item { position: relative; overflow: hidden; background: var(--mid); cursor: none; min-height: 200px; }
+  .work-item:nth-child(1) { grid-column: span 2; grid-row: span 2; min-height: 415px; }
+  .work-item:nth-child(2) { grid-column: span 2; }
+  .work-item:nth-child(5) { grid-column: span 2; }
+  .work-item:nth-child(6) { grid-row: span 2; min-height: 415px; }
   @media (max-width: 768px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 480px) { .works-grid { grid-template-columns: 1fr; } }
   .work-bg { position: absolute; inset: 0; background: linear-gradient(135deg, var(--a,#111) 0%, var(--b,#222) 100%); transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
@@ -153,7 +157,7 @@
   .work-item:nth-child(8) .work-bg{--a:#0d1f1a;--b:#0d3d33}
   .work-item:nth-child(9) .work-bg{--a:#1a1f0d;--b:#333d0d}
   .works-footer { margin-top: 60px; display: flex; justify-content: center; }
-  .btn-archive { position: relative; padding: 15px 40px; font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--white); border: 1px solid var(--mid); overflow: hidden; transition: all 0.3s; text-decoration: none; }
+  .btn-archive { position: relative; padding: 15px 40px; font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--white); border: 1px solid var(--mid); overflow: hidden; transition: all 0.3s; text-decoration: none; display: inline-block; }
   .btn-archive::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--acid); transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1); z-index: -1; }
   .btn-archive:hover { color: var(--black); border-color: var(--acid); }
   .btn-archive:hover::before { left: 0; }
@@ -161,40 +165,50 @@
   .btn-archive:hover .glitch-text { animation: glitch-mini 0.3s infinite; }
   @keyframes glitch-mini { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
+  /* VIRTUAL */
+  .virtual-section { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .virtual-visual { position: relative; height: 400px; background: rgba(255,255,255,0.02); border: 1px solid var(--mid); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .virtual-cube { width: 100px; height: 100px; border: 1px solid var(--acid); position: relative; transform-style: preserve-3d; animation: cubeRotate 10s linear infinite; }
+  .virtual-cube::before, .virtual-cube::after { content: ''; position: absolute; inset: -1px; border: 1px solid var(--acid); }
+  .virtual-cube::after { transform: rotateY(90deg); }
+  @keyframes cubeRotate { from{transform:rotateX(0) rotateY(0)} to{transform:rotateX(360deg) rotateY(360deg)} }
+  .virtual-content { display: flex; flex-direction: column; align-items: flex-start; }
+  .virtual-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; color: var(--text-dim); margin-top: -50px; margin-bottom: 30px; letter-spacing: 0.2em; }
+  .virtual-desc { font-size: 1.1rem; line-height: 1.8; color: var(--text-dim); margin-bottom: 40px; }
+
   /* AREA */
   .area-section { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); }
   .area-map-full { position: relative; background: rgba(255,255,255,0.02); border: 1px solid var(--mid); padding: 60px; overflow: hidden; margin-bottom: 60px; display: flex; align-items: center; justify-content: center; min-height: 400px; }
-  .area-map-full::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(var(--mid) 1px, transparent 1px); background-size: 30px 30px; opacity: 0.1; }
-  .map-svg-japan { width: 100%; max-width: 900px; height: auto; filter: drop-shadow(0 0 15px rgba(62, 204, 0, 0.2)); }
-  .map-point { fill: var(--acid); animation: mapPulse 2s infinite; }
-  .map-point-label { font-family: 'Space Mono', monospace; font-size: 12px; fill: var(--white); font-weight: bold; }
-  .map-line { stroke: var(--acid); stroke-width: 1; stroke-dasharray: 4 4; opacity: 0.4; }
-  @keyframes mapPulse { 0% { opacity: 1; r: 4; } 50% { opacity: 0.4; r: 10; } 100% { opacity: 1; r: 4; } }
+  .area-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--mid) 1px, transparent 1px), linear-gradient(90deg, var(--mid) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.15; }
+  .area-point-wrap { position: relative; width: 100%; max-width: 800px; height: 200px; }
+  .area-node { position: absolute; width: 12px; height: 12px; background: var(--acid); border-radius: 50%; box-shadow: 0 0 20px var(--acid); }
+  .area-node::before, .area-node::after { content: ''; position: absolute; inset: -30px; border: 1px solid var(--acid); border-radius: 50%; animation: ripple 4s infinite; opacity: 0; }
+  .area-node::after { animation-delay: 2s; }
+  @keyframes ripple { 0% { transform: scale(0.3); opacity: 0.8; } 100% { transform: scale(3); opacity: 0; } }
+  .node-nara { left: 25%; top: 65%; }
+  .node-tokyo { right: 25%; top: 35%; }
+  .node-label { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--white); white-space: nowrap; letter-spacing: 0.3em; font-weight: 700; }
   .area-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .area-detail-box { border-left: 1px solid var(--mid); padding-left: 24px; }
-  .area-detail-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--white); margin-bottom: 15px; }
-  .area-list { list-style: none; }
-  .area-list li { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  .area-detail-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--white); margin-bottom: 15px; letter-spacing: 0.1em; }
+  .area-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .area-list li { font-size: 0.85rem; color: var(--text-dim); display: flex; align-items: center; gap: 10px; }
   .area-list li::before { content: '>'; color: var(--acid); font-family: 'Space Mono', monospace; }
 
   /* ABOUT */
   #about { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; }
   .about-visual { position: relative; min-height: 600px; background: var(--gray); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .about-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,255,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,0,0.06) 1px, transparent 1px); background-size: 40px 40px; }
-  .about-orb { width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--acid) 0%, rgba(200,255,0,0.3) 40%, transparent 70%); animation: orbPulse 4s ease-in-out infinite; position: relative; }
-  .about-orb::after { content: ''; position: absolute; inset: -20px; border-radius: 50%; border: 1px solid rgba(200,255,0,0.2); animation: orbRing 4s ease-in-out infinite reverse; }
+  .about-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(62,204,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(62,204,0,0.06) 1px, transparent 1px); background-size: 40px 40px; }
+  .about-orb { width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--acid) 0%, rgba(62,204,0,0.3) 40%, transparent 70%); animation: orbPulse 4s ease-in-out infinite; position: relative; }
+  .about-orb::after { content: ''; position: absolute; inset: -20px; border-radius: 50%; border: 1px solid rgba(62,204,0,0.2); animation: orbRing 4s ease-in-out infinite reverse; }
   @keyframes orbPulse{0%,100%{transform:scale(1);opacity:0.8}50%{transform:scale(1.1);opacity:1}}
   @keyframes orbRing{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(180deg)}}
   .about-content { padding: 100px 64px; background: var(--black); display: flex; flex-direction: column; justify-content: center; }
   .about-content p { font-size: 1rem; line-height: 2; color: var(--text-dim); margin-bottom: 24px; }
   .about-content p strong { color: var(--white); font-weight: 700; }
-  .tech-stack { margi  .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
-  .tech-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; border: 1px solid var(--mid); padding: 6px 14px; color: var(--text-dim); }
-  .company-info { margin-top: 60px; border-top: 1px solid var(--mid); padding-top: 40px; }
-  .info-grid { display: grid; grid-template-columns: 120px 1fr; gap: 15px; }
-  .info-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--acid); text-transform: uppercase; }
-  .info-value { font-size: 0.9rem; color: var(--white); }clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: all 0.3s; }
-  .tech-tag:hover { border-color: var(--acid); color: var(--acid); background: rgba(200,255,0,0.05); }
+  .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .tech-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; border: 1px solid var(--mid); padding: 6px 14px; color: var(--text-dim); clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: all 0.3s; }
+  .tech-tag:hover { border-color: var(--acid); color: var(--acid); background: rgba(62,204,0,0.05); }
 
   /* BLOG */
   #blog { background: var(--black); }
@@ -226,7 +240,7 @@
   #contact .section-title { font-size: clamp(4rem,10vw,9rem); margin-bottom: 24px; }
   #contact p { color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; max-width: 480px; margin: 0 auto 60px; position: relative; }
   .contact-btn { display: inline-flex; align-items: center; gap: 16px; font-family: 'Bebas Neue',sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; background: var(--acid); color: var(--black); padding: 20px 56px; text-decoration: none; transition: all 0.3s; clip-path: polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%); }
-  .contact-btn:hover { background: var(--white); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(200,255,0,0.3); }
+  .contact-btn:hover { background: var(--white); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(62,204,0,0.3); }
   .contact-btn-arrow { font-size: 1.2rem; transition: transform 0.3s; }
   .contact-btn:hover .contact-btn-arrow { transform: translateX(6px); }
   .contact-info { margin-top: 80px; display: flex; justify-content: center; gap: 80px; position: relative; }
@@ -253,8 +267,10 @@
     .services-intro { grid-template-columns: 1fr; } .services-grid { grid-template-columns: 1fr; }
     .works-grid { grid-template-columns: 1fr; }
     .works-grid .work-item { grid-column: 1 !important; grid-row: auto !important; }
-    .numbers-grid { grid-template-columns: repeat(2,1fr); } #about { grid-template-columns: 1fr; }
-    .blog-grid { grid-template-columns: 1fr; } .contact-info { flex-direction: column; gap: 24px; }
+    #about { grid-template-columns: 1fr; }
+    .area-details-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .contact-info { flex-direction: column; gap: 40px; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
   }
 </style>
@@ -264,9 +280,9 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-  <nav>
-    <a href="#" class="nav-logo">SENTIC<span>.</span>JP</a>
-    <div class="nav-links">
+<nav>
+  <a href="#" class="nav-logo">SENTIC<span>.</span>JP</a>
+  <div class="nav-links">
     <a href="#services">サービス</a>
     <a href="#works">実績</a>
     <a href="#about">会社概要</a>
@@ -327,30 +343,56 @@
         <div class="service-num">02 —</div>
         <div class="service-name-wrap">
           <span class="service-name">写真撮影</span>
-          <span class="service-en">Photo Works</span>
+          <span class="service-en">Picture Production</span>
         </div>
         <p class="service-desc">カタログ・EC用の商品撮影、建築写真、ビジネスプロフィール、イベント記録など、プロの技術と感性でブランドの魅力を最大限に引き出します。</p>
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 03 イベントビデオ・写真 -->
+    <!-- 03 デザイン -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="イベントビデオ・写真" class="service-img">
+      <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80" alt="デザイン" class="service-img">
       <div class="service-content">
         <div class="service-num">03 —</div>
         <div class="service-name-wrap">
-          <span class="service-name">イベントビデオ・写真</span>
-          <span class="service-en">EVENT SHOOTING</span>
+          <span class="service-name">デザイン</span>
+          <span class="service-en">Design</span>
+        </div>
+        <p class="service-desc">ロゴ、グラフィック、UI/UXデザイン。ブランドのアイデンティティを視覚化し、ユーザー体験を最適化するクリエイティブを提供します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 04 イベントビデオ -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="イベントビデオ" class="service-img">
+      <div class="service-content">
+        <div class="service-num">04 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">イベントビデオ</span>
+          <span class="service-en">EVENT Shooting</span>
         </div>
         <p class="service-desc">展示会、セミナー、式典、ライブパフォーマンス等の記録撮影。複数台のカメラによるマルチアングル撮影や、当日のダイジェスト編集にも対応します。</p>
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 04 ライブ配信 -->
+    <!-- 05 イベント写真 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1505373633569-e083a0073fd7?auto=format&fit=crop&w=800&q=80" alt="イベント写真" class="service-img">
+      <div class="service-content">
+        <div class="service-num">05 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">イベント写真</span>
+          <span class="service-en">EVENT PHOTO</span>
+        </div>
+        <p class="service-desc">イベントの熱量を切り取るスチール撮影。記録用から広報用まで、現場の空気感を伝える高品質な写真を提供します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 06 ライブ配信 -->
     <div class="service-card">
       <img src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=800&q=80" alt="ライブ配信" class="service-img">
       <div class="service-content">
-        <div class="service-num">04 —</div>
+        <div class="service-num">06 —</div>
         <div class="service-name-wrap">
           <span class="service-name">ライブ配信</span>
           <span class="service-en">LIVE STREAMING</span>
@@ -359,11 +401,24 @@
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 05 WEB制作 -->
+    <!-- 07 録音・音楽制作 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80" alt="録音・音楽制作" class="service-img">
+      <div class="service-content">
+        <div class="service-num">07 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">録音・音楽制作</span>
+          <span class="service-en">MUSIC</span>
+        </div>
+        <p class="service-desc">楽曲制作、ナレーション録音、MA編集。映像の魅力を引き立てるサウンドデザインと、高品質なオーディオ制作を実現します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 08 WEB制作 -->
     <div class="service-card">
       <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="WEB制作" class="service-img">
       <div class="service-content">
-        <div class="service-num">05 —</div>
+        <div class="service-num">08 —</div>
         <div class="service-name-wrap">
           <span class="service-name">WEB制作</span>
           <span class="service-en">WEB DEVELOPMENT</span>
@@ -372,11 +427,11 @@
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 06 広告運用 -->
+    <!-- 09 広告運用 -->
     <div class="service-card">
       <img src="https://images.unsplash.com/photo-1551288049-bbdac8626ad1?auto=format&fit=crop&w=800&q=80" alt="広告運用" class="service-img">
       <div class="service-content">
-        <div class="service-num">06 —</div>
+        <div class="service-num">09 —</div>
         <div class="service-name-wrap">
           <span class="service-name">広告運用</span>
           <span class="service-en">AD OPERATION</span>
@@ -385,11 +440,11 @@
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 07 デジタルマーケティング -->
+    <!-- 10 デジタルマーケティング -->
     <div class="service-card">
       <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="デジタルマーケティング" class="service-img">
       <div class="service-content">
-        <div class="service-num">07 —</div>
+        <div class="service-num">10 —</div>
         <div class="service-name-wrap">
           <span class="service-name">デジタルマーケティング</span>
           <span class="service-en">DIGITAL MARKETING</span>
@@ -398,11 +453,11 @@
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 08 AI導入支援 -->
+    <!-- 11 AI導入支援 -->
     <div class="service-card">
       <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI導入支援" class="service-img">
       <div class="service-content">
-        <div class="service-num">08 —</div>
+        <div class="service-num">11 —</div>
         <div class="service-name-wrap">
           <span class="service-name">AI導入支援</span>
           <span class="service-en">AI CONSULTING</span>
@@ -411,11 +466,11 @@
         <span class="service-arrow">↗</span>
       </div>
     </div>
-    <!-- 09 システム開発・販売 -->
+    <!-- 12 システム開発・販売 -->
     <div class="service-card">
       <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" alt="システム開発・販売" class="service-img">
       <div class="service-content">
-        <div class="service-num">09 —</div>
+        <div class="service-num">12 —</div>
         <div class="service-name-wrap">
           <span class="service-name">システム開発・販売</span>
           <span class="service-en">SYSTEM DEVELOPMENT</span>
@@ -518,28 +573,47 @@
   </div>
 </section>
 
+<!-- VIRTUAL -->
+<section id="virtual" class="virtual-section">
+  <div class="virtual-visual reveal">
+    <div class="area-grid-bg"></div>
+    <div class="virtual-cube"></div>
+  </div>
+  <div class="virtual-content">
+    <div class="section-label reveal">— VIRTUAL —</div>
+    <h2 class="section-title reveal" style="margin-bottom:10px;">VIRTUAL</h2>
+    <div class="virtual-sub reveal">仮想の</div>
+    <p class="virtual-desc reveal">
+      3DCG e-commerce / 3D product modeling / 3D space / AR / VR / MR / the metaverse.
+    </p>
+    <div class="reveal">
+      <a href="#" class="btn-archive">
+        <span class="glitch-text">VIEW</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- AREA -->
 <section id="area" class="area-section">
   <div class="section-label reveal">— BUSINESS BASE —</div>
   <h2 class="section-title reveal">SERVICE AREA</h2>
   
   <div class="area-map-full reveal">
-    <svg class="map-svg-japan" viewBox="0 0 800 400">
-      <!-- Digital Japan Map Silhouette (Simplified) -->
-      <path d="M150,300 L180,280 L220,290 L250,260 L300,250 L350,220 L400,200 L450,150 L500,100 L550,80 L600,50 L650,60 L680,100 L650,150 L600,180 L550,220 L500,250 L450,280 L400,320 L350,350 L300,370 L250,380 L200,350 Z" fill="rgba(255,255,255,0.05)" stroke="var(--mid)" stroke-width="1" />
-      <!-- Connection Line -->
-      <path class="map-line" d="M320,280 Q400,200 480,180" fill="none" />
-      <!-- Points -->
-      <circle class="map-point" cx="320" cy="280" r="5" />
-      <text class="map-point-label" x="260" y="285">NARA HQ</text>
-      <circle class="map-point" cx="480" cy="180" r="5" />
-      <text class="map-point-label" x="495" y="185">TOKYO BRANCH</text>
-    </svg>
+    <div class="area-grid-bg"></div>
+    <div class="area-point-wrap">
+      <div class="area-node node-nara">
+        <span class="node-label">NARA</span>
+      </div>
+      <div class="area-node node-tokyo">
+        <span class="node-label">TOKYO</span>
+      </div>
+    </div>
   </div>
 
   <div class="area-details-grid reveal">
     <div class="area-detail-box">
-      <h3 class="area-detail-title">KANSAI HUB</h3>
+      <h3 class="area-detail-title">WEST</h3>
       <ul class="area-list">
         <li>奈良県全域（中心拠点）</li>
         <li>大阪府・京都府・兵庫県</li>
@@ -547,7 +621,7 @@
       </ul>
     </div>
     <div class="area-detail-box">
-      <h3 class="area-detail-title">KANTO HUB</h3>
+      <h3 class="area-detail-title">EAST</h3>
       <ul class="area-list">
         <li>東京都23区・多摩エリア</li>
         <li>神奈川県・千葉県・埼玉県</li>
@@ -575,29 +649,10 @@
       <span class="tech-tag">Google Ads</span><span class="tech-tag">Meta Ads</span>
     </div>
 
-    <div class="company-info">
-      <div class="info-grid">
-        <div class="info-label">Company</div>
-        <div class="info-value">合同会社ＳＥＮＴＩＣ</div>
-        
-        <div class="info-label">Tax ID</div>
-        <div class="info-value">T9-1500-0300-1609</div>
-        
-        <div class="info-label">Established</div>
-        <div class="info-value">2017/5/19</div>
-        
-        <div class="info-label">Capital</div>
-        <div class="info-value">3,000,000円</div>
-        
-        <div class="info-label">CEO</div>
-        <div class="info-value">中村拓哉</div>
-        
-        <div class="info-label">Mail</div>
-        <div class="info-value">info@sentic.jp</div>
-        
-        <div class="info-label">TEL</div>
-        <div class="info-value">050-5306-4547</div>
-      </div>
+    <div class="about-footer" style="margin-top: 60px;">
+      <a href="#" class="btn-archive">
+        <span class="glitch-text">COMPANY PROFILE</span>
+      </a>
     </div>
   </div>
 </section>
@@ -664,19 +719,6 @@ const observer = new IntersectionObserver((entries)=>{
   });
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-// NUMBER COUNTER
-const numObs = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      const el=entry.target, target=parseInt(el.dataset.target), step=target/(2000/16);
-      let cur=0;
-      const t=setInterval(()=>{ cur=Math.min(cur+step,target); el.textContent=Math.floor(cur)+(target>=98?'':'+'); if(cur>=target)clearInterval(t); },16);
-      numObs.unobserve(el);
-    }
-  });
-},{threshold:0.5});
-document.querySelectorAll('.number-val').forEach(el=>numObs.observe(el));
 
 // WORKS FILTER
 document.querySelectorAll('.filter-btn').forEach(btn=>{
