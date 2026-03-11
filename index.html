@@ -112,9 +112,10 @@
   .services-intro p { font-size: 1.05rem; line-height: 1.9; color: var(--text-dim); }
   .services-intro p strong { color: var(--white); font-weight: 700; }
   .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--mid); border: 1px solid var(--mid); }
-  .service-card { background: var(--black); padding: 0; position: relative; overflow: hidden; transition: background 0.4s; cursor: none; display: flex; flex-direction: column; min-height: 450px; }
-  .service-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(100%) brightness(0.7); transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-  .service-card:hover .service-img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
+  .service-card { background: var(--black); padding: 0; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); cursor: none; display: flex; flex-direction: column; min-height: 450px; border: 1px solid transparent; }
+  .service-card:hover { border-color: var(--acid); box-shadow: 0 20px 40px rgba(62,204,0,0.15); z-index: 2; }
+  .service-img { width: 100%; height: 200px; object-fit: cover; filter: brightness(0.9); transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .service-card:hover .service-img { filter: brightness(1.1); transform: scale(1.1); }
   .service-content { padding: 32px; flex-grow: 1; position: relative; z-index: 1; display: flex; flex-direction: column; }
   .service-card::before { content: ''; position: absolute; inset: 0; background: var(--acid); transform: translateY(101%); transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1); z-index: 0; }
   .service-card:hover::before { transform: translateY(0); }
@@ -165,8 +166,6 @@
   .btn-archive:hover .glitch-text { animation: glitch-mini 0.3s infinite; }
   @keyframes glitch-mini { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
-
-
   /* AREA */
   .area-section { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); }
   .area-map-full { position: relative; background: rgba(255,255,255,0.02); border: 1px solid var(--mid); padding: 60px; overflow: hidden; margin-bottom: 60px; display: flex; align-items: center; justify-content: center; min-height: 400px; }
@@ -191,7 +190,7 @@
   .about-visual { position: relative; min-height: 600px; background: var(--gray); overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .about-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(62,204,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(62,204,0,0.06) 1px, transparent 1px); background-size: 40px 40px; }
   .about-orb { width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--acid) 0%, rgba(62,204,0,0.3) 40%, transparent 70%); animation: orbPulse 4s ease-in-out infinite; position: relative; }
-  .about-orb::after { content: ''; position: absolute; inset: -20px; border-radius: 50%; border: 1px solid rgba(62,204,0,0.2); animation: orbRing 4s ease-in-out infinite reverse; }
+  .about-orb::after { content: ''; position: absolute; inset: -20px; border-radius: 50%; border: 1px solid rgba(200,255,0,0.2); animation: orbRing 4s ease-in-out infinite reverse; }
   @keyframes orbPulse{0%,100%{transform:scale(1);opacity:0.8}50%{transform:scale(1.1);opacity:1}}
   @keyframes orbRing{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(180deg)}}
   .about-content { padding: 100px 64px; background: var(--black); display: flex; flex-direction: column; justify-content: center; }
@@ -337,7 +336,7 @@
           <span class="service-name">動画制作</span>
           <span class="service-en">Film Production</span>
         </div>
-        <p class="service-desc">企業VP、ブランディングムービー、SNS広告動画など、目的に応じた最適な映像表現を追求。企画構成から撮影、編集までワンストップで提供します。</p>
+        <p class="service-desc">企業VP、ブランディングムービー、SNS広告動画など、目的に応じた最適な映像表現を追求. 企画構成から撮影、編集までワンストップで提供します。</p>
         <span class="service-arrow">↗</span>
       </div>
     </div>
@@ -441,7 +440,7 @@
           <span class="service-name">広告運用</span>
           <span class="service-en">AD OPERATION</span>
         </div>
-        <p class="service-desc">リスティング広告、SNS広告、動画広告の運用代行。詳細なターゲティングと継続的なABテストにより、獲得単価の最適化とROIの最大化を図ります。</p>
+        <p class="service-desc">リスティング広告、SNS広告、動画広告の運用代行. 詳細なターゲティングと継続的なABテストにより、獲得単価の最適化とROIの最大化を図ります。</p>
         <span class="service-arrow">↗</span>
       </div>
     </div>
@@ -578,8 +577,6 @@
   </div>
 </section>
 
-
-
 <!-- AREA -->
 <section id="area" class="area-section">
   <div class="section-label reveal">— BUSINESS BASE —</div>
@@ -666,7 +663,7 @@
       <div class="member-info">
         <span class="member-role">Lead Designer</span>
         <span class="member-name">A. Tanaka</span>
-        <p class="member-desc">UI/UXからグラフィックまで幅広く担当。ブランドの想いを視覚化し、ユーザーの心に響くデザインを提供します。</p>
+        <p class="member-desc">UI/UXからグラフィックまで幅広く担当. ブランドの想いを視覚化し、ユーザーの心に響くデザインを提供します。</p>
       </div>
     </div>
     <!-- Member 03 -->
@@ -677,7 +674,7 @@
       <div class="member-info">
         <span class="member-role">Full Stack Developer</span>
         <span class="member-name">S. Sato</span>
-        <p class="member-desc">最新の技術スタックを駆使し、高速でセキュアなシステムを構築。AI導入支援のテクニカルリードも務めます。</p>
+        <p class="member-desc">最新の技術スタックを駆使し、高速でセキュアなシステムを構築. AI導入支援のテクニカルリードも務めます。</p>
       </div>
     </div>
     <!-- Member 04 -->
@@ -688,7 +685,7 @@
       <div class="member-info">
         <span class="member-role">Marketing Strategist</span>
         <span class="member-name">M. Suzuki</span>
-        <p class="member-desc">データに基づいたマーケティング戦略を立案。広告運用からSNS戦略まで、クライアントの成長を最大化します。</p>
+        <p class="member-desc">データに基づいたマーケティング戦略を立案. 広告運用からSNS戦略まで、クライアントの成長を最大化します。</p>
       </div>
     </div>
   </div>
@@ -713,9 +710,9 @@
     お問い合わせはこちら <span class="contact-btn-arrow">→</span>
   </a>
   <div class="contact-info reveal">
-    <div class="contact-item">EMAIL<br><a href="mailto:info@sentic.jp">info@sentic.co.jp</a></div>
+    <div class="contact-item">EMAIL<br><a href="mailto:info@sentic.jp">info@sentic.jp</a></div>
     <div class="contact-item">TEL<br><a href="tel:05053064547">050-5306-4547</a></div>
-    <div class="contact-item">ADDRESS<br>奈良市疋田町３丁目２番２４号</div>
+    <div class="contact-item">ADDRESS<br>奈良県生駒市</div>
   </div>
 </section>
 
