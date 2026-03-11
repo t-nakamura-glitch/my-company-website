@@ -479,38 +479,7 @@
   }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* microCMS PANEL */
-  .cms-panel {
-    position: fixed; bottom: 32px; right: 32px;
-    background: var(--gray); border: 1px solid var(--mid);
-    padding: 24px; width: 320px; z-index: 200;
-    transform: translateX(380px);
-    transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
-  }
-  .cms-panel.open { transform: translateX(0); }
-  .cms-panel-toggle {
-    position: fixed; bottom: 32px; right: 32px;
-    width: 56px; height: 56px; background: var(--acid); color: var(--black);
-    border: none; font-size: 1.4rem; cursor: none; z-index: 201;
-    display: flex; align-items: center; justify-content: center;
-    clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition: background 0.3s;
-  }
-  .cms-panel-toggle:hover { background: var(--white); }
-  .cms-panel h3 { font-family: 'Space Mono',monospace; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--acid); margin-bottom: 16px; }
-  .cms-input {
-    width: 100%; background: var(--black); border: 1px solid var(--mid);
-    color: var(--white); padding: 10px 14px; font-family: 'Space Mono',monospace;
-    font-size: 0.7rem; margin-bottom: 10px; outline: none; transition: border-color 0.3s;
-  }
-  .cms-input:focus { border-color: var(--acid); }
-  .cms-input::placeholder { color: var(--text-dim); }
-  .cms-btn {
-    width: 100%; background: var(--acid); color: var(--black); border: none;
-    padding: 12px; font-family: 'Space Mono',monospace; font-size: 0.7rem;
-    letter-spacing: 0.15em; cursor: none; transition: background 0.3s;
-  }
-  .cms-btn:hover { background: var(--white); }
-  .cms-status { margin-top: 12px; font-family: 'Space Mono',monospace; font-size: 0.65rem; color: var(--text-dim); min-height: 20px; }
+
 
   @media (max-width: 768px) {
     nav { padding: 20px 24px; }
@@ -526,7 +495,6 @@
     .blog-grid { grid-template-columns: 1fr; }
     .contact-info { flex-direction: column; gap: 24px; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
-    .cms-panel { width: calc(100vw - 64px); }
   }
 </style>
 </head>
@@ -721,34 +689,9 @@
     <div class="cms-dot"></div>
     <div class="cms-dot"></div>
     <div class="cms-dot"></div>
-    <span id="cmsLoadingText">microCMS APIキーを設定してコンテンツを読み込みます</span>
+    <span id="cmsLoadingText">記事を読み込んでいます...</span>
   </div>
-  <div class="blog-grid" id="blogGrid">
-    <div class="blog-card">
-      <div class="blog-thumb"><span>🤖</span><div class="blog-thumb-line"></div></div>
-      <div class="blog-body">
-        <div class="blog-cat">AI CONSULTING</div>
-        <div class="blog-title">中小企業がAIを導入すべき5つの理由と始め方ガイド</div>
-        <div class="blog-date">2024.12.15</div>
-      </div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-thumb"><span>🎬</span><div class="blog-thumb-line"></div></div>
-      <div class="blog-body">
-        <div class="blog-cat">VIDEO PRODUCTION</div>
-        <div class="blog-title">SNS動画で売上を3倍にした戦略を公開</div>
-        <div class="blog-date">2024.12.08</div>
-      </div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-thumb"><span>📈</span><div class="blog-thumb-line"></div></div>
-      <div class="blog-body">
-        <div class="blog-cat">DIGITAL MARKETING</div>
-        <div class="blog-title">2024年最新！Google広告で成果を出すための完全攻略法</div>
-        <div class="blog-date">2024.12.01</div>
-      </div>
-    </div>
-  </div>
+  <div class="blog-grid" id="blogGrid"></div>
 </section>
 
 <!-- CONTACT -->
@@ -757,12 +700,12 @@
   <div class="section-label reveal">— GET IN TOUCH —</div>
   <h2 class="section-title reveal">LET'S<br><span style="color:var(--acid)">WORK</span><br>TOGETHER</h2>
   <p class="reveal">プロジェクトについてのご相談、お見積もりはお気軽にどうぞ。<br>24時間以内にご返信いたします。</p>
-  <a href="mailto:hello@nexus-creative.jp" class="contact-btn reveal">
+  <a href="/cdn-cgi/l/email-protection#d0b8b5bcbcbf90beb5a8a5a3fdb3a2b5b1a4b9a6b5febaa0" class="contact-btn reveal">
     お問い合わせはこちら
     <span class="contact-btn-arrow">→</span>
   </a>
   <div class="contact-info reveal">
-    <div class="contact-item">EMAIL<br><a href="mailto:hello@nexus-creative.jp">hello@nexus-creative.jp</a></div>
+    <div class="contact-item">EMAIL<br><a href="/cdn-cgi/l/email-protection#7c14191010133c121904090f511f0e191d08150a1952160c"><span class="__cf_email__" data-cfemail="c7afa2ababa887a9a2bfb2b4eaa4b5a2a6b3aeb1a2e9adb7">[email&#160;protected]</span></a></div>
     <div class="contact-item">TEL<br><a href="tel:0312345678">03-1234-5678</a></div>
     <div class="contact-item">ADDRESS<br>東京都渋谷区神宮前1-1-1</div>
   </div>
@@ -779,18 +722,9 @@
   </div>
 </footer>
 
-<!-- microCMS PANEL -->
-<button class="cms-panel-toggle" id="cmsPanelToggle" title="microCMS設定">⚙</button>
-<div class="cms-panel" id="cmsPanel">
-  <h3>⚡ microCMS SETTINGS</h3>
-  <input class="cms-input" id="cmsServiceId" type="text" placeholder="Service ID (例: your-service)">
-  <input class="cms-input" id="cmsApiKey" type="text" placeholder="API Key">
-  <input class="cms-input" id="cmsEndpoint" type="text" placeholder="Endpoint (例: blogs)">
-  <button class="cms-btn" id="cmsConnect">CONNECT →</button>
-  <div class="cms-status" id="cmsStatus">設定を入力してConnectを押してください</div>
-</div>
 
-<script>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CUSTOM CURSOR
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -851,44 +785,24 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// microCMS PANEL
-const panelToggle = document.getElementById('cmsPanelToggle');
-const panel = document.getElementById('cmsPanel');
-let panelOpen = false;
-panelToggle.addEventListener('click', () => {
-  panelOpen = !panelOpen;
-  panel.classList.toggle('open', panelOpen);
-  panelToggle.textContent = panelOpen ? '✕' : '⚙';
-});
-
-// microCMS CONNECT
-document.getElementById('cmsConnect').addEventListener('click', async () => {
-  const serviceId = document.getElementById('cmsServiceId').value.trim();
-  const apiKey    = document.getElementById('cmsApiKey').value.trim();
-  const endpoint  = document.getElementById('cmsEndpoint').value.trim();
-  const status    = document.getElementById('cmsStatus');
-  if (!serviceId || !apiKey || !endpoint) {
-    status.textContent = '⚠ すべての項目を入力してください';
-    status.style.color = '#ff2d2d'; return;
-  }
-  status.textContent = '接続中...'; status.style.color = '#888';
+// microCMS 自動取得
+async function loadBlogPosts() {
   try {
-    const res = await fetch(`https://${serviceId}.microcms.io/api/v1/${endpoint}?limit=3`, {
-      headers: { 'X-MICROCMS-API-KEY': apiKey }
-    });
+    const res = await fetch('/api/blogs');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    status.textContent = `✓ 接続成功！${data.contents?.length || 0}件取得`;
-    status.style.color = '#c8ff00';
-    if (data.contents?.length > 0) {
+    if (data.contents && data.contents.length > 0) {
       renderBlogCards(data.contents);
-      document.getElementById('cmsLoadingText').textContent = `microCMSから${data.contents.length}件のコンテンツを読み込みました`;
+    } else {
+      document.getElementById('cmsLoadingText').textContent = '記事がまだありません。';
     }
+    document.getElementById('cmsLoading').style.display = 'none';
   } catch(e) {
-    status.textContent = `✗ 接続失敗: ${e.message}`;
-    status.style.color = '#ff2d2d';
+    document.getElementById('cmsLoadingText').textContent = '記事の読み込みに失敗しました。';
+    console.error(e);
   }
-});
+}
+loadBlogPosts();
 
 function renderBlogCards(contents) {
   const grid   = document.getElementById('blogGrid');
@@ -905,18 +819,4 @@ function renderBlogCards(contents) {
       <div class="blog-body">
         <div class="blog-cat">${cat}</div>
         <div class="blog-title">${item.title || 'タイトルなし'}</div>
-        <div class="blog-date">${date}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// HERO INITIAL ANIMATION
-setTimeout(() => {
-  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
-    setTimeout(() => el.classList.add('visible'), i * 200 + 300);
-  });
-}, 100);
-</script>
-</body>
-</html>
+        <d
