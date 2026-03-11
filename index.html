@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS CREATIVE — クリエイティブ × テクノロジー</title>
+<title>SENTIC — クリエイティブ × テクノロジー</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -78,7 +78,7 @@
   .hero-title .line2 { -webkit-text-stroke: 1px var(--white); color: transparent; display: block; }
   .hero-title .accent { color: var(--acid); }
   .hero-sub { margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1; }
-  .hero-desc { max-width: 420px; font-size: 0.95rem; line-height: 1.8; color: var(--text-dim); }
+  .hero-desc { max-width: 100%; font-size: 0.95rem; line-height: 1.8; color: var(--text-dim); }
   .hero-scroll { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text-dim); }
   .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--acid), transparent); animation: scrollPulse 2s ease-in-out infinite; }
   @keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(0.8)} 50%{opacity:1;transform:scaleY(1)} }
@@ -112,15 +112,19 @@
   .services-intro p { font-size: 1.05rem; line-height: 1.9; color: var(--text-dim); }
   .services-intro p strong { color: var(--white); font-weight: 700; }
   .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--mid); border: 1px solid var(--mid); }
-  .service-card { background: var(--black); padding: 48px 40px; position: relative; overflow: hidden; transition: background 0.4s; cursor: none; }
-  .service-card::before { content: ''; position: absolute; inset: 0; background: var(--acid); transform: translateY(101%); transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1); }
+  .service-card { background: var(--black); padding: 0; position: relative; overflow: hidden; transition: background 0.4s; cursor: none; display: flex; flex-direction: column; min-height: 450px; }
+  .service-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(100%) brightness(0.7); transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .service-card:hover .service-img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
+  .service-content { padding: 32px; flex-grow: 1; position: relative; z-index: 1; display: flex; flex-direction: column; }
+  .service-card::before { content: ''; position: absolute; inset: 0; background: var(--acid); transform: translateY(101%); transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1); z-index: 0; }
   .service-card:hover::before { transform: translateY(0); }
-  .service-card:hover .service-num, .service-card:hover .service-name, .service-card:hover .service-desc, .service-card:hover .service-arrow { color: var(--black); }
-  .service-num { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-dim); margin-bottom: 40px; position: relative; z-index: 1; transition: color 0.3s; }
-  .service-icon { font-size: 2.5rem; margin-bottom: 20px; position: relative; z-index: 1; }
-  .service-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; margin-bottom: 16px; position: relative; z-index: 1; transition: color 0.3s; }
-  .service-desc { font-size: 0.85rem; line-height: 1.8; color: var(--text-dim); position: relative; z-index: 1; transition: color 0.3s; }
-  .service-arrow { font-size: 1.5rem; color: var(--acid); position: relative; z-index: 1; display: block; margin-top: 24px; transition: color 0.3s, transform 0.3s; }
+  .service-card:hover .service-num, .service-card:hover .service-name, .service-card:hover .service-desc, .service-card:hover .service-arrow, .service-card:hover .service-en { color: var(--black); }
+  .service-num { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-dim); margin-bottom: 16px; position: relative; transition: color 0.3s; }
+  .service-name-wrap { margin-bottom: 16px; position: relative; }
+  .service-name { font-family: 'Noto Sans JP', sans-serif; font-weight: 700; font-size: 1.4rem; letter-spacing: 0.05em; display: block; transition: color 0.3s; }
+  .service-en { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--acid); display: block; margin-top: 2px; transition: color 0.3s; }
+  .service-desc { font-size: 0.85rem; line-height: 1.7; color: var(--text-dim); position: relative; transition: color 0.3s; flex-grow: 1; }
+  .service-arrow { font-size: 1.2rem; color: var(--acid); position: relative; display: block; margin-top: 20px; transition: color 0.3s, transform 0.3s; }
   .service-card:hover .service-arrow { transform: translate(4px, -4px); }
 
   /* WORKS */
@@ -128,32 +132,50 @@
   .works-filter { display: flex; gap: 4px; margin-bottom: 48px; }
   .filter-btn { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--mid); background: transparent; color: var(--text-dim); padding: 8px 20px; cursor: none; transition: all 0.3s; }
   .filter-btn.active, .filter-btn:hover { border-color: var(--acid); color: var(--acid); background: rgba(200,255,0,0.05); }
-  .works-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
-  .work-item { position: relative; overflow: hidden; background: var(--mid); }
-  .work-item:nth-child(1){grid-column:1/8;grid-row:1;aspect-ratio:16/9}
-  .work-item:nth-child(2){grid-column:8/13;grid-row:1;aspect-ratio:4/3}
-  .work-item:nth-child(3){grid-column:1/5;grid-row:2;aspect-ratio:4/3}
-  .work-item:nth-child(4){grid-column:5/9;grid-row:2;aspect-ratio:4/3}
-  .work-item:nth-child(5){grid-column:9/13;grid-row:2;aspect-ratio:4/3}
+  .works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+  .work-item { position: relative; overflow: hidden; background: var(--mid); cursor: none; aspect-ratio: 16/9; }
+  @media (max-width: 768px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .works-grid { grid-template-columns: 1fr; } }
   .work-bg { position: absolute; inset: 0; background: linear-gradient(135deg, var(--a,#111) 0%, var(--b,#222) 100%); transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
   .work-item:hover .work-bg { transform: scale(1.06); }
-  .work-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 28px; opacity: 0; transition: opacity 0.4s; }
+  .work-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0; transition: opacity 0.4s; }
   .work-item:hover .work-overlay { opacity: 1; }
-  .work-cat { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--acid); text-transform: uppercase; margin-bottom: 8px; }
-  .work-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; }
-  .work-visual { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 5rem; opacity: 0.15; }
+  .work-cat { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--acid); text-transform: uppercase; margin-bottom: 4px; }
+  .work-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.05em; }
+  .work-visual { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 3rem; opacity: 0.15; }
   .work-item:nth-child(1) .work-bg{--a:#0d1f0d;--b:#1a3d1a}
   .work-item:nth-child(2) .work-bg{--a:#1f0d0d;--b:#3d1a1a}
   .work-item:nth-child(3) .work-bg{--a:#0d0d1f;--b:#1a1a3d}
   .work-item:nth-child(4) .work-bg{--a:#1f1a0d;--b:#3d330d}
   .work-item:nth-child(5) .work-bg{--a:#0d1a1f;--b:#0d333d}
+  .work-item:nth-child(6) .work-bg{--a:#1a0d1f;--b:#330d3d}
+  .work-item:nth-child(7) .work-bg{--a:#1f0d1a;--b:#3d0d33}
+  .work-item:nth-child(8) .work-bg{--a:#0d1f1a;--b:#0d3d33}
+  .work-item:nth-child(9) .work-bg{--a:#1a1f0d;--b:#333d0d}
+  .works-footer { margin-top: 60px; display: flex; justify-content: center; }
+  .btn-archive { position: relative; padding: 15px 40px; font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--white); border: 1px solid var(--mid); overflow: hidden; transition: all 0.3s; text-decoration: none; }
+  .btn-archive::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--acid); transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1); z-index: -1; }
+  .btn-archive:hover { color: var(--black); border-color: var(--acid); }
+  .btn-archive:hover::before { left: 0; }
+  .btn-archive .glitch-text { position: relative; display: inline-block; }
+  .btn-archive:hover .glitch-text { animation: glitch-mini 0.3s infinite; }
+  @keyframes glitch-mini { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
-  /* NUMBERS */
-  .numbers-section { background: var(--acid); padding: 80px 48px; }
-  .numbers-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; }
-  .number-item { text-align: center; }
-  .number-val { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem,7vw,6rem); color: var(--black); line-height: 1; display: block; }
-  .number-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; color: rgba(0,0,0,0.5); text-transform: uppercase; margin-top: 8px; }
+  /* AREA */
+  .area-section { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); }
+  .area-map-full { position: relative; background: rgba(255,255,255,0.02); border: 1px solid var(--mid); padding: 60px; overflow: hidden; margin-bottom: 60px; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+  .area-map-full::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(var(--mid) 1px, transparent 1px); background-size: 30px 30px; opacity: 0.1; }
+  .map-svg-japan { width: 100%; max-width: 900px; height: auto; filter: drop-shadow(0 0 15px rgba(62, 204, 0, 0.2)); }
+  .map-point { fill: var(--acid); animation: mapPulse 2s infinite; }
+  .map-point-label { font-family: 'Space Mono', monospace; font-size: 12px; fill: var(--white); font-weight: bold; }
+  .map-line { stroke: var(--acid); stroke-width: 1; stroke-dasharray: 4 4; opacity: 0.4; }
+  @keyframes mapPulse { 0% { opacity: 1; r: 4; } 50% { opacity: 0.4; r: 10; } 100% { opacity: 1; r: 4; } }
+  .area-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .area-detail-box { border-left: 1px solid var(--mid); padding-left: 24px; }
+  .area-detail-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--white); margin-bottom: 15px; }
+  .area-list { list-style: none; }
+  .area-list li { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  .area-list li::before { content: '>'; color: var(--acid); font-family: 'Space Mono', monospace; }
 
   /* ABOUT */
   #about { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; }
@@ -166,8 +188,12 @@
   .about-content { padding: 100px 64px; background: var(--black); display: flex; flex-direction: column; justify-content: center; }
   .about-content p { font-size: 1rem; line-height: 2; color: var(--text-dim); margin-bottom: 24px; }
   .about-content p strong { color: var(--white); font-weight: 700; }
-  .tech-stack { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 8px; }
-  .tech-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; border: 1px solid var(--mid); padding: 6px 16px; color: var(--text-dim); clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: all 0.3s; }
+  .tech-stack { margi  .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .tech-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; border: 1px solid var(--mid); padding: 6px 14px; color: var(--text-dim); }
+  .company-info { margin-top: 60px; border-top: 1px solid var(--mid); padding-top: 40px; }
+  .info-grid { display: grid; grid-template-columns: 120px 1fr; gap: 15px; }
+  .info-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--acid); text-transform: uppercase; }
+  .info-value { font-size: 0.9rem; color: var(--white); }clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); transition: all 0.3s; }
   .tech-tag:hover { border-color: var(--acid); color: var(--acid); background: rgba(200,255,0,0.05); }
 
   /* BLOG */
@@ -238,9 +264,9 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<nav>
-  <a href="#" class="nav-logo">NEX<span>.</span>US</a>
-  <div class="nav-links">
+  <nav>
+    <a href="#" class="nav-logo">SENTIC<span>.</span>JP</a>
+    <div class="nav-links">
     <a href="#services">サービス</a>
     <a href="#works">実績</a>
     <a href="#about">会社概要</a>
@@ -261,7 +287,7 @@
     <span class="line2">BECOME <span class="accent">REALITY</span></span>
   </h1>
   <div class="hero-sub reveal">
-    <p class="hero-desc">動画制作・イベントビデオ撮影・写真撮影・WEB制作・広告運用・デジタルマーケティング・システム開発・AI導入を支援。テクノロジーとクリエイティブの力で、あなたのビジネスを次のステージへ。</p>
+    <p class="hero-desc">動画制作・イベントビデオ撮影・写真撮影・WEB制作・広告運用・デジタルマーケティング・システム開発・AI導入を支援。<br>テクノロジーとクリエイティブの力で、あなたのビジネスを次のステージへ。</p>
     <div class="hero-scroll"><div class="scroll-line"></div><span>SCROLL</span></div>
   </div>
 </section>
@@ -281,12 +307,123 @@
     <p>最先端のテクノロジーと洗練されたクリエイティブを融合し、クライアントのビジネス成長を加速させる、<strong>唯一無二のソリューション</strong>を提供します。</p>
   </div>
   <div class="services-grid reveal">
-    <div class="service-card"><div class="service-num">01 —</div><div class="service-icon">🎬</div><div class="service-name">VIDEO PRODUCTION</div><p class="service-desc">企業VP・CM・SNS動画・ドキュメンタリー。あらゆる映像ニーズに対応。4K撮影から最終編集まで一貫制作。</p><span class="service-arrow">↗</span></div>
-    <div class="service-card"><div class="service-num">02 —</div><div class="service-icon">📸</div><div class="service-name">EVENT FILMING</div><p class="service-desc">展示会・カンファレンス・発表会・記念行事。プロの機材と経験豊富なスタッフが最高の瞬間を記録します。</p><span class="service-arrow">↗</span></div>
-    <div class="service-card"><div class="service-num">03 —</div><div class="service-icon">💻</div><div class="service-name">WEB DEVELOPMENT</div><p class="service-desc">コーポレートサイト・ECサイト・Webアプリ。microCMSを活用した更新しやすいサイトから高機能システムまで。</p><span class="service-arrow">↗</span></div>
-    <div class="service-card"><div class="service-num">04 —</div><div class="service-icon">📊</div><div class="service-name">AD OPERATION</div><p class="service-desc">Google広告・Meta広告・YouTube広告。データドリブンな運用改善でROIを最大化。月次レポートで透明性を確保。</p><span class="service-arrow">↗</span></div>
-    <div class="service-card"><div class="service-num">05 —</div><div class="service-icon">📈</div><div class="service-name">DIGITAL MARKETING</div><p class="service-desc">SEO・SNSマーケティング・コンテンツ戦略・メールマーケティング。デジタル全方位からブランドの認知拡大を実現。</p><span class="service-arrow">↗</span></div>
-    <div class="service-card"><div class="service-num">06 —</div><div class="service-icon">🤖</div><div class="service-name">AI CONSULTING</div><p class="service-desc">ChatGPT・画像生成AI・業務自動化。最新AIツールの選定から導入・社内研修まで。あなたの会社のAI化を支援します。</p><span class="service-arrow">↗</span></div>
+    <!-- 01 動画制作 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80" alt="動画制作" class="service-img">
+      <div class="service-content">
+        <div class="service-num">01 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">動画制作</span>
+          <span class="service-en">Film Production</span>
+        </div>
+        <p class="service-desc">企業VP、ブランディングムービー、SNS広告動画など、目的に応じた最適な映像表現を追求。企画構成から撮影、編集までワンストップで提供します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 02 写真撮影 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=800&q=80" alt="写真撮影" class="service-img">
+      <div class="service-content">
+        <div class="service-num">02 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">写真撮影</span>
+          <span class="service-en">Photo Works</span>
+        </div>
+        <p class="service-desc">カタログ・EC用の商品撮影、建築写真、ビジネスプロフィール、イベント記録など、プロの技術と感性でブランドの魅力を最大限に引き出します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 03 イベントビデオ・写真 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="イベントビデオ・写真" class="service-img">
+      <div class="service-content">
+        <div class="service-num">03 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">イベントビデオ・写真</span>
+          <span class="service-en">EVENT SHOOTING</span>
+        </div>
+        <p class="service-desc">展示会、セミナー、式典、ライブパフォーマンス等の記録撮影。複数台のカメラによるマルチアングル撮影や、当日のダイジェスト編集にも対応します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 04 ライブ配信 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=800&q=80" alt="ライブ配信" class="service-img">
+      <div class="service-content">
+        <div class="service-num">04 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">ライブ配信</span>
+          <span class="service-en">LIVE STREAMING</span>
+        </div>
+        <p class="service-desc">オンラインセミナー、社内向け配信、音楽ライブ等のリアルタイム配信。安定したネットワーク構築から、テロップ挿入、スイッチングまでトータルで運営します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 05 WEB制作 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="WEB制作" class="service-img">
+      <div class="service-content">
+        <div class="service-num">05 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">WEB制作</span>
+          <span class="service-en">WEB DEVELOPMENT</span>
+        </div>
+        <p class="service-desc">コーポレートサイト、LP、ECサイトの構築。microCMS等のヘッドレスCMSを活用し、運用しやすく、かつ高速でセキュアなWebサイトを実現します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 06 広告運用 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1551288049-bbdac8626ad1?auto=format&fit=crop&w=800&q=80" alt="広告運用" class="service-img">
+      <div class="service-content">
+        <div class="service-num">06 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">広告運用</span>
+          <span class="service-en">AD OPERATION</span>
+        </div>
+        <p class="service-desc">リスティング広告、SNS広告、動画広告の運用代行。詳細なターゲティングと継続的なABテストにより、獲得単価の最適化とROIの最大化を図ります。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 07 デジタルマーケティング -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="デジタルマーケティング" class="service-img">
+      <div class="service-content">
+        <div class="service-num">07 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">デジタルマーケティング</span>
+          <span class="service-en">DIGITAL MARKETING</span>
+        </div>
+        <p class="service-desc">市場調査から戦略立案、実行支援まで。SEO対策やSNS運用、コンテンツマーケティングを統合し、持続的な集客とブランド価値向上を支援します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 08 AI導入支援 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI導入支援" class="service-img">
+      <div class="service-content">
+        <div class="service-num">08 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">AI導入支援</span>
+          <span class="service-en">AI CONSULTING</span>
+        </div>
+        <p class="service-desc">ChatGPT等の生成AIを活用した業務効率化コンサルティング。社内ガイドラインの策定から、独自AIツールの開発、導入研修まで幅広くサポートします。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 09 システム開発・販売 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" alt="システム開発・販売" class="service-img">
+      <div class="service-content">
+        <div class="service-num">09 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">システム開発・販売</span>
+          <span class="service-en">SYSTEM DEVELOPMENT</span>
+        </div>
+        <p class="service-desc">顧客管理システム(CRM)や予約システム、独自SaaSの開発。また、業務を効率化する自社開発ツールの販売・カスタマイズ提供も行っています。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -301,22 +438,124 @@
     <button class="filter-btn">AI</button>
   </div>
   <div class="works-grid reveal">
-    <div class="work-item"><div class="work-bg"></div><div class="work-visual">🎥</div><div class="work-overlay"><div class="work-cat">VIDEO PRODUCTION</div><div class="work-title">BRAND FILM 2024</div></div></div>
-    <div class="work-item"><div class="work-bg"></div><div class="work-visual">🌐</div><div class="work-overlay"><div class="work-cat">WEB DEVELOPMENT</div><div class="work-title">EC PLATFORM</div></div></div>
-    <div class="work-item"><div class="work-bg"></div><div class="work-visual">📸</div><div class="work-overlay"><div class="work-cat">EVENT FILMING</div><div class="work-title">TECH CONFERENCE</div></div></div>
-    <div class="work-item"><div class="work-bg"></div><div class="work-visual">🤖</div><div class="work-overlay"><div class="work-cat">AI CONSULTING</div><div class="work-title">AI WORKFLOW</div></div></div>
-    <div class="work-item"><div class="work-bg"></div><div class="work-visual">📊</div><div class="work-overlay"><div class="work-cat">DIGITAL MARKETING</div><div class="work-title">GROWTH HACK</div></div></div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🎥</div>
+      <div class="work-overlay">
+        <span class="work-cat">Film Production</span>
+        <h3 class="work-title">BRAND FILM 2024</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🌐</div>
+      <div class="work-overlay">
+        <span class="work-cat">WEB DEVELOPMENT</span>
+        <h3 class="work-title">EC PLATFORM</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">📸</div>
+      <div class="work-overlay">
+        <span class="work-cat">EVENT SHOOTING</span>
+        <h3 class="work-title">TECH CONFERENCE</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">📡</div>
+      <div class="work-overlay">
+        <span class="work-cat">LIVE STREAMING</span>
+        <h3 class="work-title">GLOBAL SUMMIT</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">📊</div>
+      <div class="work-overlay">
+        <span class="work-cat">DIGITAL MARKETING</span>
+        <h3 class="work-title">GROWTH HACK</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🎬</div>
+      <div class="work-overlay">
+        <span class="work-cat">Film Production</span>
+        <h3 class="work-title">COMMERCIAL 2024</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">💻</div>
+      <div class="work-overlay">
+        <span class="work-cat">WEB DEVELOPMENT</span>
+        <h3 class="work-title">SAAS INTERFACE</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">📷</div>
+      <div class="work-overlay">
+        <span class="work-cat">Photo Works</span>
+        <h3 class="work-title">FASHION SHOOT</h3>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg"></div>
+      <div class="work-visual">🤖</div>
+      <div class="work-overlay">
+        <span class="work-cat">AI CONSULTING</span>
+        <h3 class="work-title">AI WORKFLOW</h3>
+      </div>
+    </div>
+  </div>
+  <div class="works-footer reveal">
+    <a href="#" class="btn-archive">
+      <span class="glitch-text">VIEW ALL PROJECTS</span>
+    </a>
   </div>
 </section>
 
-<div class="numbers-section">
-  <div class="numbers-grid">
-    <div class="number-item reveal"><span class="number-val" data-target="500">0</span><span class="number-label">制作実績（件）</span></div>
-    <div class="number-item reveal"><span class="number-val" data-target="98">0</span><span class="number-label">顧客満足度（%）</span></div>
-    <div class="number-item reveal"><span class="number-val" data-target="150">0</span><span class="number-label">取引クライアント</span></div>
-    <div class="number-item reveal"><span class="number-val" data-target="8">0</span><span class="number-label">創業（年）</span></div>
+<!-- AREA -->
+<section id="area" class="area-section">
+  <div class="section-label reveal">— BUSINESS BASE —</div>
+  <h2 class="section-title reveal">SERVICE AREA</h2>
+  
+  <div class="area-map-full reveal">
+    <svg class="map-svg-japan" viewBox="0 0 800 400">
+      <!-- Digital Japan Map Silhouette (Simplified) -->
+      <path d="M150,300 L180,280 L220,290 L250,260 L300,250 L350,220 L400,200 L450,150 L500,100 L550,80 L600,50 L650,60 L680,100 L650,150 L600,180 L550,220 L500,250 L450,280 L400,320 L350,350 L300,370 L250,380 L200,350 Z" fill="rgba(255,255,255,0.05)" stroke="var(--mid)" stroke-width="1" />
+      <!-- Connection Line -->
+      <path class="map-line" d="M320,280 Q400,200 480,180" fill="none" />
+      <!-- Points -->
+      <circle class="map-point" cx="320" cy="280" r="5" />
+      <text class="map-point-label" x="260" y="285">NARA HQ</text>
+      <circle class="map-point" cx="480" cy="180" r="5" />
+      <text class="map-point-label" x="495" y="185">TOKYO BRANCH</text>
+    </svg>
   </div>
-</div>
+
+  <div class="area-details-grid reveal">
+    <div class="area-detail-box">
+      <h3 class="area-detail-title">KANSAI HUB</h3>
+      <ul class="area-list">
+        <li>奈良県全域（中心拠点）</li>
+        <li>大阪府・京都府・兵庫県</li>
+        <li>滋賀県・和歌山県</li>
+      </ul>
+    </div>
+    <div class="area-detail-box">
+      <h3 class="area-detail-title">KANTO HUB</h3>
+      <ul class="area-list">
+        <li>東京都23区・多摩エリア</li>
+        <li>神奈川県・千葉県・埼玉県</li>
+        <li>茨城県・栃木県・群馬県</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <section id="about">
   <div class="about-visual">
@@ -334,6 +573,31 @@
       <span class="tech-tag">TypeScript</span><span class="tech-tag">Vercel</span><span class="tech-tag">ChatGPT API</span>
       <span class="tech-tag">Midjourney</span><span class="tech-tag">Adobe CC</span><span class="tech-tag">DaVinci Resolve</span>
       <span class="tech-tag">Google Ads</span><span class="tech-tag">Meta Ads</span>
+    </div>
+
+    <div class="company-info">
+      <div class="info-grid">
+        <div class="info-label">Company</div>
+        <div class="info-value">合同会社ＳＥＮＴＩＣ</div>
+        
+        <div class="info-label">Tax ID</div>
+        <div class="info-value">T9-1500-0300-1609</div>
+        
+        <div class="info-label">Established</div>
+        <div class="info-value">2017/5/19</div>
+        
+        <div class="info-label">Capital</div>
+        <div class="info-value">3,000,000円</div>
+        
+        <div class="info-label">CEO</div>
+        <div class="info-value">中村拓哉</div>
+        
+        <div class="info-label">Mail</div>
+        <div class="info-value">info@sentic.jp</div>
+        
+        <div class="info-label">TEL</div>
+        <div class="info-value">050-5306-4547</div>
+      </div>
     </div>
   </div>
 </section>
@@ -353,19 +617,19 @@
   <div class="section-label reveal">— GET IN TOUCH —</div>
   <h2 class="section-title reveal">LET'S<br><span style="color:var(--acid)">WORK</span><br>TOGETHER</h2>
   <p class="reveal">プロジェクトについてのご相談、お見積もりはお気軽にどうぞ。<br>24時間以内にご返信いたします。</p>
-  <a href="mailto:hello@nexus-creative.jp" class="contact-btn reveal">
+  <a href="mailto:info@sentic.jp" class="contact-btn reveal">
     お問い合わせはこちら <span class="contact-btn-arrow">→</span>
   </a>
   <div class="contact-info reveal">
-    <div class="contact-item">EMAIL<br><a href="mailto:hello@nexus-creative.jp">hello@nexus-creative.jp</a></div>
-    <div class="contact-item">TEL<br><a href="tel:0312345678">03-1234-5678</a></div>
-    <div class="contact-item">ADDRESS<br>東京都渋谷区神宮前1-1-1</div>
+    <div class="contact-item">EMAIL<br><a href="mailto:info@sentic.jp">info@sentic.jp</a></div>
+    <div class="contact-item">TEL<br><a href="tel:05053064547">050-5306-4547</a></div>
+    <div class="contact-item">ADDRESS<br>奈良県生駒市</div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">NEX<span>.</span>US CREATIVE</div>
-  <div class="footer-copy">© 2024 NEXUS CREATIVE. ALL RIGHTS RESERVED.</div>
+  <div class="footer-logo">SENTIC<span>.</span>JP</div>
+  <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
   <div class="footer-links">
     <a href="#">プライバシーポリシー</a>
     <a href="#">利用規約</a>
