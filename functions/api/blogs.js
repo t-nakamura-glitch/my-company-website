@@ -1,26 +1,32 @@
+/**
+ * Cloudflare Pages Function
+ * /api/blogs へのリクエストを受け取り、
+ * サーバー側でmicroCMSのAPIを呼び出して結果を返す。
+ * APIキーはCloudflareの環境変数に保存されるため、
+ * 訪問者からは一切見えない。
+ */
 export async function onRequest(context) {
-  const serviceId = context.env.MICROCMS_SERVICE_ID;
-  const apiKey    = context.env.MICROCMS_API_KEY;
+  const { env } = context;
 
-  if (!serviceId || !apiKey) {
-    return new Response(JSON.stringify({ error: 'API設定がありません' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+  const SERVICE_ID = env.MICROCMS_SERVICE_ID;
+  const API_KEY    = env.MICROCMS_API_KEY;
+
+  if (!SERVICE_ID || !API_KEY) {
+    return new Response(
+      JSON.stringify({ error: '環境変数が設定されていません。Cloudflareダッシュボードを確認してください。' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 
   try {
     const res = await fetch(
-      `https://${serviceId}.microcms.io/api/v1/blogs?limit=6&orders=-publishedAt`,
-      { headers: { 'X-MICROCMS-API-KEY': apiKey } }
+      `https://${SERVICE_ID}.microcms.io/api/v1/blogs?limit=3&orders=-publishedAt`,
+      {
+        headers: { 'X-MICROCMS-API-KEY': API_KEY },
+      }
     );
 
-    if (!res.ok) {
-      return new Response(JSON.stringify({ error: `microCMS error: ${res.status}` }), {
-        status: res.status,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    if (!res.ok) throw new Error(`microCMS API error: ${res.status}`);
 
     const data = await res.json();
 
@@ -28,14 +34,14 @@ export async function onRequest(context) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=60'
-      }
+        'Cache-Control': 'public, max-age=60',
+      },
     });
 
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(
+      JSON.stringify({ error: e.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }
