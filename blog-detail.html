@@ -524,8 +524,9 @@
     // 関連記事を更新
     function updateRelatedPosts(article) {
       const relatedGrid = document.querySelector('.related-posts-grid');
-      if (relatedGrid && article.related_blogs && article.related_blogs.length > 0) {
-        relatedGrid.innerHTML = article.related_blogs.map(post => `
+      const relatedBlogsData = article.related_blog || article.related_blogs;
+      if (relatedGrid && relatedBlogsData && relatedBlogsData.length > 0) {
+        relatedGrid.innerHTML = relatedBlogsData.map(post => `
           <a href="./blog-detail.html?id=${post.id}" class="related-post-card" style="text-decoration: none; color: inherit;">
             <div class="related-post-thumb">
               ${post.eyecatch?.url ? `<img src="${post.eyecatch.url}" alt="${post.title}">` : '[IMAGE]'}
