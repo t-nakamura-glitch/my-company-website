@@ -147,37 +147,41 @@
   }
   .work-item {
     position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
     overflow: hidden;
     background: var(--gray);
     cursor: none;
-    display: flex;
-    flex-direction: column;
     border: 1px solid var(--mid);
     transition: border-color 0.3s;
   }
   .work-item:hover {
     border-color: var(--acid);
   }
-  .work-img-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    overflow: hidden;
-  }
   .work-bg {
     position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 0;
   }
   .work-item:hover .work-bg {
-    transform: scale(1.05);
+    transform: scale(1.1);
   }
-  .work-info {
-    padding: 20px;
-    background: var(--black);
-    flex-grow: 1;
+  .work-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 1;
+    transition: background 0.3s;
+  }
+  .work-item:hover .work-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
   }
   .work-cat {
     font-family: 'Space Mono', monospace;
@@ -187,13 +191,28 @@
     text-transform: uppercase;
     margin-bottom: 8px;
     display: block;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .work-title {
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.4;
     color: var(--white);
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s;
+  }
+  .work-item:hover .work-cat,
+  .work-item:hover .work-title {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  /* Always show a bit of title even without hover for accessibility/UX */
+  .work-cat, .work-title {
+    opacity: 0.8;
+    transform: translateY(0);
   }
 
   /* MODAL */
