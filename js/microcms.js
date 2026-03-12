@@ -2,6 +2,8 @@
 // APIキーはCloudflareサーバー側で管理されているため、
 // フロントエンドからはAPIエンドポイント経由でアクセス
 
+let allWorks = []; // すべての実績データを保持
+
 // Cloudflare Pages Functionsのエンドポイントからデータを取得
 async function fetchWorksFromMicroCMS() {
   try {
@@ -27,7 +29,7 @@ function createWorkCard(work) {
   const id = work.id;
 
   return `
-    <div class="work-item" data-work-id="${id}" style="cursor: pointer;">
+    <div class="work-item" data-work-id="${id}" data-category="${category}" style="cursor: pointer;">
       <div class="work-bg" style="background-image: url('${thumbnail}'); background-size: cover; background-position: center;"></div>
       <div class="work-overlay">
         <span class="work-cat">${category}</span>
@@ -39,13 +41,22 @@ function createWorkCard(work) {
 
 // ポートフォリオセクションを更新する関数
 async function updatePortfolioSection() {
-  const works = await fetchWorksFromMicroCMS();
+  allWorks = await fetchWorksFromMicroCMS();
   
-  if (works.length === 0) {
+  if (allWorks.length === 0) {
     console.log('No works found in microCMS');
     return;
   }
 
+  // 初回表示：すべての実績を表示
+  displayWorks(allWorks);
+  
+  // フィルターボタンのイベント設定
+  setupFilterButtons();
+}
+
+// 実績を表示する関数
+function displayWorks(worksToDisplay) {
   const worksGrid = document.querySelector('.works-grid');
   if (!worksGrid) {
     console.error('Works grid element not found');
@@ -56,13 +67,39 @@ async function updatePortfolioSection() {
   worksGrid.innerHTML = '';
 
   // 新しいカードを追加
-  works.forEach(work => {
+  worksToDisplay.forEach(work => {
     const cardHTML = createWorkCard(work);
     worksGrid.insertAdjacentHTML('beforeend', cardHTML);
   });
 
   // クリックイベントを追加
-  attachWorkCardListeners(works);
+  attachWorkCardListeners(allWorks);
+}
+
+// フィルターボタンのイベント設定
+function setupFilterButtons() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // すべてのボタンからactiveクラスを削除
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      
+      // クリックされたボタンにactiveクラスを追加
+      this.classList.add('active');
+      
+      // フィルター値を取得
+      const filterValue = this.dataset.filter;
+      
+      // フィルタリング処理
+      if (filterValue === 'ALL') {
+        displayWorks(allWorks);
+      } else {
+        const filteredWorks = allWorks.filter(work => work.category === filterValue);
+        displayWorks(filteredWorks);
+      }
+    });
+  });
 }
 
 // 実績カードのクリックイベントを設定
