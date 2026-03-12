@@ -859,7 +859,7 @@ async function loadBlogs() {
       const date = item.publishedAt
         ? new Date(item.publishedAt).toLocaleDateString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\//g,'.')
         : '';
-      const cat   = (item.category || 'ARTICLE').toString().toUpperCase();
+      const cat   = (item.category?.name || 'ARTICLE').toUpperCase();
       const thumb = item.eyecatch
         ? `<img src="${item.eyecatch.url}" alt="${item.title}" loading="lazy">`
         : `<span>${emojis[i % emojis.length]}</span>`;

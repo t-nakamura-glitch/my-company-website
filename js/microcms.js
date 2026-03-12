@@ -44,10 +44,10 @@ function createWorkCard(work) {
   const thumbnail = work.thumbnail?.url || 'https://via.placeholder.com/400x300?text=No+Image';
   const title = work.title || 'Untitled';
   
-  // カテゴリーが配列の場合、最初のカテゴリーを取得
+  // カテゴリーがオブジェクトの場合、nameを取得
   let categoryName = 'Other';
-  if (work.categories && work.categories.length > 0) {
-    categoryName = work.categories[0].name || 'Other';
+  if (work.categories && work.categories.name) {
+    categoryName = work.categories.name;
   }
   
   const id = work.id;
@@ -152,8 +152,8 @@ function setupFilterButtons() {
         displayWorks(allWorks);
       } else {
         const filteredWorks = allWorks.filter(work => {
-          if (work.categories && work.categories.length > 0) {
-            return work.categories.some(cat => cat.name === filterValue);
+          if (work.categories && work.categories.name) {
+            return work.categories.name === filterValue;
           }
           return false;
         });
@@ -181,8 +181,8 @@ function attachWorkCardListeners(works) {
 function showWorkDetail(work) {
   // カテゴリー名を取得
   let categoryName = 'Other';
-  if (work.categories && work.categories.length > 0) {
-    categoryName = work.categories[0].name || 'Other';
+  if (work.categories && work.categories.name) {
+    categoryName = work.categories.name;
   }
 
   const modal = document.createElement('div');
