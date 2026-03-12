@@ -196,6 +196,32 @@
     .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    /* PAGINATION */
+    .blog-list-pagination {
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      margin-top: 60px; padding: 40px 48px; flex-wrap: wrap;
+    }
+    .pagination-btn {
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1px solid var(--mid); color: var(--text-dim); padding: 10px 16px;
+      background: transparent; cursor: pointer; transition: all 0.3s;
+      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    }
+    .pagination-btn:hover {
+      border-color: var(--acid); color: var(--acid);
+    }
+    .pagination-btn.active {
+      border-color: var(--acid); color: var(--acid); background: rgba(62, 204, 0, 0.1);
+    }
+    .pagination-btn:disabled {
+      opacity: 0.5; cursor: not-allowed;
+    }
+    .pagination-info {
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      color: var(--text-dim); margin: 0 12px;
+    }
+
     /* FOOTER */
     footer {
       background: var(--gray); padding: 60px 48px; text-align: center;
@@ -281,6 +307,8 @@
       <div class="blog-list-empty-icon">📝</div>
       <div class="blog-list-empty-text">記事がまだありません。</div>
     </div>
+    <!-- PAGINATION -->
+    <div class="blog-list-pagination" id="paginationContainer" style="display: none;"></div>
   </div>
 
   <!-- FOOTER -->
@@ -336,6 +364,9 @@
     // ブログ記事一覧を取得・表示
     let allBlogs = [];
     let allCategories = [];
+    let currentPage = 1;
+    let itemsPerPage = 9;
+    let currentFilteredBlogs = [];
 
     async function loadBlogList() {
       const loadingEl = document.getElementById('blogListLoading');
@@ -402,13 +433,14 @@
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
 
+          currentPage = 1;
           const filter = btn.dataset.filter;
           if (filter === 'ALL') {
-            displayBlogs(allBlogs);
+            currentFilteredBlogs = allBlogs;
           } else {
-            const filtered = allBlogs.filter(blog => blog.category?.name === filter);
-            displayBlogs(filtered);
+            currentFilteredBlogs = allBlogs.filter(blog => blog.category?.name === filter);
           }
+          displayBlogs(currentFilteredBlogs);
         });
       });
     }
@@ -416,17 +448,24 @@
     function displayBlogs(blogs) {
       const gridEl = document.getElementById('blogListGrid');
       const emptyEl = document.getElementById('blogListEmpty');
+      const paginationEl = document.getElementById('paginationContainer');
 
       if (blogs.length === 0) {
         gridEl.style.display = 'none';
         emptyEl.style.display = 'block';
+        paginationEl.style.display = 'none';
         return;
       }
 
       gridEl.style.display = 'grid';
       emptyEl.style.display = 'none';
 
-      gridEl.innerHTML = blogs.map(blog => {
+      const totalPages = Math.ceil(blogs.length / itemsPerPage);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedBlogs = blogs.slice(startIndex, endIndex);
+
+      gridEl.innerHTML = paginatedBlogs.map(blog => {
         const date = blog.publishedAt
           ? new Date(blog.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.')
           : '';
@@ -455,7 +494,56 @@
         `;
       }).join('');
 
+      // ページネーション表示
+      if (totalPages > 1) {
+        renderPagination(totalPages, blogs);
+        paginationEl.style.display = 'flex';
+      } else {
+        paginationEl.style.display = 'none';
+      }
+
       setupCursorEffects();
+    }
+
+    function renderPagination(totalPages, blogs) {
+      const paginationEl = document.getElementById('paginationContainer');
+      let html = '';
+
+      // 前へボタン
+      html += `<button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1}, ${JSON.stringify(blogs).replace(/"/g, '&quot;')})">前へ</button>`;
+
+      // ページ番号
+      const maxVisible = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+      if (endPage - startPage + 1 < maxVisible) {
+        startPage = Math.max(1, endPage - maxVisible + 1);
+      }
+
+      if (startPage > 1) {
+        html += `<button class="pagination-btn" onclick="goToPage(1, ${JSON.stringify(blogs).replace(/"/g, '&quot;')})">1</button>`;
+        if (startPage > 2) html += '<span class="pagination-info">...</span>';
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i}, ${JSON.stringify(blogs).replace(/"/g, '&quot;')})">${i}</button>`;
+      }
+
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) html += '<span class="pagination-info">...</span>';
+        html += `<button class="pagination-btn" onclick="goToPage(${totalPages}, ${JSON.stringify(blogs).replace(/"/g, '&quot;')})">` + totalPages + '</button>';
+      }
+
+      // 次へボタン
+      html += `<button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1}, ${JSON.stringify(blogs).replace(/"/g, '&quot;')})">次へ</button>`;
+
+      paginationEl.innerHTML = html;
+    }
+
+    function goToPage(page, blogs) {
+      currentPage = page;
+      displayBlogs(blogs);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // ページロード時に実行
