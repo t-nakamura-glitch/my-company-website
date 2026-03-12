@@ -875,7 +875,7 @@ async function loadBlogs() {
         : `<span>${emojis[i % emojis.length]}</span>`;
 
       return `
-        <a href="/blog/${item.id}" class="blog-card" style="text-decoration: none; color: inherit;">
+        <a href="./blog-detail.html?id=${item.id}" class="blog-card" style="text-decoration: none; color: inherit;">
           <div class="blog-thumb" style="--a:${c.a};--b:${c.b}">
             ${thumb}
             <div class="blog-thumb-line"></div>
@@ -897,17 +897,15 @@ async function loadBlogs() {
 // ページ読み込み時に自動実行
 loadBlogs();
 
-// ブログ記事ページへのリダイレクト処理
+// ブログ記事ページへのリダイレクト処理（/blog/xxxへのアクセスをblog-detail.html?id=xxxにリダイレクト）
 function handleBlogNavigation() {
   const urlPath = window.location.pathname;
   const blogMatch = urlPath.match(/\/blog\/([a-zA-Z0-9_-]+)/);
   
   if (blogMatch) {
     const blogId = blogMatch[1];
-    // microCMSのブログ記事ページへリダイレクト
-    // または、ブログ詳細ページを別途作成する場合はここで処理
-    console.log('Blog ID:', blogId);
-    // 例: window.location.href = `https://your-blog-domain.com/blog/${blogId}`;
+    // blog-detail.htmlへリダイレクト
+    window.location.href = `./blog-detail.html?id=${blogId}`;
   }
 }
 
