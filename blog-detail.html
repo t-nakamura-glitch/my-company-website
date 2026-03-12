@@ -73,8 +73,8 @@
       background: var(--black);
     }
     .blog-hero-img {
-      width: 100%; max-width: 100%; margin: 0; aspect-ratio: 16/9; object-fit: cover; z-index: 0;
-      display: block;
+      width: 100%; max-width: 100%; margin: 0; aspect-ratio: 16/9; object-fit: contain; object-position: center; z-index: 0;
+      display: block; background: var(--black);
     }
     .placeholder-img {
       width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
@@ -228,7 +228,7 @@
 
     /* PLACEHOLDER IMAGE */
     .placeholder-img {
-      width: 100%; height: 400px; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
+      width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
       display: flex; align-items: center; justify-content: center; color: var(--text-dim);
       font-family: 'Space Mono', monospace; font-size: 0.8rem;
     }
