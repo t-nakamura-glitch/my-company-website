@@ -208,6 +208,23 @@
       color: var(--text-dim);
     }
 
+    /* BREADCRUMB */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.05em; color: var(--text-dim);
+      margin-bottom: 30px; flex-wrap: wrap;
+    }
+    .breadcrumb a {
+      color: var(--acid); text-decoration: none; transition: color 0.3s;
+    }
+    .breadcrumb a:hover {
+      color: var(--white);
+    }
+    .breadcrumb span {
+      color: var(--text-dim);
+    }
+
     /* BACK BUTTON */
     .blog-back {
       display: inline-flex; align-items: center; gap: 8px;
@@ -268,6 +285,14 @@
     <div class="placeholder-img">IMAGE PLACEHOLDER</div>
     <div class="blog-hero-overlay"></div>
     <div class="blog-hero-content">
+      <!-- BREADCRUMB -->
+      <nav class="breadcrumb" id="breadcrumb">
+        <a href="./">ホーム</a>
+        <span>/</span>
+        <a href="./blog-list.html">ブログ</a>
+        <span>/</span>
+        <span id="breadcrumbTitle">記事タイトル</span>
+      </nav>
       <div class="blog-hero-meta">
         <span class="blog-hero-category">WEB DEVELOPMENT</span>
         <span class="blog-hero-date">2024.03.12</span>
@@ -534,6 +559,12 @@
       const contentDiv = document.querySelector('.blog-content');
       if (contentDiv) {
         contentDiv.innerHTML = article.content || '<p>コンテンツが利用できません。</p>';
+      }
+      
+      // パンくずリストを更新
+      const breadcrumbTitle = document.getElementById('breadcrumbTitle');
+      if (breadcrumbTitle) {
+        breadcrumbTitle.textContent = article.title || '記事';
       }
     }
 

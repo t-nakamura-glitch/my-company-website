@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログ一覧 - SENTIC</title>
+  <link rel="icon" type="image/jpeg" href="./assets/images/favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #050505;
+      --white: #f5f0e8;
+      --acid: #3ecc00;
+      --red: #888;
+      --gray: #1a1a1a;
+      --mid: #333;
+      --text-dim: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; scrollbar-gutter: stable; }
+    body {
+      background: var(--black); color: var(--white);
+      font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+      overflow-x: hidden; cursor: none; width: 100%; margin: 0; padding: 0;
+    }
+
+    /* CURSOR */
+    .cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--acid); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed; width: 40px; height: 40px;
+      border: 1px solid rgba(62,204,0,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%); transition: all 0.15s ease;
+    }
+
+    /* NOISE */
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9990; opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 48px;
+      background: var(--black);
+      backdrop-filter: none;
+      width: 100%; max-width: 100vw; box-sizing: border-box; overflow: hidden;
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; height: 40px; }
+    .nav-logo img { height: 100%; width: auto; max-width: 150px; }
+    .nav-logo span { color: var(--acid); }
+    .nav-links { display: flex; gap: 40px; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--acid); }
+    .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--acid); color: var(--acid); padding: 10px 24px; text-decoration: none; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+    .nav-cta:hover { background: var(--acid); color: var(--black); }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.05em; color: var(--text-dim);
+      margin-bottom: 30px; flex-wrap: wrap;
+    }
+    .breadcrumb a {
+      color: var(--acid); text-decoration: none; transition: color 0.3s;
+    }
+    .breadcrumb a:hover {
+      color: var(--white);
+    }
+    .breadcrumb span {
+      color: var(--text-dim);
+    }
+
+    /* HERO SECTION */
+    .blog-list-hero {
+      padding: 160px 48px 80px; position: relative; overflow: visible; width: 100%; max-width: 100vw; box-sizing: border-box;
+      background: var(--black); display: flex; flex-direction: column; align-items: center;
+    }
+    .blog-list-hero-content {
+      position: relative; z-index: 10; max-width: 900px; margin: 0 auto;
+    }
+    .blog-list-hero-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; text-align: center;
+    }
+    .blog-list-hero-subtitle {
+      font-size: 1rem; line-height: 1.8; color: var(--text-dim); max-width: 600px; margin: 0 auto; text-align: center;
+    }
+
+    /* FILTER & SEARCH */
+    .blog-list-controls {
+      max-width: 900px; margin: 60px auto 40px; padding: 0 48px;
+      width: 100%; box-sizing: border-box;
+      display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center;
+    }
+    .blog-list-filter {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    }
+    .filter-btn {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      border: 1px solid var(--mid); color: var(--text-dim); padding: 10px 20px;
+      background: transparent; cursor: pointer; transition: all 0.3s;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--acid); color: var(--acid); background: rgba(62, 204, 0, 0.1);
+    }
+
+    /* BLOG GRID */
+    .blog-list-container {
+      max-width: 1200px; margin: 0 auto; padding: 40px 48px;
+      width: 100%; box-sizing: border-box;
+    }
+    .blog-list-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 40px;
+    }
+    .blog-list-card {
+      border: 1px solid var(--mid); overflow: hidden;
+      transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+    }
+    .blog-list-card:hover {
+      border-color: var(--acid);
+      transform: translateY(-8px);
+    }
+    .blog-list-card-thumb {
+      width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+    }
+    .blog-list-card-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .blog-list-card-body {
+      padding: 24px; flex-grow: 1; display: flex; flex-direction: column;
+    }
+    .blog-list-card-category {
+      font-family: 'Space Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--acid);
+      margin-bottom: 12px;
+    }
+    .blog-list-card-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem;
+      font-weight: 700; margin-bottom: 12px; line-height: 1.4;
+    }
+    .blog-list-card-excerpt {
+      font-size: 0.9rem; color: var(--text-dim); margin-bottom: 16px; flex-grow: 1;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .blog-list-card-date {
+      font-family: 'Space Mono', monospace; font-size: 0.6rem;
+      color: var(--text-dim); margin-top: auto;
+    }
+
+    /* EMPTY STATE */
+    .blog-list-empty {
+      text-align: center; padding: 60px 48px;
+      color: var(--text-dim);
+    }
+    .blog-list-empty-icon {
+      font-size: 3rem; margin-bottom: 20px;
+    }
+    .blog-list-empty-text {
+      font-size: 1.1rem;
+    }
+
+    /* LOADING STATE */
+    .blog-list-loading {
+      text-align: center; padding: 60px 48px;
+      color: var(--text-dim);
+    }
+    .blog-list-loading-spinner {
+      display: inline-block; width: 40px; height: 40px;
+      border: 2px solid var(--mid); border-top-color: var(--acid);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* REVEAL ANIMATION */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* FOOTER */
+    footer {
+      background: var(--gray); padding: 60px 48px; text-align: center;
+      border-top: 1px solid var(--mid);
+    }
+    .footer-logo { margin-bottom: 24px; }
+    .footer-logo img { height: 40px; width: auto; }
+    .footer-copy { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 24px; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--acid); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 20px; }
+      .blog-list-hero { padding: 120px 24px 60px; }
+      .blog-list-controls { padding: 0 24px; }
+      .blog-list-container { padding: 30px 24px; }
+      .blog-list-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+    }
+    @media (max-width: 480px) {
+      nav { padding: 12px 16px; flex-direction: column; gap: 12px; }
+      .nav-links { gap: 12px; flex-direction: column; }
+      .blog-list-hero { padding: 100px 16px 40px; }
+      .blog-list-hero-title { font-size: 1.8rem; }
+      .blog-list-controls { padding: 0 16px; flex-direction: column; }
+      .blog-list-filter { width: 100%; }
+      .filter-btn { flex: 1; }
+      .blog-list-container { padding: 20px 16px; }
+      .blog-list-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="./" class="nav-logo">
+      <img src="./assets/images/senticllc_logo_s.png" alt="SENTIC">
+      <span></span>
+    </a>
+    <div class="nav-links">
+      <a href="./#services">サービス</a>
+      <a href="./#works">実績</a>
+      <a href="./#about">会社概要</a>
+      <a href="./#blog">ブログ</a>
+    </div>
+    <a href="mailto:info@sentic.jp" class="nav-cta">お問い合わせ</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="blog-list-hero">
+    <div class="blog-list-hero-content">
+      <!-- BREADCRUMB -->
+      <nav class="breadcrumb">
+        <a href="./">ホーム</a>
+        <span>/</span>
+        <span>ブログ</span>
+      </nav>
+      <h1 class="blog-list-hero-title reveal">ブログ</h1>
+      <p class="blog-list-hero-subtitle reveal">最新のテクノロジーとデジタルマーケティングに関する情報を発信しています。</p>
+    </div>
+  </section>
+
+  <!-- FILTER & CONTROLS -->
+  <div class="blog-list-controls">
+    <div class="blog-list-filter" id="filterContainer">
+      <button class="filter-btn active" data-filter="ALL">すべて</button>
+    </div>
+  </div>
+
+  <!-- BLOG LIST -->
+  <div class="blog-list-container">
+    <div class="blog-list-loading" id="blogListLoading">
+      <div class="blog-list-loading-spinner"></div>
+      <p style="margin-top: 20px;">記事を読み込み中...</p>
+    </div>
+    <div class="blog-list-grid" id="blogListGrid" style="display: none;"></div>
+    <div class="blog-list-empty" id="blogListEmpty" style="display: none;">
+      <div class="blog-list-empty-icon">📝</div>
+      <div class="blog-list-empty-text">記事がまだありません。</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
+    <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
+    <div class="footer-links">
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">利用規約</a>
+      <a href="#">採用情報</a>
+    </div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Cursor effect for interactive elements
+    function setupCursorEffects() {
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.style.width = '20px';
+          cursor.style.height = '20px';
+          ring.style.width = '60px';
+          ring.style.height = '60px';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.style.width = '12px';
+          cursor.style.height = '12px';
+          ring.style.width = '40px';
+          ring.style.height = '40px';
+        });
+      });
+    }
+    setupCursorEffects();
+
+    // ブログ記事一覧を取得・表示
+    let allBlogs = [];
+    let allCategories = [];
+
+    async function loadBlogList() {
+      const loadingEl = document.getElementById('blogListLoading');
+      const gridEl = document.getElementById('blogListGrid');
+      const emptyEl = document.getElementById('blogListEmpty');
+
+      try {
+        const response = await fetch('/api/blogs');
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+        const data = await response.json();
+        allBlogs = data.contents || [];
+
+        if (allBlogs.length === 0) {
+          loadingEl.style.display = 'none';
+          emptyEl.style.display = 'block';
+          return;
+        }
+
+        // カテゴリーを抽出
+        const categoriesSet = new Set();
+        allBlogs.forEach(blog => {
+          if (blog.category?.name) {
+            categoriesSet.add(blog.category.name);
+          }
+        });
+        allCategories = Array.from(categoriesSet).sort();
+
+        // フィルターボタンを生成
+        generateFilterButtons();
+
+        // 記事を表示
+        displayBlogs(allBlogs);
+
+        loadingEl.style.display = 'none';
+        gridEl.style.display = 'grid';
+
+      } catch (error) {
+        console.error('Failed to load blogs:', error);
+        loadingEl.innerHTML = '<p>記事の読み込みに失敗しました。</p>';
+      }
+    }
+
+    function generateFilterButtons() {
+      const filterContainer = document.getElementById('filterContainer');
+      filterContainer.innerHTML = '<button class="filter-btn active" data-filter="ALL">すべて</button>';
+
+      allCategories.forEach(category => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.dataset.filter = category;
+        btn.textContent = category;
+        filterContainer.appendChild(btn);
+      });
+
+      setupFilterButtons();
+      setupCursorEffects();
+    }
+
+    function setupFilterButtons() {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.dataset.filter;
+          if (filter === 'ALL') {
+            displayBlogs(allBlogs);
+          } else {
+            const filtered = allBlogs.filter(blog => blog.category?.name === filter);
+            displayBlogs(filtered);
+          }
+        });
+      });
+    }
+
+    function displayBlogs(blogs) {
+      const gridEl = document.getElementById('blogListGrid');
+      const emptyEl = document.getElementById('blogListEmpty');
+
+      if (blogs.length === 0) {
+        gridEl.style.display = 'none';
+        emptyEl.style.display = 'block';
+        return;
+      }
+
+      gridEl.style.display = 'grid';
+      emptyEl.style.display = 'none';
+
+      gridEl.innerHTML = blogs.map(blog => {
+        const date = blog.publishedAt
+          ? new Date(blog.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.')
+          : '';
+        const category = (blog.category?.name || 'ARTICLE').toUpperCase();
+        const thumb = blog.eyecatch?.url
+          ? `<img src="${blog.eyecatch.url}" alt="${blog.title}">`
+          : '<span style="font-size: 2rem;">📝</span>';
+        
+        // 本文から最初のテキストを抽出（簡易版）
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = blog.content || '';
+        const excerpt = (tempDiv.textContent || '').substring(0, 100) + '...';
+
+        return `
+          <a href="./blog-detail.html?id=${blog.id}" class="blog-list-card">
+            <div class="blog-list-card-thumb">
+              ${thumb}
+            </div>
+            <div class="blog-list-card-body">
+              <div class="blog-list-card-category">${category}</div>
+              <div class="blog-list-card-title">${blog.title || 'タイトルなし'}</div>
+              <div class="blog-list-card-excerpt">${excerpt}</div>
+              <div class="blog-list-card-date">${date}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+
+      setupCursorEffects();
+    }
+
+    // ページロード時に実行
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadBlogList);
+    } else {
+      loadBlogList();
+    }
+
+    // SCROLL REVEAL
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
