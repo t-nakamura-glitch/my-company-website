@@ -68,27 +68,133 @@
 
   /* SUB-HERO */
   .sub-hero {
-    padding: 180px 48px 80px;
+    padding: 180px 48px 60px;
     background: var(--black);
-    border-bottom: 1px solid var(--mid);
   }
   .sub-hero-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--acid); letter-spacing: 0.3em; margin-bottom: 16px; }
   .sub-hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; }
 
-  /* WORKS SECTION */
-  .works-section { padding: 80px 48px 120px; background: var(--black); min-height: 600px; }
-  .works-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
-  .filter-btn { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--mid); background: transparent; color: var(--text-dim); padding: 8px 20px; cursor: none; transition: all 0.3s; }
-  .filter-btn.active, .filter-btn:hover { border-color: var(--acid); color: var(--acid); background: rgba(62,204,0,0.05); }
-  
-  .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-  .work-item { position: relative; aspect-ratio: 4/5; overflow: hidden; background: var(--mid); cursor: none; }
-  .work-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-  .work-item:hover .work-bg { transform: scale(1.1); }
-  .work-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; opacity: 0.9; transition: opacity 0.3s; }
-  .work-item:hover .work-overlay { opacity: 1; }
-  .work-cat { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--acid); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
-  .work-title { font-family: 'Noto Sans JP', sans-serif; font-weight: 700; font-size: 1.1rem; line-height: 1.4; }
+  /* MAIN CONTENT LAYOUT */
+  .works-container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 60px;
+    padding: 40px 48px 120px;
+    background: var(--black);
+    min-height: 600px;
+  }
+
+  /* SIDEBAR */
+  .works-sidebar {
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+  .sidebar-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--acid);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--mid);
+  }
+  .works-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .filter-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    text-align: left;
+    cursor: none;
+    transition: all 0.3s;
+    padding: 4px 0;
+    position: relative;
+  }
+  .filter-btn::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    width: 6px;
+    height: 1px;
+    background: var(--acid);
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    color: var(--acid);
+    padding-left: 15px;
+  }
+  .filter-btn.active::before, .filter-btn:hover::before {
+    transform: translateY(-50%) scaleX(1);
+  }
+
+  /* WORKS GRID */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--gray);
+    cursor: none;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--mid);
+    transition: border-color 0.3s;
+  }
+  .work-item:hover {
+    border-color: var(--acid);
+  }
+  .work-img-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  .work-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .work-item:hover .work-bg {
+    transform: scale(1.05);
+  }
+  .work-info {
+    padding: 20px;
+    background: var(--black);
+    flex-grow: 1;
+  }
+  .work-cat {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--acid);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .work-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--white);
+  }
 
   /* MODAL */
   .work-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 40px; cursor: auto; }
@@ -114,14 +220,19 @@
   .footer-links a { font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
   .footer-links a:hover { color: var(--acid); }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     .works-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
+    .works-container { grid-template-columns: 1fr; gap: 40px; padding: 20px 24px 80px; }
+    .works-sidebar { position: static; }
+    .works-filter { flex-direction: row; flex-wrap: wrap; }
+    .sidebar-title { margin-bottom: 16px; }
+  }
+  @media (max-width: 600px) {
     nav { padding: 20px; }
     .nav-links { display: none; }
-    .sub-hero { padding: 140px 24px 60px; }
-    .works-section { padding: 40px 24px 80px; }
+    .sub-hero { padding: 140px 24px 40px; }
     .works-grid { grid-template-columns: 1fr; }
     .work-modal { padding: 0; }
     .work-modal-info { padding: 24px; }
@@ -152,16 +263,21 @@
   <h1 class="sub-hero-title reveal">SELECTED<br><span style="color:var(--acid)">WORKS</span></h1>
 </div>
 
-<section class="works-section">
-  <div class="works-filter reveal" id="worksFilter">
-    <!-- Filter buttons will be generated here -->
-    <button class="filter-btn active" data-filter="ALL">ALL</button>
-  </div>
-  
-  <div class="works-grid reveal" id="worksGrid">
-    <!-- Works will be loaded here -->
-  </div>
-</section>
+<div class="works-container">
+  <aside class="works-sidebar reveal">
+    <h2 class="sidebar-title">Categories</h2>
+    <div class="works-filter" id="worksFilter">
+      <button class="filter-btn active" data-filter="ALL">ALL PROJECTS</button>
+      <!-- Dynamic categories will be inserted here -->
+    </div>
+  </aside>
+
+  <main class="works-content reveal">
+    <div class="works-grid" id="worksGrid">
+      <!-- Works will be loaded here -->
+    </div>
+  </main>
+</div>
 
 <footer>
   <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
@@ -208,9 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   setupCursorEffects();
 });
-
-// The microcms.js script will handle data fetching and rendering
-// We override updatePortfolioSection if needed or ensure it works with our IDs
 </script>
 </body>
 </html>

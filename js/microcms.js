@@ -41,7 +41,7 @@ async function fetchCategoriesFromMicroCMS() {
 
 // 実績データをHTMLに変換する関数
 function createWorkCard(work) {
-  const thumbnail = work.thumbnail?.url || 'https://via.placeholder.com/400x300?text=No+Image';
+  const thumbnail = work.thumbnail?.url || 'https://via.placeholder.com/600x400?text=No+Image';
   const title = work.title || 'Untitled';
   
   // カテゴリーがオブジェクトの場合、nameを取得
@@ -52,15 +52,33 @@ function createWorkCard(work) {
   
   const id = work.id;
 
-  return `
-    <div class="work-item" data-work-id="${id}" data-category="${categoryName}" style="cursor: pointer;">
-      <div class="work-bg" style="background-image: url('${thumbnail}'); background-size: cover; background-position: center;"></div>
-      <div class="work-overlay">
-        <span class="work-cat">${categoryName}</span>
-        <h3 class="work-title">${title}</h3>
+  // index.htmlとworks.htmlで構造を分ける（works.htmlには.work-infoがある）
+  const isWorksPage = window.location.pathname.includes('works.html');
+
+  if (isWorksPage) {
+    return `
+      <div class="work-item" data-work-id="${id}" data-category="${categoryName}">
+        <div class="work-img-container">
+          <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
+        </div>
+        <div class="work-info">
+          <span class="work-cat">${categoryName}</span>
+          <h3 class="work-title">${title}</h3>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  } else {
+    // index.html用の既存レイアウト
+    return `
+      <div class="work-item" data-work-id="${id}" data-category="${categoryName}" style="cursor: pointer;">
+        <div class="work-bg" style="background-image: url('${thumbnail}'); background-size: cover; background-position: center;"></div>
+        <div class="work-overlay">
+          <span class="work-cat">${categoryName}</span>
+          <h3 class="work-title">${title}</h3>
+        </div>
+      </div>
+    `;
+  }
 }
 
 // ポートフォリオセクションを更新する関数
@@ -123,10 +141,11 @@ function generateFilterButtons() {
   filterContainer.innerHTML = '';
 
   // ALLボタンを追加
+  const isWorksPage = window.location.pathname.includes('works.html');
   const allButton = document.createElement('button');
   allButton.className = 'filter-btn active';
   allButton.dataset.filter = 'ALL';
-  allButton.textContent = 'ALL';
+  allButton.textContent = isWorksPage ? 'ALL PROJECTS' : 'ALL';
   filterContainer.appendChild(allButton);
 
   // カテゴリーボタンを追加
