@@ -243,6 +243,13 @@
   .blog-dot:nth-child(3){animation-delay:0.4s}
   @keyframes dotBlink{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
 
+  /* BLOG VIEW ALL */
+  .blog-view-all-container { display: flex; justify-content: center; margin-top: 60px; }
+  .blog-view-all-btn { display: inline-flex; align-items: center; gap: 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--acid); color: var(--acid); padding: 14px 32px; text-decoration: none; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+  .blog-view-all-btn:hover { background: var(--acid); color: var(--black); }
+  .blog-view-all-arrow { font-size: 0.9rem; transition: transform 0.3s; }
+  .blog-view-all-btn:hover .blog-view-all-arrow { transform: translateX(4px); }
+
   /* CONTACT */
   #contact { background: var(--gray); text-align: center; padding: 160px 48px; position: relative; overflow: hidden; }
   .contact-bg-text { position: absolute; font-family: 'Bebas Neue',sans-serif; font-size: 25vw; color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; letter-spacing: -0.05em; }
@@ -749,6 +756,9 @@
     <span id="blogLoadingText">記事を読み込み中...</span>
   </div>
   <div class="blog-grid" id="blogGrid"></div>
+  <div class="blog-view-all-container reveal">
+    <a href="./blog-list.html" class="blog-view-all-btn">VIEW ALL POSTS <span class="blog-view-all-arrow">→</span></a>
+  </div>
 </section>
 
 <section id="contact">
