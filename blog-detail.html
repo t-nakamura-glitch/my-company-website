@@ -359,38 +359,7 @@
       <!-- RELATED POSTS -->
       <div class="related-posts">
         <h2 class="related-posts-title">関連記事</h2>
-        <div class="related-posts-grid">
-          <a href="#" class="related-post-card" style="text-decoration: none; color: inherit;">
-            <div class="related-post-thumb">
-              [IMAGE]
-            </div>
-            <div class="related-post-body">
-              <div class="related-post-category">DIGITAL MARKETING</div>
-              <div class="related-post-title">SEO対策の最新トレンド2024</div>
-              <div class="related-post-date">2024.03.05</div>
-            </div>
-          </a>
-          <a href="#" class="related-post-card" style="text-decoration: none; color: inherit;">
-            <div class="related-post-thumb">
-              [IMAGE]
-            </div>
-            <div class="related-post-body">
-              <div class="related-post-category">WEB DEVELOPMENT</div>
-              <div class="related-post-title">Next.jsで実現する高速Webアプリケーション</div>
-              <div class="related-post-date">2024.02.28</div>
-            </div>
-          </a>
-          <a href="#" class="related-post-card" style="text-decoration: none; color: inherit;">
-            <div class="related-post-thumb">
-              [IMAGE]
-            </div>
-            <div class="related-post-body">
-              <div class="related-post-category">AI CONSULTING</div>
-              <div class="related-post-title">ChatGPTを活用した業務効率化の実例</div>
-              <div class="related-post-date">2024.02.20</div>
-            </div>
-          </a>
-        </div>
+        <div class="related-posts-grid"></div>
       </div>
     </div>
   </div>
@@ -561,29 +530,37 @@
       const relatedGrid = document.querySelector('.related-posts-grid');
       console.log('[DEBUG] relatedGrid found:', !!relatedGrid);
       
-      const relatedBlogsData = article.related_blog || article.related_blogs;
+      // microCMSから返されるフィールド名を確認（複数の可能性に対応）
+      let relatedBlogsData = article.relatedBlogs || article.related_blogs || article.related_blog;
       console.log('[DEBUG] relatedBlogsData:', relatedBlogsData);
       console.log('[DEBUG] relatedBlogsData is array:', Array.isArray(relatedBlogsData));
       console.log('[DEBUG] relatedBlogsData length:', relatedBlogsData?.length);
       
-      if (relatedGrid && relatedBlogsData && relatedBlogsData.length > 0) {
-        console.log('[DEBUG] Rendering related posts');
-        const html = relatedBlogsData.map(post => `
-          <a href="./blog-detail.html?id=${post.id}" class="related-post-card" style="text-decoration: none; color: inherit;">
-            <div class="related-post-thumb">
-              ${post.eyecatch?.url ? `<img src="${post.eyecatch.url}" alt="${post.title}">` : '[IMAGE]'}
-            </div>
-            <div class="related-post-body">
-              <div class="related-post-category">${(post.category?.name || 'ARTICLE').toUpperCase()}</div>
-              <div class="related-post-title">${post.title}</div>
-              <div class="related-post-date">${post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.') : ''}</div>
-            </div>
-          </a>
-        `).join('');
-        console.log('[DEBUG] Generated HTML:', html);
-        relatedGrid.innerHTML = html;
-      } else {
-        console.log('[DEBUG] No related posts to display');
+      if (relatedGrid) {
+        if (relatedBlogsData && Array.isArray(relatedBlogsData) && relatedBlogsData.length > 0) {
+          console.log('[DEBUG] Rendering related posts');
+          const html = relatedBlogsData.map(post => `
+            <a href="./blog-detail.html?id=${post.id}" class="related-post-card" style="text-decoration: none; color: inherit;">
+              <div class="related-post-thumb">
+                ${post.eyecatch?.url ? `<img src="${post.eyecatch.url}" alt="${post.title}">` : '[IMAGE]'}
+              </div>
+              <div class="related-post-body">
+                <div class="related-post-category">${(post.category?.name || 'ARTICLE').toUpperCase()}</div>
+                <div class="related-post-title">${post.title}</div>
+                <div class="related-post-date">${post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.') : ''}</div>
+              </div>
+            </a>
+          `).join('');
+          console.log('[DEBUG] Generated HTML:', html);
+          relatedGrid.innerHTML = html;
+        } else {
+          console.log('[DEBUG] No related posts to display');
+          // 関連記事がない場合は関連記事セクション全体を非表示にする
+          const relatedPostsSection = document.querySelector('.related-posts');
+          if (relatedPostsSection) {
+            relatedPostsSection.style.display = 'none';
+          }
+        }
       }
     }
 
