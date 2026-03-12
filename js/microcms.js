@@ -3,6 +3,7 @@
 // フロントエンドからはAPIエンドポイント経由でアクセス
 
 let allWorks = []; // すべての実績データを保持
+let allCategories = []; // すべてのカテゴリーデータを保持
 
 // Cloudflare Pages Functionsのエンドポイントからデータを取得
 async function fetchWorksFromMicroCMS() {
@@ -21,18 +22,41 @@ async function fetchWorksFromMicroCMS() {
   }
 }
 
+// カテゴリーデータを取得
+async function fetchCategoriesFromMicroCMS() {
+  try {
+    const response = await fetch('/api/categories');
+
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.contents || [];
+  } catch (error) {
+    console.error('Failed to fetch categories:', error);
+    return [];
+  }
+}
+
 // 実績データをHTMLに変換する関数
 function createWorkCard(work) {
   const thumbnail = work.thumbnail?.url || 'https://via.placeholder.com/400x300?text=No+Image';
-  const title = work.works || 'Untitled';
-  const category = work.category || 'Other';
+  const title = work.title || 'Untitled';
+  
+  // カテゴリーが配列の場合、最初のカテゴリーを取得
+  let categoryName = 'Other';
+  if (work.categories && work.categories.length > 0) {
+    categoryName = work.categories[0].name || 'Other';
+  }
+  
   const id = work.id;
 
   return `
-    <div class="work-item" data-work-id="${id}" data-category="${category}" style="cursor: pointer;">
+    <div class="work-item" data-work-id="${id}" data-category="${categoryName}" style="cursor: pointer;">
       <div class="work-bg" style="background-image: url('${thumbnail}'); background-size: cover; background-position: center;"></div>
       <div class="work-overlay">
-        <span class="work-cat">${category}</span>
+        <span class="work-cat">${categoryName}</span>
         <h3 class="work-title">${title}</h3>
       </div>
     </div>
@@ -42,6 +66,7 @@ function createWorkCard(work) {
 // ポートフォリオセクションを更新する関数
 async function updatePortfolioSection() {
   allWorks = await fetchWorksFromMicroCMS();
+  allCategories = await fetchCategoriesFromMicroCMS();
   
   if (allWorks.length === 0) {
     console.log('No works found in microCMS');
@@ -51,8 +76,8 @@ async function updatePortfolioSection() {
   // 初回表示：すべての実績を表示
   displayWorks(allWorks);
   
-  // フィルターボタンのイベント設定
-  setupFilterButtons();
+  // フィルターボタンを動的に生成
+  generateFilterButtons();
 }
 
 // 実績を表示する関数
@@ -76,6 +101,37 @@ function displayWorks(worksToDisplay) {
   attachWorkCardListeners(allWorks);
 }
 
+// フィルターボタンを動的に生成
+function generateFilterButtons() {
+  const filterContainer = document.querySelector('.works-filter');
+  if (!filterContainer) {
+    console.error('Filter container not found');
+    return;
+  }
+
+  // 既存のボタンをクリア
+  filterContainer.innerHTML = '';
+
+  // ALLボタンを追加
+  const allButton = document.createElement('button');
+  allButton.className = 'filter-btn active';
+  allButton.dataset.filter = 'ALL';
+  allButton.textContent = 'ALL';
+  filterContainer.appendChild(allButton);
+
+  // カテゴリーボタンを追加
+  allCategories.forEach(category => {
+    const button = document.createElement('button');
+    button.className = 'filter-btn';
+    button.dataset.filter = category.name;
+    button.textContent = category.name;
+    filterContainer.appendChild(button);
+  });
+
+  // フィルターボタンのイベント設定
+  setupFilterButtons();
+}
+
 // フィルターボタンのイベント設定
 function setupFilterButtons() {
   const filterButtons = document.querySelectorAll('.filter-btn');
@@ -95,7 +151,12 @@ function setupFilterButtons() {
       if (filterValue === 'ALL') {
         displayWorks(allWorks);
       } else {
-        const filteredWorks = allWorks.filter(work => work.category === filterValue);
+        const filteredWorks = allWorks.filter(work => {
+          if (work.categories && work.categories.length > 0) {
+            return work.categories.some(cat => cat.name === filterValue);
+          }
+          return false;
+        });
         displayWorks(filteredWorks);
       }
     });
@@ -118,15 +179,21 @@ function attachWorkCardListeners(works) {
 
 // 実績の詳細を表示する関数（モーダルで表示）
 function showWorkDetail(work) {
+  // カテゴリー名を取得
+  let categoryName = 'Other';
+  if (work.categories && work.categories.length > 0) {
+    categoryName = work.categories[0].name || 'Other';
+  }
+
   const modal = document.createElement('div');
   modal.className = 'work-modal';
   modal.innerHTML = `
     <div class="work-modal-content">
       <button class="work-modal-close">&times;</button>
-      <img src="${work.thumbnail?.url || 'https://via.placeholder.com/600x400'}" alt="${work.works}" class="work-modal-img">
+      <img src="${work.thumbnail?.url || 'https://via.placeholder.com/600x400'}" alt="${work.title}" class="work-modal-img">
       <div class="work-modal-info">
-        <span class="work-modal-category">${work.category || 'Other'}</span>
-        <h2 class="work-modal-title">${work.works}</h2>
+        <span class="work-modal-category">${categoryName}</span>
+        <h2 class="work-modal-title">${work.title}</h2>
         <p class="work-modal-date">${work.date || ''}</p>
         <div class="work-modal-content-text">${work.content || ''}</div>
         ${work.related_works && work.related_works.length > 0 ? `
