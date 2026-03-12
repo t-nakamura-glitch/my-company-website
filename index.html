@@ -176,10 +176,10 @@
   .area-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--mid) 1px, transparent 1px), linear-gradient(90deg, var(--mid) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.15; }
   .area-point-wrap { position: relative; width: 100%; max-width: 800px; height: 200px; }
   .area-node { position: absolute; width: 16px; height: 16px; background: var(--acid); border-radius: 50%; box-shadow: 0 0 20px var(--acid); overflow: visible; }
-  .area-node::before, .area-node::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid var(--acid); border-radius: 50%; animation: ripple 2.5s ease-out infinite; opacity: 0; }
+  .area-node::before, .area-node::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid var(--acid); border-radius: 50%; animation: ripple 3.5s ease-out infinite; opacity: 0; }
   .area-node::before { animation-delay: 0s; }
-  .area-node::after { animation-delay: 0.8s; }
-  @keyframes ripple { 0% { width: 16px; height: 16px; opacity: 1; } 100% { width: 80px; height: 80px; opacity: 0; } }
+  .area-node::after { animation-delay: 1.2s; }
+  @keyframes ripple { 0% { width: 16px; height: 16px; opacity: 1; } 100% { width: 240px; height: 240px; opacity: 0; } }
   .node-nara { left: 20%; top: 65%; }
   .node-tokyo { right: 20%; top: 35%; }
   .node-label { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--acid); white-space: nowrap; letter-spacing: 0.2em; font-weight: 700; }
