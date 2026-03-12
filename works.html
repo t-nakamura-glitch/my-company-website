@@ -143,19 +143,28 @@
   .works-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    gap: 40px 30px;
   }
   .work-item {
     position: relative;
     width: 100%;
+    overflow: hidden;
+    background: transparent;
+    cursor: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .work-img-wrapper {
+    position: relative;
+    width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
-    background: var(--gray);
-    cursor: none;
     border: 1px solid var(--mid);
     transition: border-color 0.3s;
   }
-  .work-item:hover {
+  .work-item:hover .work-img-wrapper {
     border-color: var(--acid);
   }
   .work-bg {
@@ -164,24 +173,15 @@
     background-size: cover;
     background-position: center;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 0;
   }
   .work-item:hover .work-bg {
     transform: scale(1.1);
   }
-  .work-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
-    padding: 24px;
+  .work-info {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    z-index: 1;
-    transition: background 0.3s;
-  }
-  .work-item:hover .work-overlay {
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    gap: 8px;
+    padding: 0 4px;
   }
   .work-cat {
     font-family: 'Space Mono', monospace;
@@ -189,30 +189,19 @@
     color: var(--acid);
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    margin-bottom: 8px;
     display: block;
-    transform: translateY(10px);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0.8;
   }
   .work-title {
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.4;
     color: var(--white);
-    transform: translateY(10px);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s;
+    transition: color 0.3s;
   }
-  .work-item:hover .work-cat,
   .work-item:hover .work-title {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  /* Always show a bit of title even without hover for accessibility/UX */
-  .work-cat, .work-title {
-    opacity: 0.8;
-    transform: translateY(0);
+    color: var(--acid);
   }
 
   /* MODAL */

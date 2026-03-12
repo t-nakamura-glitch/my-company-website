@@ -58,8 +58,10 @@ function createWorkCard(work) {
   if (isWorksPage) {
     return `
       <div class="work-item" data-work-id="${id}" data-category="${categoryName}">
-        <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
-        <div class="work-overlay">
+        <div class="work-img-wrapper">
+          <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
+        </div>
+        <div class="work-info">
           <span class="work-cat">${categoryName}</span>
           <h3 class="work-title">${title}</h3>
         </div>
