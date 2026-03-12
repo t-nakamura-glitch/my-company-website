@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SENTIC — クリエイティブ × テクノロジー</title>
+<link rel="icon" type="image/jpeg" href="./assets/images/favicon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -57,7 +58,8 @@
     backdrop-filter: none;
     width: 100%; max-width: 100vw; box-sizing: border-box; overflow: hidden;
   }
-  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.15em; color: var(--white); text-decoration: none; }
+  .nav-logo { display: flex; align-items: center; text-decoration: none; height: 40px; }
+  .nav-logo img { height: 100%; width: auto; max-width: 150px; }
   .nav-logo span { color: var(--acid); }
   .nav-links { display: flex; gap: 40px; }
   .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
@@ -295,7 +297,7 @@
 <div class="cursor-ring" id="cursorRing"></div>
 
 <nav>
-  <a href="#" class="nav-logo">SENTIC<span>.</span>JP</a>
+  <a href="#" class="nav-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></a>
   <div class="nav-links">
     <a href="#services">サービス</a>
     <a href="#works">実績</a>
@@ -379,7 +381,7 @@
     </div>
     <!-- 04 イベントビデオ -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="イベントビデオ" class="service-img">
+      <img src="./assets/images/eventviode.webp" alt="イベントビデオ" class="service-img">
       <div class="service-content">
         <div class="service-num">04 —</div>
         <div class="service-name-wrap">
