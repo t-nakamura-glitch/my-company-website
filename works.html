@@ -143,26 +143,28 @@
   .works-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px 30px;
+    gap: 48px 32px;
   }
   .work-item {
     position: relative;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
     background: transparent;
     cursor: none;
     border: none;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
+    transition: transform 0.3s ease;
   }
   .work-img-wrapper {
     position: relative;
     width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
+    background: var(--gray);
     border: 1px solid var(--mid);
-    transition: border-color 0.3s;
+    transition: border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .work-item:hover .work-img-wrapper {
     border-color: var(--acid);
@@ -172,33 +174,34 @@
     inset: 0;
     background-size: cover;
     background-position: center;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .work-item:hover .work-bg {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
   .work-info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 0 4px;
+    gap: 10px;
+    padding: 0 2px;
   }
   .work-cat {
     font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     color: var(--acid);
-    letter-spacing: 0.2em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     display: block;
-    opacity: 0.8;
+    font-weight: 500;
   }
   .work-title {
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.4;
+    font-size: 1.1rem;
+    line-height: 1.5;
     color: var(--white);
     transition: color 0.3s;
+    letter-spacing: 0.02em;
   }
   .work-item:hover .work-title {
     color: var(--acid);
