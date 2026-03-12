@@ -24,7 +24,7 @@ async function fetchWorksFromMicroCMS() {
 // 実績データをHTMLに変換する関数
 function createWorkCard(work) {
   const thumbnail = work.thumbnail?.url || 'https://via.placeholder.com/400x300?text=No+Image';
-  const title = work.title || 'Untitled';
+  const title = work.works || 'Untitled';
   const category = work.category || 'Other';
   const id = work.id;
 
@@ -123,10 +123,10 @@ function showWorkDetail(work) {
   modal.innerHTML = `
     <div class="work-modal-content">
       <button class="work-modal-close">&times;</button>
-      <img src="${work.thumbnail?.url || 'https://via.placeholder.com/600x400'}" alt="${work.title}" class="work-modal-img">
+      <img src="${work.thumbnail?.url || 'https://via.placeholder.com/600x400'}" alt="${work.works}" class="work-modal-img">
       <div class="work-modal-info">
         <span class="work-modal-category">${work.category || 'Other'}</span>
-        <h2 class="work-modal-title">${work.title}</h2>
+        <h2 class="work-modal-title">${work.works}</h2>
         <p class="work-modal-date">${work.date || ''}</p>
         <div class="work-modal-content-text">${work.content || ''}</div>
         ${work.related_works && work.related_works.length > 0 ? `
