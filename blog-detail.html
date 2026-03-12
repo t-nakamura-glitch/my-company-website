@@ -437,9 +437,13 @@
           if (!response.ok) throw new Error(`API Error: ${response.status}`);
           
           const data = await response.json();
+          console.log('[DEBUG] API response (full):', JSON.stringify(data, null, 2));
           console.log('[DEBUG] API response:', data);
           article = data.contents && data.contents.length > 0 ? data.contents[0] : null;
           console.log('[DEBUG] Article loaded:', !!article);
+          if (article) {
+            console.log('[DEBUG] Article keys:', Object.keys(article));
+          }
         } catch (error) {
           console.error('[DEBUG] Failed to load blog article:', error);
         }
@@ -526,12 +530,28 @@
     // 関連記事を更新
     function updateRelatedPosts(article) {
       console.log('[DEBUG] updateRelatedPosts called');
-      console.log('[DEBUG] article:', article);
+      console.log('[DEBUG] Full article object:', JSON.stringify(article, null, 2));
       const relatedGrid = document.querySelector('.related-posts-grid');
       console.log('[DEBUG] relatedGrid found:', !!relatedGrid);
       
       // microCMSから返されるフィールド名を確認（複数の可能性に対応）
-      let relatedBlogsData = article.relatedBlogs || article.related_blogs || article.related_blog;
+      // 一般的なフィールド名のパターンをすべて確認
+      let relatedBlogsData = null;
+      const possibleFieldNames = ['relatedBlogs', 'related_blogs', 'related_blog', 'relatedPosts', 'related_posts', 'related', 'relatedArticles', 'related_articles'];
+      
+      for (const fieldName of possibleFieldNames) {
+        if (article[fieldName]) {
+          console.log(`[DEBUG] Found related posts in field: ${fieldName}`);
+          relatedBlogsData = article[fieldName];
+          break;
+        }
+      }
+      
+      // フィールドが見つからない場合、すべてのプロパティをログ出力
+      if (!relatedBlogsData) {
+        console.log('[DEBUG] No related posts field found. Available fields:', Object.keys(article));
+      }
+      
       console.log('[DEBUG] relatedBlogsData:', relatedBlogsData);
       console.log('[DEBUG] relatedBlogsData is array:', Array.isArray(relatedBlogsData));
       console.log('[DEBUG] relatedBlogsData length:', relatedBlogsData?.length);
