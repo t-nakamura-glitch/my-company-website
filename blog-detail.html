@@ -69,21 +69,26 @@
 
     /* BLOG DETAIL SECTION */
     .blog-hero {
-      min-height: 60vh; display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 160px 48px 80px; position: relative; overflow: hidden; width: 100%; max-width: 100vw; box-sizing: border-box;
-      background: linear-gradient(135deg, rgba(10,26,0,0.4) 0%, rgba(26,0,0,0.4) 100%), var(--black);
+      padding: 160px 0 0; position: relative; overflow: visible; width: 100%; max-width: 100vw; box-sizing: border-box;
+      background: var(--black);
     }
     .blog-hero-img {
-      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+      width: 100%; max-width: 100%; margin: 0; aspect-ratio: 16/9; object-fit: cover; z-index: 0;
+      display: block;
+    }
+    .placeholder-img {
+      width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
+      display: flex; align-items: center; justify-content: center; color: var(--text-dim);
+      font-family: 'Space Mono', monospace; font-size: 0.8rem;
     }
     .blog-hero-overlay {
-      position: absolute; inset: 0; background: rgba(5,5,5,0.5); z-index: 1;
+      display: none;
     }
     .blog-hero-content {
-      position: relative; z-index: 10; max-width: 900px;
+      position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 60px 48px 0;
     }
     .blog-hero-meta {
-      display: flex; gap: 24px; align-items: center; margin-bottom: 24px; flex-wrap: wrap;
+      display: flex; gap: 24px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; justify-content: center;
     }
     .blog-hero-category {
       font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em;
@@ -95,16 +100,16 @@
       color: var(--text-dim);
     }
     .blog-hero-title {
-      font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 8vw, 4rem);
-      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px;
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 5vw, 2.8rem);
+      line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; text-align: center; max-width: 1200px; margin-left: auto; margin-right: auto;
     }
     .blog-hero-excerpt {
-      font-size: 1.05rem; line-height: 1.8; color: var(--text-dim); max-width: 700px;
+      font-size: 1.05rem; line-height: 1.8; color: var(--text-dim); max-width: 700px; margin: 0 auto; text-align: center; display: none;
     }
 
     /* BLOG CONTENT */
     .blog-container {
-      max-width: 900px; margin: 0 auto; padding: 120px 48px;
+      max-width: 900px; margin: 0 auto; padding: 40px 48px;
       width: 100%; box-sizing: border-box;
     }
     .blog-content {
@@ -137,7 +142,7 @@
 
     /* BLOG META */
     .blog-meta {
-      display: flex; gap: 40px; padding: 40px 0; border-top: 1px solid var(--mid);
+      display: none; gap: 40px; padding: 40px 0; border-top: 1px solid var(--mid);
       border-bottom: 1px solid var(--mid); margin: 60px 0; flex-wrap: wrap;
     }
     .blog-meta-item {
@@ -171,8 +176,8 @@
       border-color: var(--acid);
     }
     .related-post-thumb {
-      width: 100%; aspect-ratio: 16/9; background: var(--gray);
-      overflow: hidden;
+      width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
     }
     .related-post-thumb img {
       width: 100%; height: 100%; object-fit: cover; margin: 0;
@@ -198,28 +203,11 @@
       display: inline-flex; align-items: center; gap: 8px;
       font-family: 'Space Mono', monospace; font-size: 0.75rem;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--acid); text-decoration: none; margin-bottom: 40px;
+      color: var(--acid); text-decoration: none; margin-bottom: 0; margin-top: 60px;
       transition: all 0.3s;
     }
     .blog-back:hover {
       gap: 12px;
-    }
-
-    /* LOADING STATE */
-    .blog-loading {
-      display: flex; align-items: center; justify-content: center;
-      min-height: 60vh; gap: 12px; color: var(--text-dim);
-      font-family: 'Space Mono', monospace; font-size: 0.75rem;
-    }
-    .blog-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--acid); animation: dotBlink 1.2s ease-in-out infinite;
-    }
-    .blog-dot:nth-child(2) { animation-delay: 0.2s; }
-    .blog-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes dotBlink {
-      0%, 100% { opacity: 0.2; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1); }
     }
 
     /* FOOTER */
@@ -237,6 +225,13 @@
     /* REVEAL ANIMATION */
     .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* PLACEHOLDER IMAGE */
+    .placeholder-img {
+      width: 100%; height: 400px; background: linear-gradient(135deg, #1a3a1a 0%, #2a1a3a 100%);
+      display: flex; align-items: center; justify-content: center; color: var(--text-dim);
+      font-family: 'Space Mono', monospace; font-size: 0.8rem;
+    }
   </style>
 </head>
 <body>
@@ -260,33 +255,143 @@
 
   <!-- BLOG HERO -->
   <section class="blog-hero" id="blogHero">
-    <img id="blogHeroImg" class="blog-hero-img" alt="Blog Hero">
+    <div class="placeholder-img">IMAGE PLACEHOLDER</div>
     <div class="blog-hero-overlay"></div>
     <div class="blog-hero-content">
       <div class="blog-hero-meta">
-        <span class="blog-hero-category" id="blogCategory">ARTICLE</span>
-        <span class="blog-hero-date" id="blogDate">2024.01.01</span>
+        <span class="blog-hero-category">WEB DEVELOPMENT</span>
+        <span class="blog-hero-date">2024.03.12</span>
       </div>
-      <h1 class="blog-hero-title reveal" id="blogTitle">記事タイトルを読み込み中...</h1>
-      <p class="blog-hero-excerpt reveal" id="blogExcerpt">記事の概要を読み込み中...</p>
+      <h1 class="blog-hero-title reveal">最新のWebテクノロジーで実現する、次世代のデジタル体験</h1>
+      <p class="blog-hero-excerpt reveal">テクノロジーの進化に伴い、Webサイトの役割も大きく変わってきました。本記事では、2024年のWebデザイン・開発トレンドと、SENTICが実践している最新の手法をご紹介します。</p>
     </div>
   </section>
 
   <!-- BLOG CONTENT -->
   <div class="blog-container">
-    <a href="./#blog" class="blog-back">← ブログ一覧に戻る</a>
-
-    <div id="blogLoadingState" class="blog-loading">
-      <div class="blog-dot"></div>
-      <div class="blog-dot"></div>
-      <div class="blog-dot"></div>
-      <span>記事を読み込み中...</span>
+    <div class="blog-meta">
+      <div class="blog-meta-item">
+        <div class="blog-meta-label">カテゴリー</div>
+        <div class="blog-meta-value">WEB DEVELOPMENT</div>
+      </div>
+      <div class="blog-meta-item">
+        <div class="blog-meta-label">公開日</div>
+        <div class="blog-meta-value">2024.03.12</div>
+      </div>
+      <div class="blog-meta-item">
+        <div class="blog-meta-label">著者</div>
+        <div class="blog-meta-value">S. Sato</div>
+      </div>
     </div>
 
-    <div id="blogContentWrapper" style="display: none;">
-      <div class="blog-meta" id="blogMetaSection"></div>
-      <div class="blog-content" id="blogContent"></div>
-      <div class="related-posts" id="relatedPostsSection" style="display: none;"></div>
+    <div class="blog-content">
+      <h2>デジタル時代のWebサイトに求められるもの</h2>
+      
+      <p>
+        かつてのWebサイトは、企業情報を掲載する「パンフレット」のような役割が中心でした。しかし、現在のWebサイトは、顧客との接点であり、ビジネスの成長を直結させるツールへと進化しています。
+      </p>
+
+      <p>
+        特に、以下の3つの要素が重要視されています：
+      </p>
+
+      <ul>
+        <li><strong>ユーザー体験（UX）の最適化</strong>：訪問者が直感的に情報にアクセスでき、ストレスなく操作できる設計</li>
+        <li><strong>パフォーマンスの高速化</strong>：ページの読み込み速度がSEOランキングやコンバージョン率に大きく影響</li>
+        <li><strong>モバイルファースト設計</strong>：スマートフォンからのアクセスが全体の70%以上を占める現在、モバイル対応は必須</li>
+      </ul>
+
+      <h2>SENTICが実践するWebデザイン手法</h2>
+
+      <p>
+        SENTICでは、単なる「見た目の美しさ」だけでなく、ビジネス目標を達成するための戦略的なWebデザインを心がけています。
+      </p>
+
+      <h3>1. データドリブンなデザイン判断</h3>
+
+      <p>
+        ユーザーの行動データを分析し、どのセクションが最も注目されているか、どこで離脱しているかを把握します。これらのインサイトに基づいて、デザインやレイアウトを最適化することで、実際のビジネス成果につながる改善を実現します。
+      </p>
+
+      <h3>2. アクセシビリティの重視</h3>
+
+      <p>
+        色覚障害のある方や、スクリーンリーダーを使用するユーザーなど、多様なユーザーがWebサイトにアクセスします。WCAG 2.1などの国際的なアクセシビリティ基準に準拠することで、より多くの人々にサービスを届けることができます。
+      </p>
+
+      <h3>3. パフォーマンス最適化</h3>
+
+      <p>
+        画像の最適化、コードの圧縮、キャッシング戦略など、細部にわたるパフォーマンス改善を実施します。結果として、ページの読み込み時間を50%以上削減した事例も多数あります。
+      </p>
+
+      <div class="placeholder-img" style="margin: 40px 0;">IMAGE PLACEHOLDER</div>
+
+      <h2>今後のWebトレンド予測</h2>
+
+      <p>
+        2024年から2025年にかけて、以下のトレンドがさらに加速すると予想されます：
+      </p>
+
+      <ul>
+        <li><strong>AI/ML技術の統合</strong>：パーソナライズされたユーザー体験を実現するため、AI技術の活用が進む</li>
+        <li><strong>Web3・メタバース対応</strong>：ブロックチェーン技術やメタバースプラットフォームへの対応が検討される</li>
+        <li><strong>音声インターフェース</strong>：音声検索や音声操作への対応が標準化される</li>
+        <li><strong>サステナビリティ</strong>：グリーンウェブ（低消費電力のWebサイト設計）への関心が高まる</li>
+      </ul>
+
+      <blockquote>
+        「テクノロジーは進化し続けるものです。重要なのは、その進化に対応するだけでなく、ビジネスの本質を見失わないこと。SENTICは、常に『なぜ？』を問い続けながら、クライアントにとって本当に必要なWebソリューションを提供します。」
+      </blockquote>
+
+      <h2>まとめ</h2>
+
+      <p>
+        Webサイトは、単なる情報発信ツールではなく、ビジネス成長の重要なドライバーです。最新のテクノロジーを活用しながらも、ユーザーの視点を忘れず、戦略的にデザイン・開発することが成功の鍵となります。
+      </p>
+
+      <p>
+        SENTICでは、このような視点から、クライアントのビジネス目標を実現するWebサイト構築をサポートしています。Webサイトのリニューアルや新規構築をご検討の際は、ぜひお気軽にお問い合わせください。
+      </p>
+
+      <a href="./#blog" class="blog-back">← ブログ一覧に戻る</a>
+
+      <!-- RELATED POSTS -->
+      <div class="related-posts">
+        <h2 class="related-posts-title">関連記事</h2>
+        <div class="related-posts-grid">
+          <a href="#" class="related-post-card" style="text-decoration: none; color: inherit;">
+            <div class="related-post-thumb">
+              [IMAGE]
+            </div>
+            <div class="related-post-body">
+              <div class="related-post-category">DIGITAL MARKETING</div>
+              <div class="related-post-title">SEO対策の最新トレンド2024</div>
+              <div class="related-post-date">2024.03.05</div>
+            </div>
+          </a>
+          <a href="#" class="related-post-card" style="text-decoration: none; color: inherit;">
+            <div class="related-post-thumb">
+              [IMAGE]
+            </div>
+            <div class="related-post-body">
+              <div class="related-post-category">WEB DEVELOPMENT</div>
+              <div class="related-post-title">Next.jsで実現する高速Webアプリケーション</div>
+              <div class="related-post-date">2024.02.28</div>
+            </div>
+          </a>
+          <a href="#" class="related-post-card" style="text-decoration: none; color: inherit;">
+            <div class="related-post-thumb">
+              [IMAGE]
+            </div>
+            <div class="related-post-body">
+              <div class="related-post-category">AI CONSULTING</div>
+              <div class="related-post-title">ChatGPTを活用した業務効率化の実例</div>
+              <div class="related-post-date">2024.02.20</div>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -350,126 +455,6 @@
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // =============================================
-    // ブログ記事データ取得・表示
-    // =============================================
-    async function loadBlogDetail() {
-      const loadingState = document.getElementById('blogLoadingState');
-      const contentWrapper = document.getElementById('blogContentWrapper');
-
-      try {
-        // URLから記事IDを取得
-        const urlPath = window.location.pathname;
-        const blogMatch = urlPath.match(/\/blog\/([a-zA-Z0-9_-]+)/);
-
-        if (!blogMatch) {
-          throw new Error('記事IDが見つかりません');
-        }
-
-        const blogId = blogMatch[1];
-
-        // microCMS APIから記事データを取得
-        const res = await fetch(`/api/blogs?id=${blogId}`);
-
-        if (!res.ok) {
-          throw new Error(`API Error: ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        if (!data.contents || data.contents.length === 0) {
-          throw new Error('記事が見つかりません');
-        }
-
-        const article = data.contents[0];
-
-        // ページタイトルを更新
-        document.title = `${article.title} - SENTIC`;
-
-        // ヒーロー画像を設定
-        const heroImg = document.getElementById('blogHeroImg');
-        if (article.eyecatch) {
-          heroImg.src = article.eyecatch.url;
-        }
-
-        // メタ情報を設定
-        document.getElementById('blogCategory').textContent = (article.category?.name || 'ARTICLE').toUpperCase();
-        const date = article.publishedAt
-          ? new Date(article.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')
-          : '';
-        document.getElementById('blogDate').textContent = date;
-
-        // タイトルと概要を設定
-        document.getElementById('blogTitle').textContent = article.title || 'タイトルなし';
-        document.getElementById('blogExcerpt').textContent = article.description || article.content?.substring(0, 100) || '';
-
-        // メタセクションを生成
-        const metaSection = document.getElementById('blogMetaSection');
-        metaSection.innerHTML = `
-          <div class="blog-meta-item">
-            <div class="blog-meta-label">カテゴリー</div>
-            <div class="blog-meta-value">${article.category?.name || 'その他'}</div>
-          </div>
-          <div class="blog-meta-item">
-            <div class="blog-meta-label">公開日</div>
-            <div class="blog-meta-value">${date}</div>
-          </div>
-          ${article.author ? `
-            <div class="blog-meta-item">
-              <div class="blog-meta-label">著者</div>
-              <div class="blog-meta-value">${article.author}</div>
-            </div>
-          ` : ''}
-        `;
-
-        // コンテンツを設定
-        const contentEl = document.getElementById('blogContent');
-        contentEl.innerHTML = article.content || '<p>コンテンツが利用できません</p>';
-
-        // 関連記事を表示（オプション）
-        if (article.related_blogs && article.related_blogs.length > 0) {
-          const relatedSection = document.getElementById('relatedPostsSection');
-          relatedSection.innerHTML = `
-            <h2 class="related-posts-title">関連記事</h2>
-            <div class="related-posts-grid">
-              ${article.related_blogs.map(relatedBlog => `
-                <a href="/blog/${relatedBlog.id}" class="related-post-card" style="text-decoration: none; color: inherit;">
-                  <div class="related-post-thumb">
-                    ${relatedBlog.eyecatch ? `<img src="${relatedBlog.eyecatch.url}" alt="${relatedBlog.title}">` : ''}
-                  </div>
-                  <div class="related-post-body">
-                    <div class="related-post-category">${(relatedBlog.category?.name || 'ARTICLE').toUpperCase()}</div>
-                    <div class="related-post-title">${relatedBlog.title}</div>
-                    <div class="related-post-date">${new Date(relatedBlog.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')}</div>
-                  </div>
-                </a>
-              `).join('')}
-            </div>
-          `;
-          relatedSection.style.display = 'block';
-        }
-
-        // ローディング非表示、コンテンツ表示
-        loadingState.style.display = 'none';
-        contentWrapper.style.display = 'block';
-
-        // カーソルエフェクトを再適用
-        setupCursorEffects();
-
-      } catch (error) {
-        console.error('Blog load error:', error);
-        loadingState.innerHTML = `
-          <div style="text-align: center; color: var(--text-dim);">
-            <p>申し訳ありません。記事の読み込みに失敗しました。</p>
-            <p style="margin-top: 16px;"><a href="./" style="color: var(--acid); text-decoration: none;">トップページに戻る</a></p>
-          </div>
-        `;
-      }
-    }
-
-    // ページ読み込み時に実行
-    document.addEventListener('DOMContentLoaded', loadBlogDetail);
   </script>
 </body>
 </html>
