@@ -457,33 +457,66 @@
     // microCMSからブログ記事データを取得
     async function loadBlogArticle() {
       const blogId = getBlogIdFromUrl();
-      if (!blogId) {
-        console.log('No blog ID found in URL');
-        return;
-      }
-
-      try {
-        const response = await fetch(`/api/blogs?id=${blogId}`);
-        if (!response.ok) throw new Error(`API Error: ${response.status}`);
-        
-        const data = await response.json();
-        const article = data.contents && data.contents.length > 0 ? data.contents[0] : null;
-        
-        if (article) {
-          // ページタイトルを更新
-          document.title = `${article.title} - SENTIC`;
+      console.log('[DEBUG] blogId:', blogId);
+      
+      let article = null;
+      
+      if (blogId) {
+        try {
+          console.log('[DEBUG] Fetching article with ID:', blogId);
+          const response = await fetch(`/api/blogs?id=${blogId}`);
+          if (!response.ok) throw new Error(`API Error: ${response.status}`);
           
-          // ヒーローセクションを更新
-          updateHeroSection(article);
-          
-          // ブログコンテンツを更新
-          updateBlogContent(article);
-          
-          // 関連記事を更新
-          updateRelatedPosts(article);
+          const data = await response.json();
+          console.log('[DEBUG] API response:', data);
+          article = data.contents && data.contents.length > 0 ? data.contents[0] : null;
+          console.log('[DEBUG] Article loaded:', !!article);
+        } catch (error) {
+          console.error('[DEBUG] Failed to load blog article:', error);
         }
-      } catch (error) {
-        console.error('Failed to load blog article:', error);
+      } else {
+        console.log('[DEBUG] No blog ID found, using dummy data');
+        // ダミーデータを使用
+        article = {
+          title: '最新のWebテクノロジーで実現する、次世代のデジタル体験',
+          category: { name: 'WEB DEVELOPMENT' },
+          publishedAt: '2024-03-12',
+          eyecatch: { url: 'https://via.placeholder.com/1600x900' },
+          content: '<p>これはダミーデータです。</p>',
+          related_blog: [
+            {
+              id: 'post1',
+              title: 'SEO対策の最新トレンド2024',
+              category: { name: 'DIGITAL MARKETING' },
+              publishedAt: '2024-03-05',
+              eyecatch: { url: 'https://via.placeholder.com/400x300' }
+            },
+            {
+              id: 'post2',
+              title: 'Next.jsで実現する高速Webアプリケーション',
+              category: { name: 'WEB DEVELOPMENT' },
+              publishedAt: '2024-02-28',
+              eyecatch: { url: 'https://via.placeholder.com/400x300' }
+            }
+          ]
+        };
+      }
+      
+      if (article) {
+        console.log('[DEBUG] Updating page with article:', article.title);
+        // ページタイトルを更新
+        document.title = `${article.title} - SENTIC`;
+        
+        // ヒーローセクションを更新
+        updateHeroSection(article);
+        
+        // ブログコンテンツを更新
+        updateBlogContent(article);
+        
+        // 関連記事を更新
+        updateRelatedPosts(article);
+      } else {
+        console.log('[DEBUG] No article data available');
       }
     }
 
@@ -523,10 +556,19 @@
 
     // 関連記事を更新
     function updateRelatedPosts(article) {
+      console.log('[DEBUG] updateRelatedPosts called');
+      console.log('[DEBUG] article:', article);
       const relatedGrid = document.querySelector('.related-posts-grid');
+      console.log('[DEBUG] relatedGrid found:', !!relatedGrid);
+      
       const relatedBlogsData = article.related_blog || article.related_blogs;
+      console.log('[DEBUG] relatedBlogsData:', relatedBlogsData);
+      console.log('[DEBUG] relatedBlogsData is array:', Array.isArray(relatedBlogsData));
+      console.log('[DEBUG] relatedBlogsData length:', relatedBlogsData?.length);
+      
       if (relatedGrid && relatedBlogsData && relatedBlogsData.length > 0) {
-        relatedGrid.innerHTML = relatedBlogsData.map(post => `
+        console.log('[DEBUG] Rendering related posts');
+        const html = relatedBlogsData.map(post => `
           <a href="./blog-detail.html?id=${post.id}" class="related-post-card" style="text-decoration: none; color: inherit;">
             <div class="related-post-thumb">
               ${post.eyecatch?.url ? `<img src="${post.eyecatch.url}" alt="${post.title}">` : '[IMAGE]'}
@@ -538,6 +580,10 @@
             </div>
           </a>
         `).join('');
+        console.log('[DEBUG] Generated HTML:', html);
+        relatedGrid.innerHTML = html;
+      } else {
+        console.log('[DEBUG] No related posts to display');
       }
     }
 
