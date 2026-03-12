@@ -258,7 +258,8 @@
 
   /* FOOTER */
   footer { background: var(--black); border-top: 1px solid var(--mid); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; }
-  .footer-logo { font-family: 'Bebas Neue',sans-serif; font-size: 1.4rem; letter-spacing: 0.15em; color: var(--text-dim); }
+  .footer-logo { display: flex; align-items: center; height: 30px; }
+  .footer-logo img { height: 100%; width: auto; max-width: 120px; }
   .footer-logo span { color: var(--acid); }
   .footer-copy { font-family: 'Space Mono',monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); }
   .footer-links { display: flex; gap: 32px; }
@@ -342,7 +343,7 @@
   <div class="services-grid reveal">
     <!-- 01 動画制作 -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80" alt="動画制作" class="service-img">
+      <img src="./assets/images/filming.webp" alt="動画製作" class="service-img">
       <div class="service-content">
         <div class="service-num">01 —</div>
         <div class="service-name-wrap">
@@ -355,7 +356,7 @@
     </div>
     <!-- 02 写真撮影 -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=800&q=80" alt="写真撮影" class="service-img">
+      <img src="./assets/images/photo.webp" alt="写真撮影" class="service-img">
       <div class="service-content">
         <div class="service-num">02 —</div>
         <div class="service-name-wrap">
@@ -394,7 +395,7 @@
     </div>
     <!-- 05 イベント写真 -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1505373633569-e083a0073fd7?auto=format&fit=crop&w=800&q=80" alt="イベント写真" class="service-img">
+      <img src="./assets/images/eventphoto.webp" alt="イベント写真" class="service-img">
       <div class="service-content">
         <div class="service-num">05 —</div>
         <div class="service-name-wrap">
@@ -407,7 +408,7 @@
     </div>
     <!-- 06 ライブ配信 -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=800&q=80" alt="ライブ配信" class="service-img">
+      <img src="./assets/images/streming.webp" alt="ライブ配信" class="service-img">
       <div class="service-content">
         <div class="service-num">06 —</div>
         <div class="service-name-wrap">
@@ -420,7 +421,7 @@
     </div>
     <!-- 07 録音・音楽制作 -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80" alt="録音・音楽制作" class="service-img">
+      <img src="./assets/images/music.webp" alt="録音・音声製作" class="service-img">
       <div class="service-content">
         <div class="service-num">07 —</div>
         <div class="service-name-wrap">
@@ -446,7 +447,7 @@
     </div>
     <!-- 09 広告運用 -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1551288049-bbdac8626ad1?auto=format&fit=crop&w=800&q=80" alt="広告運用" class="service-img">
+      <img src="./assets/images/ad.webp" alt="広告運用" class="service-img">
       <div class="service-content">
         <div class="service-num">09 —</div>
         <div class="service-name-wrap">
@@ -459,7 +460,7 @@
     </div>
     <!-- 10 デジタルマーケティング -->
     <div class="service-card">
-      <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="デジタルマーケティング" class="service-img">
+      <img src="./assets/images/marketing.webp" alt="デジタルマーケティング" class="service-img">
       <div class="service-content">
         <div class="service-num">10 —</div>
         <div class="service-name-wrap">
@@ -752,7 +753,7 @@
 </section>
 
 <footer>
-  <div class="footer-logo">SENTIC<span>.</span>JP</div>
+  <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
   <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
   <div class="footer-links">
     <a href="#">プライバシーポリシー</a>
