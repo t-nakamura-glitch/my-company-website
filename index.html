@@ -113,7 +113,7 @@
 
   /* SERVICES */
   #services { background: var(--black); }
-  .services-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 80px; }
+  .services-intro { display: grid; grid-template-columns: 1fr; gap: 80px; margin-bottom: 80px; }
   .services-intro p { font-size: 1.05rem; line-height: 1.9; color: var(--text-dim); }
   .services-intro p strong { color: var(--white); font-weight: 700; }
   .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--mid); border: 1px solid var(--mid); }
@@ -357,7 +357,6 @@
   <h2 class="section-title reveal">WHAT WE DO</h2>
   <div class="services-intro reveal">
     <p>私たちは、<strong>映像・WEB・AI・マーケティング</strong>の領域を横断するクリエイティブ集団です。単なる制作会社に留まらず、戦略立案から実行・改善まで一貫してサポートします。</p>
-    <p>最先端のテクノロジーと洗練されたクリエイティブを融合し、クライアントのビジネス成長を加速させる、<strong>唯一無二のソリューション</strong>を提供します。</p>
   </div>
   <div class="services-grid reveal">
     <!-- 01 動画制作 -->
@@ -807,10 +806,21 @@ function animateRing(){
   requestAnimationFrame(animateRing);
 }
 animateRing();
-document.querySelectorAll('a,button,.service-card,.work-item,.blog-card,.filter-btn').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='60px';ring.style.height='60px';});
-  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
-});
+// Cursor effect for interactive elements
+function setupCursorEffects() {
+  document.querySelectorAll('a,button,.service-card,.work-item,.blog-card,.filter-btn').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='60px';ring.style.height='60px';});
+    el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
+  });
+}
+setupCursorEffects();
+
+// Re-apply cursor effects after blog cards are loaded
+const originalLoadBlogs = loadBlogs;
+loadBlogs = async function() {
+  await originalLoadBlogs.call(this);
+  setupCursorEffects();
+};
 
 // SCROLL REVEAL
 const observer = new IntersectionObserver((entries)=>{
@@ -865,7 +875,7 @@ async function loadBlogs() {
         : `<span>${emojis[i % emojis.length]}</span>`;
 
       return `
-        <div class="blog-card">
+        <a href="/blog/${item.id}" class="blog-card" style="text-decoration: none; color: inherit;">
           <div class="blog-thumb" style="--a:${c.a};--b:${c.b}">
             ${thumb}
             <div class="blog-thumb-line"></div>
@@ -875,7 +885,7 @@ async function loadBlogs() {
             <div class="blog-title">${item.title || 'タイトルなし'}</div>
             <div class="blog-date">${date}</div>
           </div>
-        </div>`;
+        </a>`;
     }).join('');
 
   } catch(e) {
@@ -886,6 +896,27 @@ async function loadBlogs() {
 
 // ページ読み込み時に自動実行
 loadBlogs();
+
+// ブログ記事ページへのリダイレクト処理
+function handleBlogNavigation() {
+  const urlPath = window.location.pathname;
+  const blogMatch = urlPath.match(/\/blog\/([a-zA-Z0-9_-]+)/);
+  
+  if (blogMatch) {
+    const blogId = blogMatch[1];
+    // microCMSのブログ記事ページへリダイレクト
+    // または、ブログ詳細ページを別途作成する場合はここで処理
+    console.log('Blog ID:', blogId);
+    // 例: window.location.href = `https://your-blog-domain.com/blog/${blogId}`;
+  }
+}
+
+// ページロード時に実行
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', handleBlogNavigation);
+} else {
+  handleBlogNavigation();
+}
 </script>
 </body>
 </html>
