@@ -26,11 +26,11 @@ export async function onRequest(context) {
     // 特定の記事IDが指定されている場合と、リスト取得の場合で処理を分ける
     let apiUrl;
     if (blogId) {
-      // 特定の記事を取得
-      apiUrl = `https://${SERVICE_ID}.microcms.io/api/v1/blogs/${blogId}`;
+      // 特定の記事を取得（depth=2で関連記事の詳細情報も取得）
+      apiUrl = `https://${SERVICE_ID}.microcms.io/api/v1/blogs/${blogId}?depth=2`;
     } else {
-      // 記事一覧を取得（最新3件）
-      apiUrl = `https://${SERVICE_ID}.microcms.io/api/v1/blogs?limit=3&orders=-publishedAt`;
+      // 記事一覧を取得（最新3件、depth=2で関連記事の詳細情報も取得）
+      apiUrl = `https://${SERVICE_ID}.microcms.io/api/v1/blogs?limit=3&orders=-publishedAt&depth=2`;
     }
     
     const res = await fetch(apiUrl, {
