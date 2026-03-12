@@ -78,6 +78,11 @@ async function updatePortfolioSection() {
   
   // フィルターボタンを動的に生成
   generateFilterButtons();
+
+  // カーソルエフェクトの再設定（新規要素に対して）
+  if (typeof setupCursorEffects === 'function') {
+    setupCursorEffects();
+  }
 }
 
 // 実績を表示する関数
@@ -99,6 +104,11 @@ function displayWorks(worksToDisplay) {
 
   // クリックイベントを追加
   attachWorkCardListeners(allWorks);
+
+  // カーソルエフェクトの再設定
+  if (typeof setupCursorEffects === 'function') {
+    setupCursorEffects();
+  }
 }
 
 // フィルターボタンを動的に生成
