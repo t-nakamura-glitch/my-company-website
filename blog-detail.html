@@ -445,6 +445,108 @@
     }
     setupCursorEffects();
 
+    // URLからブログIDを取得
+    function getBlogIdFromUrl() {
+      const pathMatch = window.location.pathname.match(/\/blog\/([a-zA-Z0-9_-]+)/);
+      if (pathMatch) return pathMatch[1];
+      const queryMatch = window.location.search.match(/id=([a-zA-Z0-9_-]+)/);
+      if (queryMatch) return queryMatch[1];
+      return null;
+    }
+
+    // microCMSからブログ記事データを取得
+    async function loadBlogArticle() {
+      const blogId = getBlogIdFromUrl();
+      if (!blogId) {
+        console.log('No blog ID found in URL');
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/blogs?id=${blogId}`);
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+        
+        const data = await response.json();
+        const article = data.contents && data.contents.length > 0 ? data.contents[0] : null;
+        
+        if (article) {
+          // ページタイトルを更新
+          document.title = `${article.title} - SENTIC`;
+          
+          // ヒーローセクションを更新
+          updateHeroSection(article);
+          
+          // ブログコンテンツを更新
+          updateBlogContent(article);
+          
+          // 関連記事を更新
+          updateRelatedPosts(article);
+        }
+      } catch (error) {
+        console.error('Failed to load blog article:', error);
+      }
+    }
+
+    // ヒーローセクションを更新
+    function updateHeroSection(article) {
+      const heroMeta = document.querySelector('.blog-hero-meta');
+      const heroTitle = document.querySelector('.blog-hero-title');
+      const placeholderImg = document.querySelector('.placeholder-img');
+      
+      if (heroMeta) {
+        const categoryName = article.category?.name || 'ARTICLE';
+        const publishDate = article.publishedAt 
+          ? new Date(article.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.')
+          : '';
+        heroMeta.innerHTML = `
+          <span class="blog-hero-category">${categoryName.toUpperCase()}</span>
+          <span class="blog-hero-date">${publishDate}</span>
+        `;
+      }
+      
+      if (heroTitle) {
+        heroTitle.textContent = article.title || 'Untitled';
+      }
+      
+      if (placeholderImg && article.eyecatch?.url) {
+        placeholderImg.innerHTML = `<img src="${article.eyecatch.url}" alt="${article.title}" style="width: 100%; height: 100%; object-fit: cover;">`;
+      }
+    }
+
+    // ブログコンテンツを更新
+    function updateBlogContent(article) {
+      const contentDiv = document.querySelector('.blog-content');
+      if (contentDiv) {
+        contentDiv.innerHTML = article.content || '<p>コンテンツが利用できません。</p>';
+      }
+    }
+
+    // 関連記事を更新
+    function updateRelatedPosts(article) {
+      const relatedGrid = document.querySelector('.related-posts-grid');
+      if (relatedGrid && article.related_posts && article.related_posts.length > 0) {
+        relatedGrid.innerHTML = article.related_posts.map(post => `
+          <a href="/blog/${post.id}" class="related-post-card" style="text-decoration: none; color: inherit;">
+            <div class="related-post-thumb">
+              ${post.eyecatch?.url ? `<img src="${post.eyecatch.url}" alt="${post.title}">` : '[IMAGE]'}
+            </div>
+            <div class="related-post-body">
+              <div class="related-post-category">${(post.category?.name || 'ARTICLE').toUpperCase()}</div>
+              <div class="related-post-title">${post.title}</div>
+              <div class="related-post-date">${post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.') : ''}</div>
+            </div>
+          </a>
+        `).join('');
+      }
+    }
+
+    // ページロード時にブログ記事を読み込み
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadBlogArticle);
+    } else {
+      loadBlogArticle();
+    }
+
     // SCROLL REVEAL
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
