@@ -19,18 +19,32 @@ export async function onRequest(context) {
   }
 
   try {
-    const res = await fetch(
-      `https://${SERVICE_ID}.microcms.io/api/v1/blogs?limit=3&orders=-publishedAt`,
-      {
-        headers: { 'X-MICROCMS-API-KEY': API_KEY },
-      }
-    );
+    // URLからクエリパラメータを取得
+    const url = new URL(context.request.url);
+    const blogId = url.searchParams.get('id');
+    
+    // 特定の記事IDが指定されている場合と、リスト取得の場合で処理を分ける
+    let apiUrl;
+    if (blogId) {
+      // 特定の記事を取得
+      apiUrl = `https://${SERVICE_ID}.microcms.io/api/v1/blogs/${blogId}`;
+    } else {
+      // 記事一覧を取得（最新3件）
+      apiUrl = `https://${SERVICE_ID}.microcms.io/api/v1/blogs?limit=3&orders=-publishedAt`;
+    }
+    
+    const res = await fetch(apiUrl, {
+      headers: { 'X-MICROCMS-API-KEY': API_KEY },
+    });
 
     if (!res.ok) throw new Error(`microCMS API error: ${res.status}`);
 
     const data = await res.json();
+    
+    // 単一記事取得の場合、contentsの形式に統一
+    const responseData = blogId ? { contents: [data] } : data;
 
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify(responseData), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
