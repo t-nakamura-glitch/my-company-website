@@ -222,6 +222,45 @@
       color: var(--text-dim); margin: 0 12px;
     }
 
+    /* SEARCH */
+    .blog-list-search {
+      max-width: 900px; margin: 40px auto; padding: 0 48px;
+      width: 100%; box-sizing: border-box;
+    }
+    .search-input-wrapper {
+      position: relative; display: flex; align-items: center;
+    }
+    .search-input {
+      width: 100%; padding: 14px 48px 14px 16px;
+      font-family: 'Space Mono', monospace; font-size: 0.9rem;
+      letter-spacing: 0.05em; background: transparent;
+      border: 1px solid var(--mid); color: var(--white);
+      transition: all 0.3s; outline: none;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .search-input:focus {
+      border-color: var(--acid); box-shadow: 0 0 12px rgba(62, 204, 0, 0.2);
+    }
+    .search-input::placeholder {
+      color: var(--text-dim);
+    }
+    .search-clear-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: 1.2rem; transition: color 0.3s;
+      padding: 4px 8px; display: none;
+    }
+    .search-clear-btn:hover {
+      color: var(--acid);
+    }
+    .search-clear-btn.visible {
+      display: block;
+    }
+    .search-result-count {
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      color: var(--text-dim); margin-top: 12px; text-align: center;
+    }
+
     /* FOOTER */
     footer {
       background: var(--gray); padding: 60px 48px; text-align: center;
@@ -288,6 +327,15 @@
       <p class="blog-list-hero-subtitle reveal">最新のテクノロジーとデジタルマーケティングに関する情報を発信しています。</p>
     </div>
   </section>
+
+  <!-- SEARCH -->
+  <div class="blog-list-search">
+    <div class="search-input-wrapper">
+      <input type="text" class="search-input" id="searchInput" placeholder="記事を検索...">
+      <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="search-result-count" id="searchResultCount"></div>
+  </div>
 
   <!-- FILTER & CONTROLS -->
   <div class="blog-list-controls">
@@ -367,6 +415,8 @@
     let currentPage = 1;
     let itemsPerPage = 9;
     let currentFilteredBlogs = [];
+    let currentSearchQuery = '';
+    let currentFilter = 'ALL';
 
     async function loadBlogList() {
       const loadingEl = document.getElementById('blogListLoading');
@@ -434,15 +484,43 @@
           btn.classList.add('active');
 
           currentPage = 1;
-          const filter = btn.dataset.filter;
-          if (filter === 'ALL') {
-            currentFilteredBlogs = allBlogs;
-          } else {
-            currentFilteredBlogs = allBlogs.filter(blog => blog.category?.name === filter);
-          }
-          displayBlogs(currentFilteredBlogs);
+          currentFilter = btn.dataset.filter;
+          applyFiltersAndSearch();
         });
       });
+    }
+
+    function applyFiltersAndSearch() {
+      let filtered = allBlogs;
+
+      if (currentFilter !== 'ALL') {
+        filtered = filtered.filter(blog => blog.category?.name === currentFilter);
+      }
+
+      if (currentSearchQuery.trim()) {
+        const query = currentSearchQuery.toLowerCase();
+        filtered = filtered.filter(blog => {
+          const title = (blog.title || '').toLowerCase();
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = blog.content || '';
+          const content = tempDiv.textContent.toLowerCase();
+          return title.includes(query) || content.includes(query);
+        });
+      }
+
+      currentFilteredBlogs = filtered;
+      currentPage = 1;
+      displayBlogs(currentFilteredBlogs);
+      updateSearchResultCount();
+    }
+
+    function updateSearchResultCount() {
+      const countEl = document.getElementById('searchResultCount');
+      if (currentSearchQuery.trim()) {
+        countEl.textContent = 'Search results: ' + currentFilteredBlogs.length + ' articles';
+      } else {
+        countEl.textContent = '';
+      }
     }
 
     function displayBlogs(blogs) {
@@ -546,11 +624,39 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // 検索入力のイベントリスナーを設定
+    function setupSearchInput() {
+      const searchInput = document.getElementById('searchInput');
+      const searchClearBtn = document.getElementById('searchClearBtn');
+
+      searchInput.addEventListener('input', (e) => {
+        currentSearchQuery = e.target.value;
+        if (currentSearchQuery.trim()) {
+          searchClearBtn.classList.add('visible');
+        } else {
+          searchClearBtn.classList.remove('visible');
+        }
+        applyFiltersAndSearch();
+      });
+    }
+
+    function clearSearch() {
+      const searchInput = document.getElementById('searchInput');
+      searchInput.value = '';
+      currentSearchQuery = '';
+      document.getElementById('searchClearBtn').classList.remove('visible');
+      applyFiltersAndSearch();
+    }
+
     // ページロード時に実行
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadBlogList);
+      document.addEventListener('DOMContentLoaded', () => {
+        loadBlogList();
+        setupSearchInput();
+      });
     } else {
       loadBlogList();
+      setupSearchInput();
     }
 
     // SCROLL REVEAL
