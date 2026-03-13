@@ -160,15 +160,18 @@
     transition: transform 0.3s ease;
   }
 
-  /* アイキャッチ画像コンテナ */
+  /* アイキャッチ画像コンテナ - 16:9比率を強制 */
   .work-img-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9; /* 16:9比率を維持 */
     overflow: hidden;
     background: var(--gray);
     border: 1px solid var(--mid);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .work-item:hover .work-img-wrapper {
@@ -176,16 +179,16 @@
     box-shadow: 0 12px 32px rgba(62, 204, 0, 0.15);
   }
 
-  /* 背景画像 */
-  .work-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
+  /* 画像タグ - object-fit: coverで枠いっぱいに表示 */
+  .work-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像を枠いっぱいに広げる */
+    object-position: center;
     transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  .work-item:hover .work-bg {
+  .work-item:hover .work-img {
     transform: scale(1.08);
   }
 

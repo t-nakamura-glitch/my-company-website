@@ -56,11 +56,11 @@ function createWorkCard(work) {
   const isWorksPage = window.location.pathname.includes('works.html');
 
   if (isWorksPage) {
-    // works.html用の新しいレイアウト（16:9画像 + タイトル + カテゴリー）
+    // works.html用の新しいレイアウト（<img>タグを使用し、object-fit: coverで16:9を実現）
     return `
       <div class="work-item" data-work-id="${id}" data-category="${categoryName}">
         <div class="work-img-wrapper">
-          <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
+          <img src="${thumbnail}" alt="${title}" class="work-img" loading="lazy">
           ${!work.thumbnail?.url ? '<div class="work-img-placeholder">📷</div>' : ''}
         </div>
         <div class="work-info">
