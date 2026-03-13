@@ -54,6 +54,7 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; justify-content: space-between; align-items: center;
     padding: 24px 48px;
+    padding-top: max(24px, env(safe-area-inset-top));
     background: var(--black);
     backdrop-filter: none;
     width: 100%; max-width: 100vw; box-sizing: border-box; overflow: hidden;
@@ -374,7 +375,7 @@
   @media (max-width: 768px) {
     html, body { width: 100vw; overflow-x: hidden; margin: 0; padding: 0; position: relative; }
     * { max-width: 100vw; }
-    nav { padding: 20px 24px; width: 100%; max-width: 100vw; box-sizing: border-box; } 
+    nav { padding: 20px 24px; padding-top: max(20px, env(safe-area-inset-top)); width: 100%; max-width: 100vw; box-sizing: border-box; } 
     .nav-links { display: none; }
     .nav-cta { display: none; }
     .mobile-menu-toggle { display: flex; }
