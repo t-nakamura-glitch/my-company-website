@@ -140,6 +140,22 @@
   .expression-item:hover .expression-icon { background: rgba(62,204,0,0.2); transform: scale(1.15); }
   .expression-item h4 { font-size: 1.1rem; color: var(--white); position: relative; z-index: 1; font-weight: 700; letter-spacing: 0.05em; }
 
+  /* FLOW SECTION */
+  .flow-container { position: relative; }
+  .flow-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; position: relative; }
+  .flow-steps::before { content: ''; position: absolute; top: 60px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--acid), transparent); z-index: 0; }
+  .flow-step { position: relative; z-index: 1; }
+  .flow-step-card { background: transparent; border: 2px solid var(--mid); border-radius: 12px; padding: 40px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; }
+  .flow-step-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(62,204,0,0.05), rgba(62,204,0,0.02)); transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
+  .flow-step-card:hover::before { transform: scaleY(1); }
+  .flow-step-card:hover { border-color: var(--acid); box-shadow: 0 20px 60px rgba(62,204,0,0.2), inset 0 0 30px rgba(62,204,0,0.05); transform: translateY(-15px); }
+  .flow-number { width: 70px; height: 70px; background: linear-gradient(135deg, rgba(62,204,0,0.15), rgba(62,204,0,0.05)); border: 2px solid var(--acid); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--acid); margin-bottom: 20px; position: relative; z-index: 1; transition: all 0.3s; }
+  .flow-step-card:hover .flow-number { background: linear-gradient(135deg, rgba(62,204,0,0.25), rgba(62,204,0,0.1)); transform: scale(1.1); box-shadow: 0 0 20px rgba(62,204,0,0.3); }
+  .flow-icon { width: 50px; height: 50px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; transition: all 0.3s; }
+  .flow-step-card:hover .flow-icon { transform: scale(1.2); }
+  .flow-step-title { font-size: 1.2rem; color: var(--white); margin-bottom: 12px; position: relative; z-index: 1; font-weight: 700; letter-spacing: 0.05em; }
+  .flow-step-desc { font-size: 0.85rem; line-height: 1.6; color: var(--text-dim); position: relative; z-index: 1; }
+
   /* PRICING SECTION - enhanced cards */
   .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
   .price-card { 
@@ -229,12 +245,15 @@
     .feature-grid { grid-template-columns: 1fr; }
     .strength-grid { grid-template-columns: repeat(2, 1fr); }
     .expression-grid { grid-template-columns: repeat(2, 1fr); }
+    .flow-steps { grid-template-columns: repeat(2, 1fr); }
+    .flow-steps::before { display: none; }
     .price-grid { grid-template-columns: 1fr; }
     .works-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 480px) {
     .strength-grid { grid-template-columns: 1fr; }
     .expression-grid { grid-template-columns: 1fr; }
+    .flow-steps { grid-template-columns: 1fr; }
     .works-grid { grid-template-columns: 1fr; }
   }
 
@@ -547,6 +566,79 @@
       <div class="amount">¥1,000,000〜</div>
       <div class="desc">あらゆる制作を実現</div>
       <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title reveal">FLOW</h2>
+  <p class="reveal" style="margin-bottom: 60px; color: var(--text-dim); font-size: 1.05rem;">企画から納品まで、ワンストップで対応いたします。</p>
+  <div class="flow-container">
+    <div class="flow-steps">
+      <div class="flow-step reveal">
+        <div class="flow-step-card">
+          <div class="flow-number">01</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acid);">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h4 class="flow-step-title">ヒアリング</h4>
+          <p class="flow-step-desc">お客様のご要望、目的、ターゲット層などを詳しくお伺いいたします。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-step-card">
+          <div class="flow-number">02</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acid);">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+          </div>
+          <h4 class="flow-step-title">企画・構成</h4>
+          <p class="flow-step-desc">ご要望に沿った最適な映像表現を企画・構成いたします。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-step-card">
+          <div class="flow-number">03</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acid);">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+          </div>
+          <h4 class="flow-step-title">撮影</h4>
+          <p class="flow-step-desc">最適な機材とスタッフで、高品質な映像を撮影いたします。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-step-card">
+          <div class="flow-number">04</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acid);">
+              <polyline points="23 6 13.5 15.5 8 10 1 17"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+          <h4 class="flow-step-title">編集</h4>
+          <p class="flow-step-desc">撮影素材を丁寧に編集し、完成度の高い映像に仕上げます。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-step-card">
+          <div class="flow-number">05</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acid);">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h4 class="flow-step-title">納品</h4>
+          <p class="flow-step-desc">完成した映像をお納めし、アフターサポートも対応いたします。</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
