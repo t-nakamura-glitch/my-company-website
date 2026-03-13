@@ -123,6 +123,34 @@
   .price-card .amount { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; }
   .price-card .desc { font-size: 0.85rem; color: var(--text-dim); }
 
+  /* WORKS SECTION */
+  .works-section { background: var(--black); padding: 100px 48px; border-top: 1px solid var(--mid); }
+  .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 40px; }
+  .work-item { position: relative; overflow: hidden; background: var(--mid); cursor: none; min-height: 250px; }
+  .work-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .work-item:hover .work-bg { transform: scale(1.06); }
+  .work-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0; transition: opacity 0.4s; }
+  .work-item:hover .work-overlay { opacity: 1; }
+  .work-cat { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--acid); text-transform: uppercase; margin-bottom: 4px; }
+  .work-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.05em; color: var(--white); }
+  
+  /* MODAL STYLES (microcms.js uses these) */
+  .work-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 40px; backdrop-filter: blur(10px); }
+  .work-modal-content { background: var(--gray); max-width: 1000px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; border: 1px solid var(--mid); }
+  .work-modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; z-index: 10; }
+  .work-modal-img { width: 100%; height: auto; display: block; }
+  .work-modal-info { padding: 40px; }
+  .work-modal-category { font-family: 'Space Mono', monospace; color: var(--acid); font-size: 0.8rem; letter-spacing: 0.2em; margin-bottom: 10px; display: block; }
+  .work-modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; margin-bottom: 20px; }
+  .work-modal-content-text { line-height: 1.8; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    .works-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .works-grid { grid-template-columns: 1fr; }
+  }
+
   /* REVEAL */
   .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -306,6 +334,18 @@
   </div>
 </section>
 
+<section class="works-section">
+  <h2 class="section-title reveal">WORKS</h2>
+  <p class="reveal" style="color: var(--text-dim); margin-bottom: 30px;">動画制作カテゴリーの最新実績をご紹介します。</p>
+  <div class="works-grid reveal" id="filmingWorksGrid">
+    <!-- JSで動的に生成 -->
+    <p style="color: var(--text-dim);">Loading works...</p>
+  </div>
+  <div style="margin-top: 60px; text-align: center;" class="reveal">
+    <a href="../works.html?category=動画制作" class="nav-cta" style="display: inline-block; padding: 15px 40px;">VIEW ALL WORKS</a>
+  </div>
+</section>
+
 <footer>
   <a href="../index.html" class="footer-logo"><img src="../assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></a>
   <div class="footer-copy">© 2024 SENTIC LLC.</div>
@@ -333,6 +373,60 @@
   }, observerOptions);
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<script src="../js/microcms.js"></script>
+<script>
+  // 動画制作カテゴリーの実績のみを表示する
+  async function displayFilmingWorks() {
+    const works = await fetchWorksFromMicroCMS();
+    const grid = document.getElementById('filmingWorksGrid');
+    
+    if (!grid) return;
+    
+    // 「動画制作」カテゴリーのみをフィルタリング
+    const filmingWorks = works.filter(work => {
+      const catName = work.categories?.name || work.category?.name || '';
+      return catName === '動画制作';
+    }).slice(0, 8); // 最大8件
+    
+    if (filmingWorks.length === 0) {
+      grid.innerHTML = '<p style="color: var(--text-dim);">現在、表示できる実績がありません。</p>';
+      return;
+    }
+    
+    grid.innerHTML = '';
+    filmingWorks.forEach(work => {
+      const thumbnail = work.thumbnail?.url || work.eyecatch?.url || 'https://via.placeholder.com/600x400?text=No+Image';
+      const catName = work.categories?.name || work.category?.name || '動画制作';
+      
+      const html = `
+        <div class="work-item" data-work-id="${work.id}" style="cursor: pointer;">
+          <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
+          <div class="work-overlay">
+            <span class="work-cat">${catName}</span>
+            <h3 class="work-title">${work.title}</h3>
+          </div>
+        </div>
+      `;
+      grid.insertAdjacentHTML('beforeend', html);
+    });
+    
+    // クリックイベントの追加
+    const cards = grid.querySelectorAll('.work-item');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const workId = card.dataset.workId;
+        const work = filmingWorks.find(w => w.id === workId);
+        if (work && typeof showWorkDetail === 'function') {
+          showWorkDetail(work);
+        }
+      });
+    });
+  }
+  
+  // ページ読み込み時に実行
+  window.addEventListener('load', displayFilmingWorks);
 </script>
 
 </body>
