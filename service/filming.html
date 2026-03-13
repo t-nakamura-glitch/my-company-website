@@ -114,13 +114,13 @@
   .feature-item p { font-size: 0.9rem; line-height: 1.8; color: var(--text-dim); }
 
   /* STRENGTHS SECTION - with flat icons */
-  .strength-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-  .strength-card { background: transparent; border: 1px solid var(--mid); padding: 30px 20px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
-  .strength-card::before { content: ''; position: absolute; inset: 0; background: rgba(62,204,0,0.05); transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
-  .strength-card:hover::before { transform: scaleY(1); }
-  .strength-card:hover { border-color: var(--acid); }
-  .strength-icon { width: 50px; height: 50px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; background: rgba(62,204,0,0.1); border-radius: 8px; font-size: 1.8rem; position: relative; z-index: 1; transition: all 0.3s; }
-  .strength-card:hover .strength-icon { background: rgba(62,204,0,0.2); transform: scale(1.1); }
+  .strength-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px; }
+  .strength-card { background: transparent; border: none; padding: 0; text-align: center; transition: all 0.3s; position: relative; overflow: visible; }
+  .strength-card::before { content: ''; position: absolute; inset: 0; background: transparent; transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
+  .strength-card:hover::before { transform: scaleY(0); }
+  .strength-card:hover { border-color: transparent; }
+  .strength-icon { width: 50px; height: 50px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; background: transparent; border-radius: 0; font-size: 1.8rem; position: relative; z-index: 1; transition: all 0.3s; }
+  .strength-card:hover .strength-icon { background: transparent; transform: scale(1.15); }
   .strength-card h4 { font-size: 1rem; color: var(--white); margin-bottom: 12px; position: relative; z-index: 1; font-weight: 700; }
   .strength-card p { font-size: 0.8rem; line-height: 1.6; color: var(--text-dim); position: relative; z-index: 1; }
 
@@ -128,36 +128,42 @@
   .genre-tag { background: var(--mid); color: var(--white); padding: 8px 20px; font-size: 0.9rem; border-radius: 2px; }
 
   /* EXPRESSION SECTION */
-  .expression-intro { margin-bottom: 60px; }
+  .expression-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .expression-intro { margin-bottom: 0; }
   .expression-intro p { font-size: 1.05rem; line-height: 1.9; color: var(--text-dim); }
   .expression-intro p strong { color: var(--white); font-weight: 700; }
-  .expression-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-  .expression-item { background: transparent; border: 1px solid var(--mid); padding: 40px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; }
-  .expression-item::before { content: ''; position: absolute; inset: 0; background: rgba(62,204,0,0.05); transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
-  .expression-item:hover::before { transform: scaleY(1); }
-  .expression-item:hover { border-color: var(--acid); box-shadow: 0 20px 40px rgba(62,204,0,0.15); }
-  .expression-icon { width: 60px; height: 60px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; background: rgba(62,204,0,0.1); border-radius: 8px; position: relative; z-index: 1; transition: all 0.3s; }
-  .expression-item:hover .expression-icon { background: rgba(62,204,0,0.2); transform: scale(1.15); }
-  .expression-item h4 { font-size: 1.1rem; color: var(--white); position: relative; z-index: 1; font-weight: 700; letter-spacing: 0.05em; }
+  .expression-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+  .expression-item { background: transparent; border: none; padding: 0; text-align: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: auto; }
+  .expression-item::before { content: ''; position: absolute; inset: 0; background: transparent; transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
+  .expression-item:hover::before { transform: scaleY(0); }
+  .expression-item:hover { border-color: transparent; box-shadow: none; }
+  .expression-icon { width: 50px; height: 50px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; background: transparent; border-radius: 0; position: relative; z-index: 1; transition: all 0.3s; }
+  .expression-item:hover .expression-icon { background: transparent; transform: scale(1.15); }
+  .expression-item h4 { font-size: 1rem; color: var(--white); position: relative; z-index: 1; font-weight: 700; letter-spacing: 0.05em; }
 
   /* FLOW SECTION */
-  .flow-container { position: relative; }
-  .flow-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; position: relative; }
-  .flow-steps::before { content: ''; position: absolute; top: 60px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--acid), transparent); z-index: 0; }
-  .flow-step { position: relative; z-index: 1; }
-  .flow-step-card { background: transparent; border: 2px solid var(--mid); border-radius: 12px; padding: 40px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; }
-  .flow-step-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(62,204,0,0.05), rgba(62,204,0,0.02)); transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
-  .flow-step-card:hover::before { transform: scaleY(1); }
-  .flow-step-card:hover { border-color: var(--acid); box-shadow: 0 20px 60px rgba(62,204,0,0.2), inset 0 0 30px rgba(62,204,0,0.05); transform: translateY(-15px); }
-  .flow-number { width: 70px; height: 70px; background: linear-gradient(135deg, rgba(62,204,0,0.15), rgba(62,204,0,0.05)); border: 2px solid var(--acid); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--acid); margin-bottom: 20px; position: relative; z-index: 1; transition: all 0.3s; }
-  .flow-step-card:hover .flow-number { background: linear-gradient(135deg, rgba(62,204,0,0.25), rgba(62,204,0,0.1)); transform: scale(1.1); box-shadow: 0 0 20px rgba(62,204,0,0.3); }
+  .flow-container { position: relative; overflow-x: auto; padding-bottom: 20px; }
+  .flow-steps { display: flex; gap: 0; position: relative; min-width: 100%; }
+  .flow-steps::before { content: ''; position: absolute; top: 50px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--acid), transparent); z-index: 0; }
+  .flow-step { position: relative; z-index: 1; flex: 1; min-width: 200px; display: flex; flex-direction: column; align-items: center; }
+  .flow-step::after { content: ''; position: absolute; width: 12px; height: 12px; background: var(--acid); border-radius: 50%; top: 44px; left: 50%; transform: translateX(-50%); z-index: 2; }
+  .flow-step-card { background: transparent; border: none; border-radius: 0; padding: 80px 20px 0; text-align: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: auto; }
+  .flow-step-card::before { content: ''; position: absolute; inset: 0; background: transparent; transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
+  .flow-step-card:hover::before { transform: scaleY(0); }
+  .flow-step-card:hover { border-color: transparent; box-shadow: none; transform: none; }
+  .flow-number { width: 0; height: 0; background: transparent; border: none; border-radius: 50%; display: none; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--acid); margin-bottom: 20px; position: relative; z-index: 1; transition: all 0.3s; }
+  .flow-step-card:hover .flow-number { background: transparent; transform: scale(1); box-shadow: none; }
   .flow-icon { width: 50px; height: 50px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; transition: all 0.3s; }
-  .flow-step-card:hover .flow-icon { transform: scale(1.2); }
-  .flow-step-title { font-size: 1.2rem; color: var(--white); margin-bottom: 12px; position: relative; z-index: 1; font-weight: 700; letter-spacing: 0.05em; }
-  .flow-step-desc { font-size: 0.85rem; line-height: 1.6; color: var(--text-dim); position: relative; z-index: 1; }
+  .flow-step-card:hover .flow-icon { transform: scale(1.15); }
+  .flow-step-title { font-size: 1rem; color: var(--white); margin-bottom: 12px; position: relative; z-index: 1; font-weight: 700; letter-spacing: 0.05em; }
+  .flow-step-desc { font-size: 0.8rem; line-height: 1.6; color: var(--text-dim); position: relative; z-index: 1; }
 
   /* PRICING SECTION - enhanced cards */
-  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; overflow-x: auto; padding-bottom: 10px; }
+  @media (max-width: 768px) {
+    .price-grid { grid-template-columns: repeat(6, 1fr); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 15px; }
+    .price-card { scroll-snap-align: start; min-width: 280px; }
+  }
   .price-card { 
     background: linear-gradient(135deg, var(--gray) 0%, rgba(26,26,26,0.8) 100%);
     padding: 40px 30px;
@@ -184,17 +190,18 @@
     transform: translateY(-10px);
   }
   .price-card h4 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: var(--acid);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1.1rem;
+    color: var(--white);
     margin-bottom: 15px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
+    font-weight: 700;
   }
   .price-card .amount {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 15px;
-    color: var(--white);
+    color: var(--acid);
     font-family: 'Space Mono', monospace;
   }
   .price-card .desc {
@@ -204,7 +211,7 @@
     margin-bottom: 20px;
   }
   .price-card .cta-btn {
-    display: inline-block;
+    display: none;
     padding: 10px 24px;
     border: 1px solid var(--acid);
     color: var(--acid);
@@ -472,10 +479,11 @@
 
 <section style="background: #0a0a0a;">
   <h2 class="section-title reveal">EXPRESSION</h2>
-  <div class="expression-intro reveal">
-    <p>ナレーターやカメラマン、CGクリエイター、ドローンオペレーターなど各分野に精通したスタッフが社内に。目的、用途、コンセプトに沿った最適な映像表現で動画制作が可能です。</p>
-  </div>
-  <div class="expression-grid">
+  <div class="expression-wrapper">
+    <div class="expression-intro reveal">
+      <p>ナレーターやカメラマン、CGクリエイター、ドローンオペレーターなど各分野に精通したスタッフが社内に。目的、用途、コンセプトに沿った最適な映像表現で動画制作が可能です。</p>
+    </div>
+    <div class="expression-grid">
     <div class="expression-item reveal">
       <div class="expression-icon">
         <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acid);">
@@ -523,6 +531,7 @@
         </svg>
       </div>
       <h4>ドローン空撮</h4>
+    </div>
     </div>
   </div>
 </section>
