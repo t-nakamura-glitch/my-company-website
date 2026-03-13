@@ -150,6 +150,12 @@
   .service-desc { font-size: 0.85rem; line-height: 1.7; color: var(--text-dim); position: relative; transition: color 0.3s; flex-grow: 1; }
   .service-arrow { font-size: 1.2rem; color: var(--acid); position: relative; display: block; margin-top: 20px; transition: color 0.3s, transform 0.3s; }
   .service-card:hover .service-arrow { transform: translate(4px, -4px); }
+  
+  /* SERVICE CARD LINK STYLES */
+  .service-card[href] { text-decoration: none; color: inherit; }
+  .service-card[href]:visited { color: inherit; }
+  .service-card[href] .service-name { color: var(--white); }
+  .service-card[href] .service-desc { color: var(--text-dim); }
 
   /* WORKS */
   #works { background: var(--gray); }

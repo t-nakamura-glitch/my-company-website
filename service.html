@@ -229,6 +229,12 @@
   .service-card:hover .service-arrow {
     transform: translate(4px, -4px);
   }
+  
+  /* SERVICE CARD LINK STYLES */
+  .service-card[href] { text-decoration: none; color: inherit; }
+  .service-card[href]:visited { color: inherit; }
+  .service-card[href] .service-name { color: var(--white); }
+  .service-card[href] .service-desc { color: var(--text-dim); }
 
   /* REVEAL */
   .reveal {
