@@ -1151,7 +1151,14 @@ function handleBlogNavigation() {
 	// MOBILE MENU LOGIC
 	const menuToggle = document.getElementById('mobileMenuToggle');
 	const overlay = document.getElementById('mobileOverlay');
+	const overlayBg = document.querySelector('.mobile-overlay-bg');
 	const body = document.body;
+
+	function closeMenu() {
+	  menuToggle.classList.remove('active');
+	  overlay.classList.remove('active');
+	  body.style.overflow = '';
+	}
 
 	menuToggle.addEventListener('click', () => {
 	  const isActive = menuToggle.classList.toggle('active');
@@ -1159,9 +1166,15 @@ function handleBlogNavigation() {
 	  body.style.overflow = isActive ? 'hidden' : '';
 	});
 
+	// Close menu when clicking on background
+	if (overlayBg) {
+	  overlayBg.addEventListener('click', closeMenu);
+	}
+
 	// Mobile Accordion
 	document.querySelectorAll('.mobile-nav-header[data-target]').forEach(header => {
-	  header.addEventListener('click', () => {
+	  header.addEventListener('click', (e) => {
+	    e.preventDefault();
 	    const targetId = header.getAttribute('data-target');
 	    const targetMenu = document.getElementById(targetId);
 	    
@@ -1171,7 +1184,10 @@ function handleBlogNavigation() {
 	    document.querySelectorAll('.mobile-nav-header.active').forEach(h => {
 	      if (h !== header) {
 	        h.classList.remove('active');
-	        document.getElementById(h.getAttribute('data-target')).classList.remove('active');
+	        const targetId = h.getAttribute('data-target');
+	        if (targetId) {
+	          document.getElementById(targetId).classList.remove('active');
+	        }
 	      }
 	    });
 	    
@@ -1183,11 +1199,44 @@ function handleBlogNavigation() {
 	// Close menu on link click
 	document.querySelectorAll('.mobile-overlay a').forEach(link => {
 	  link.addEventListener('click', () => {
-	    menuToggle.classList.remove('active');
-	    overlay.classList.remove('active');
-	    body.style.overflow = '';
+	    closeMenu();
 	  });
 	});
+
+	// Setup mobile category list
+	async function setupMobileCategoryList() {
+	  const mobileCategoryList = document.getElementById('mobileCategoryList');
+	  if (!mobileCategoryList) return;
+
+	  try {
+	    const response = await fetch('/api/categories');
+	    if (!response.ok) throw new Error('Failed to fetch categories');
+	    
+	    const data = await response.json();
+	    const categories = data.contents || [];
+	    
+	    // "すべて見る" を残してクリア
+	    mobileCategoryList.innerHTML = '<a href="./works.html" style="display: block; margin-bottom: 12px;">すべて見る</a>';
+	    
+	    categories.forEach(cat => {
+	      const link = document.createElement('a');
+	      link.href = `./works.html?category=${encodeURIComponent(cat.name)}`;
+	      link.textContent = cat.name;
+	      link.style.display = 'block';
+	      link.style.marginBottom = '12px';
+	      mobileCategoryList.appendChild(link);
+	    });
+	  } catch (error) {
+	    console.error('Failed to setup mobile category list:', error);
+	  }
+	}
+
+	// ページ読み込み時にモバイルカテゴリーを設定
+	if (document.readyState === 'loading') {
+	  document.addEventListener('DOMContentLoaded', setupMobileCategoryList);
+	} else {
+	  setupMobileCategoryList();
+	}
 	</script>
 </body>
 </html>
