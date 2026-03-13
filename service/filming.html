@@ -115,6 +115,9 @@
 
   /* STRENGTHS SECTION - with flat icons */
   .strength-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px; }
+  @media (max-width: 768px) {
+    .strength-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  }
   .strength-card { background: transparent; border: none; padding: 0; text-align: center; transition: all 0.3s; position: relative; overflow: visible; }
   .strength-card::before { content: ''; position: absolute; inset: 0; background: transparent; transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
   .strength-card:hover::before { transform: scaleY(0); }
