@@ -225,10 +225,14 @@
   .tech-tag:hover { border-color: var(--acid); color: var(--acid); background: rgba(62,204,0,0.05); }
 
   /* MEMBER */
-  #member { background: var(--black); padding: 120px 48px; border-top: 1px solid var(--mid); }
-  .member-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
-  .member-card { position: relative; overflow: visible; background: transparent; border: none; transition: all 0.4s; display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .member-card:hover { border-color: var(--acid); transform: translateY(-10px); }
+  #member { background: var(--black); padding: 120px 0; border-top: 1px solid var(--mid); overflow: hidden; }
+  #member .section-label, #member .section-title { padding-left: 48px; }
+  .member-scroll-container { width: 100%; overflow-x: auto; overflow-y: hidden; padding: 60px 48px 40px; cursor: grab; scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
+  .member-scroll-container::-webkit-scrollbar { display: none; }
+  .member-scroll-container:active { cursor: grabbing; }
+  .member-grid { display: flex; gap: 40px; width: max-content; }
+  .member-card { width: 300px; position: relative; overflow: visible; background: transparent; border: none; transition: all 0.4s; display: flex; flex-direction: column; align-items: center; text-align: center; flex-shrink: 0; }
+  .member-card:hover { transform: translateY(-10px); }
   .member-img-wrap { aspect-ratio: 1/1; width: 180px; height: 180px; overflow: hidden; position: relative; background: var(--mid); margin: 0 auto 24px; clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
   .member-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.6s; }
   .member-card:hover .member-img { filter: grayscale(0%); transform: scale(1.05); }
@@ -381,7 +385,11 @@
     #about { grid-template-columns: 1fr; }
     .area-details-grid { grid-template-columns: 1fr; }
     .blog-grid { grid-template-columns: 1fr; }
-    .member-grid { grid-template-columns: repeat(2, 1fr); }
+    #member { padding: 80px 0; }
+    #member .section-label, #member .section-title { padding-left: 24px; }
+    .member-scroll-container { padding: 40px 24px; }
+    .member-grid { gap: 24px; }
+    .member-card { width: 260px; }
     .contact-info { flex-direction: column; gap: 40px; }
     footer { flex-direction: column; gap: 24px; text-align: center; }
     .marquee-bar { width: 100%; }
@@ -891,7 +899,8 @@
 <section id="member">
   <div class="section-label reveal">-Employee Introduction-</div>
   <h2 class="section-title reveal">MEMBER</h2>
-  <div class="member-grid">
+  <div class="member-scroll-container" id="memberScroll">
+    <div class="member-grid">
     <!-- Member 01 -->
     <div class="member-card reveal">
       <div class="member-img-wrap">
@@ -1045,9 +1054,37 @@ function setupCursorEffects() {
     el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
   });
 }
-setupCursorEffects();
+	setupCursorEffects();
 
-// Re-apply cursor effects after blog cards are loaded
+	// MEMBER HORIZONTAL DRAG
+	const memberScroll = document.getElementById('memberScroll');
+	if (memberScroll) {
+	  let isDown = false;
+	  let startX;
+	  let scrollLeft;
+
+	  memberScroll.addEventListener('mousedown', (e) => {
+	    isDown = true;
+	    memberScroll.classList.add('active');
+	    startX = e.pageX - memberScroll.offsetLeft;
+	    scrollLeft = memberScroll.scrollLeft;
+	  });
+	  memberScroll.addEventListener('mouseleave', () => {
+	    isDown = false;
+	  });
+	  memberScroll.addEventListener('mouseup', () => {
+	    isDown = false;
+	  });
+	  memberScroll.addEventListener('mousemove', (e) => {
+	    if (!isDown) return;
+	    e.preventDefault();
+	    const x = e.pageX - memberScroll.offsetLeft;
+	    const walk = (x - startX) * 2;
+	    memberScroll.scrollLeft = scrollLeft - walk;
+	  });
+	}
+	
+	// Re-apply cursor effects after blog cards are loaded
 const originalLoadBlogs = loadBlogs;
 loadBlogs = async function() {
   await originalLoadBlogs.call(this);
