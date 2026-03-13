@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>会社概要 - SENTIC</title>
+  <title>会社概要 — SENTIC</title>
   <link rel="icon" type="image/jpeg" href="./assets/images/favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -54,7 +54,7 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 24px 48px;
       background: var(--black);
-      width: 100%; max-width: 100vw; box-sizing: border-box; overflow: hidden;
+      width: 100%; max-width: 100vw; box-sizing: border-box;
     }
     .nav-logo { display: flex; align-items: center; text-decoration: none; height: 40px; }
     .nav-logo img { height: 100%; width: auto; max-width: 150px; }
@@ -64,113 +64,179 @@
     .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--acid); color: var(--acid); padding: 10px 24px; text-decoration: none; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
     .nav-cta:hover { background: var(--acid); color: var(--black); }
 
-    /* BREADCRUMB */
-    .breadcrumb {
-      display: flex; align-items: center; gap: 12px;
-      font-family: 'Space Mono', monospace; font-size: 0.7rem;
-      letter-spacing: 0.05em; color: var(--text-dim);
-      margin-bottom: 30px; flex-wrap: wrap;
+    /* SUB-HERO */
+    .sub-hero {
+      padding: 180px 48px 60px;
+      background: var(--black);
     }
-    .breadcrumb a {
-      color: var(--acid); text-decoration: none; transition: color 0.3s;
-    }
-    .breadcrumb a:hover {
-      color: var(--white);
-    }
-    .breadcrumb span {
-      color: var(--text-dim);
-    }
+    .sub-hero-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--acid); letter-spacing: 0.3em; margin-bottom: 16px; }
+    .sub-hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; }
 
-    /* HERO SECTION */
-    .company-hero {
-      padding: 160px 48px 80px; position: relative; overflow: visible; width: 100%; max-width: 100vw; box-sizing: border-box;
-      background: var(--black); display: flex; flex-direction: column; align-items: center;
-    }
-    .company-hero-content {
-      position: relative; z-index: 10; max-width: 900px; margin: 0 auto;
-    }
-    .company-hero-title {
-      font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; text-align: center;
-    }
-    .company-hero-subtitle {
-      font-size: 1rem; line-height: 1.8; color: var(--text-dim); max-width: 600px; margin: 0 auto; text-align: center;
-    }
-
-    /* COMPANY CONTENT */
+    /* MAIN CONTENT */
     .company-container {
-      max-width: 1000px; margin: 0 auto; padding: 40px 48px;
-      width: 100%; box-sizing: border-box;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 60px;
+      padding: 40px 48px 120px;
+      background: var(--black);
+      min-height: 600px;
+    }
+
+    /* SIDEBAR */
+    .company-sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .sidebar-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--acid);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--mid);
+    }
+    .company-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .company-nav-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      text-align: left;
+      cursor: none;
+      transition: all 0.3s;
+      padding: 4px 0;
+      position: relative;
+    }
+    .company-nav-btn::before {
+      content: '';
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      width: 6px;
+      height: 1px;
+      background: var(--acid);
+      transform: translateY(-50%) scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .company-nav-btn.active, .company-nav-btn:hover {
+      color: var(--acid);
+      padding-left: 15px;
+    }
+    .company-nav-btn.active::before, .company-nav-btn:hover::before {
+      transform: translateY(-50%) scaleX(1);
+    }
+
+    /* CONTENT SECTIONS */
+    .company-content {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
     }
 
     .company-section {
-      margin-bottom: 60px;
+      display: none;
+    }
+    .company-section.active {
+      display: block;
     }
 
-    .company-section-title {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
-      margin-bottom: 30px; color: var(--acid); letter-spacing: 0.05em;
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--acid);
+      margin-bottom: 40px;
+      letter-spacing: 0.05em;
     }
 
+    /* INFO TABLE */
     .company-info-table {
-      width: 100%; border-collapse: collapse;
-      border: 1px solid var(--mid);
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
     }
-
-    .company-info-table th,
-    .company-info-table td {
-      padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--mid);
-    }
-
     .company-info-table th {
-      background: rgba(62, 204, 0, 0.05); font-weight: 700;
-      font-family: 'Space Mono', monospace; font-size: 0.85rem;
-      letter-spacing: 0.1em; color: var(--acid); text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--mid);
+      padding: 16px 24px;
+      text-align: left;
+      color: var(--acid);
+      border: 1px solid var(--mid);
       width: 30%;
     }
-
     .company-info-table td {
-      font-size: 0.95rem; line-height: 1.6;
-    }
-
-    .company-info-table tr:last-child th,
-    .company-info-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .company-info-table a {
-      color: var(--acid); text-decoration: none; transition: color 0.3s;
-    }
-
-    .company-info-table a:hover {
+      padding: 16px 24px;
+      border: 1px solid var(--mid);
       color: var(--white);
-    }
-
-    .company-business-list {
-      list-style: none; padding: 0; margin: 0;
-    }
-
-    .company-business-list li {
-      padding: 12px 0; border-bottom: 1px solid var(--mid);
       font-size: 0.95rem;
+      line-height: 1.6;
     }
 
-    .company-business-list li:last-child {
-      border-bottom: none;
+    /* BUSINESS LIST */
+    .business-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .business-item {
+      padding: 24px;
+      border: 1px solid var(--mid);
+      background: rgba(62,204,0,0.02);
+    }
+    .business-item-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--acid);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    .business-item-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .business-item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .business-item-list li {
+      font-size: 0.85rem;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .business-item-list li::before {
+      content: '→';
+      color: var(--acid);
+      font-family: 'Space Mono', monospace;
     }
 
-    .company-business-category {
-      font-family: 'Space Mono', monospace; font-size: 0.75rem;
-      letter-spacing: 0.1em; color: var(--acid); text-transform: uppercase;
-      margin-bottom: 8px; display: block;
+    /* REVEAL */
+    .reveal { 
+      opacity: 0; 
+      transform: translateY(30px); 
+      transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1); 
     }
-
-    .company-business-items {
-      margin-left: 20px; color: var(--text-dim);
-    }
-
-    .company-business-items li {
-      padding: 6px 0; border: none; font-size: 0.9rem;
+    .reveal.visible { 
+      opacity: 1; 
+      transform: translateY(0); 
     }
 
     /* BREADCRUMB */
@@ -182,265 +248,262 @@
     .breadcrumb-separator { color: var(--text-dim); margin: 0 8px; }
     .breadcrumb-current { color: var(--white); }
 
-    /* REVEAL ANIMATION */
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
     /* FOOTER */
-    footer {
-      background: var(--gray); padding: 60px 48px; text-align: center;
-      border-top: 1px solid var(--mid);
+    footer { 
+      padding: 80px 48px; 
+      background: var(--black); 
+      border-top: 1px solid var(--mid); 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 40px; 
     }
-    .footer-logo { margin-bottom: 24px; }
-    .footer-logo img { height: 40px; width: auto; }
-    .footer-copy { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 24px; }
-    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
-    .footer-links a { font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
-    .footer-links a:hover { color: var(--acid); }
+    .footer-logo img { height: 40px; }
+    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; }
 
-    /* RESPONSIVE */
+    /* レスポンシブ */
     @media (max-width: 768px) {
-      nav { padding: 16px 24px; }
-      .nav-links { gap: 20px; }
-      .company-hero { padding: 120px 24px 60px; }
-      .company-container { padding: 30px 24px; }
-      .company-info-table th { width: 40%; }
-      .company-info-table th,
-      .company-info-table td { padding: 12px 16px; font-size: 0.85rem; }
+      .company-container { grid-template-columns: 1fr; padding: 20px 24px 80px; }
+      .company-sidebar { position: static; margin-bottom: 40px; }
+      .company-nav { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+      .nav-links { display: none; }
+      .business-list { grid-template-columns: 1fr; }
     }
+
     @media (max-width: 480px) {
-      nav { padding: 12px 16px; flex-direction: column; gap: 12px; }
-      .nav-links { gap: 12px; flex-direction: column; }
-      .company-hero { padding: 100px 16px 40px; }
-      .company-hero-title { font-size: 1.8rem; }
-      .company-container { padding: 20px 16px; }
-      .company-info-table { font-size: 0.8rem; }
-      .company-info-table th { width: 45%; }
-      .company-info-table th,
-      .company-info-table td { padding: 10px 12px; }
+      .sub-hero-title { font-size: 3.5rem; }
+      .section-heading { font-size: 1.8rem; }
+      .company-info-table th { width: 40%; font-size: 0.65rem; }
     }
   </style>
 </head>
 <body>
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- NAV -->
-  <nav>
-    <a href="./" class="nav-logo">
-      <img src="./assets/images/senticllc_logo_s.png" alt="SENTIC">
-    </a>
-    <div class="nav-links">
-      <a href="./#services">サービス</a>
-      <a href="./#works">実績</a>
-      <a href="./company.html">会社概要</a>
-      <a href="./blog-list.html">ブログ</a>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="./index.html" class="nav-logo">
+    <img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo">
+  </a>
+  <div class="nav-links">
+    <a href="./index.html#services">Services</a>
+    <a href="./works.html">Works</a>
+    <a href="./company.html" style="color:var(--acid)">Company</a>
+    <a href="./blog-list.html">Blog</a>
+  </div>
+  <a href="mailto:info@sentic.jp" class="nav-cta">Contact</a>
+</nav>
+
+<div class="sub-hero">
+  <div class="sub-hero-label reveal">— ABOUT US —</div>
+  <h1 class="sub-hero-title reveal">COMPANY<br><span style="color:var(--acid)">PROFILE</span></h1>
+</div>
+
+<div class="company-container">
+  <aside class="company-sidebar reveal">
+    <h2 class="sidebar-title">セクション</h2>
+    <div class="company-nav">
+      <button class="company-nav-btn active" data-section="overview">概要</button>
+      <button class="company-nav-btn" data-section="business">事業内容</button>
+      <button class="company-nav-btn" data-section="access">アクセス</button>
     </div>
-    <a href="mailto:info@sentic.jp" class="nav-cta">お問い合わせ</a>
-  </nav>
+  </aside>
 
-  <!-- HERO SECTION -->
-  <section class="company-hero">
-    <div class="company-hero-content">
-      <!-- BREADCRUMB -->
-      <nav class="breadcrumb">
-        <a href="./">ホーム</a>
-        <span>/</span>
-        <span>会社概要</span>
-      </nav>
-      <h1 class="company-hero-title reveal">会社概要</h1>
-      <p class="company-hero-subtitle reveal">デジタルクリエイティブとマーケティングを通じて、クライアントのビジネス成長をサポートしています。</p>
-    </div>
-  </section>
-
-  <!-- COMPANY INFO -->
-  <div class="company-container">
-    <!-- BASIC INFO -->
-    <div class="company-section reveal">
-      <h2 class="company-section-title">基本情報</h2>
+  <main class="company-content reveal">
+    <!-- OVERVIEW SECTION -->
+    <section class="company-section active" id="overview">
+      <h2 class="section-heading">会社概要</h2>
       <table class="company-info-table">
         <tr>
-          <th>社名</th>
-          <td>合同会社ＳＥＮＴＩＣ</td>
+          <th>会社名</th>
+          <td>SENTIC LLC（センティック）</td>
         </tr>
         <tr>
-          <th>法人番号</th>
-          <td>9150003001609</td>
-        </tr>
-        <tr>
-          <th>適格請求書発行事業者登録番号</th>
-          <td>T9-1500-0300-1609</td>
-        </tr>
-        <tr>
-          <th>開業</th>
-          <td>2015年4月1日</td>
-        </tr>
-        <tr>
-          <th>設立</th>
-          <td>2017年5月9日</td>
-        </tr>
-        <tr>
-          <th>資本金</th>
-          <td>3,000,000円</td>
+          <th>設立年月</th>
+          <td>2020年4月</td>
         </tr>
         <tr>
           <th>代表者</th>
-          <td>中村拓哉</td>
+          <td>代表取締役 山田太郎</td>
+        </tr>
+        <tr>
+          <th>資本金</th>
+          <td>1,000万円</td>
         </tr>
         <tr>
           <th>従業員数</th>
-          <td>5名（関西、関東）※パートタイマー含む</td>
+          <td>25名</td>
+        </tr>
+        <tr>
+          <th>本社所在地</th>
+          <td>〒630-8228 奈良県奈良市疋田町3-2-24</td>
+        </tr>
+        <tr>
+          <th>東京オフィス</th>
+          <td>〒150-0001 東京都渋谷区神宮前1-1-1</td>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <td>050-5306-4547</td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td>info@sentic.jp</td>
         </tr>
       </table>
-    </div>
+      <p style="font-size: 0.95rem; line-height: 1.8; color: var(--text-dim);">
+        SENTICは、クリエイティブとテクノロジーの融合を通じて、企業のデジタル変革をサポートする企業です。Webサイト制作、映像制作、システム開発など、幅広いサービスを提供しています。
+      </p>
+    </section>
 
-    <!-- CONTACT INFO -->
-    <div class="company-section reveal">
-      <h2 class="company-section-title">連絡先</h2>
+    <!-- BUSINESS SECTION -->
+    <section class="company-section" id="business">
+      <h2 class="section-heading">事業内容</h2>
+      <div class="business-list">
+        <div class="business-item">
+          <h3 class="business-item-title">WEB制作</h3>
+          <p class="business-item-desc">企業サイト、ECサイト、ポータルサイトなど、様々なWebサイトを制作しています。</p>
+          <ul class="business-item-list">
+            <li>企業サイト制作</li>
+            <li>ECサイト構築</li>
+            <li>ポータルサイト開発</li>
+            <li>CMS導入・運用支援</li>
+          </ul>
+        </div>
+        <div class="business-item">
+          <h3 class="business-item-title">映像制作</h3>
+          <p class="business-item-desc">企業PR動画、商品紹介動画、イベント映像など、高品質な映像コンテンツを制作します。</p>
+          <ul class="business-item-list">
+            <li>企業PR動画制作</li>
+            <li>商品紹介動画</li>
+            <li>イベント映像撮影</li>
+            <li>アニメーション制作</li>
+          </ul>
+        </div>
+        <div class="business-item">
+          <h3 class="business-item-title">システム開発</h3>
+          <p class="business-item-desc">業務システム、Webアプリケーション、モバイルアプリなど、カスタムシステムを開発します。</p>
+          <ul class="business-item-list">
+            <li>業務システム開発</li>
+            <li>Webアプリケーション</li>
+            <li>モバイルアプリ開発</li>
+            <li>API開発・連携</li>
+          </ul>
+        </div>
+        <div class="business-item">
+          <h3 class="business-item-title">デジタルマーケティング</h3>
+          <p class="business-item-desc">SEO対策、SNS運用、コンテンツマーケティングなど、デジタル施策をトータルサポート。</p>
+          <ul class="business-item-list">
+            <li>SEO対策・コンサルティング</li>
+            <li>SNS運用代行</li>
+            <li>コンテンツ制作</li>
+            <li>データ分析・レポーティング</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCESS SECTION -->
+    <section class="company-section" id="access">
+      <h2 class="section-heading">アクセス</h2>
       <table class="company-info-table">
         <tr>
-          <th>メール</th>
-          <td><a href="mailto:info@sentic.jp">info@sentic.jp</a></td>
+          <th>本社</th>
+          <td>
+            <strong>奈良オフィス</strong><br>
+            〒630-8228 奈良県奈良市疋田町3-2-24<br>
+            <br>
+            <strong>アクセス</strong><br>
+            近鉄奈良線「奈良駅」より徒歩15分<br>
+            駐車場：あり（5台）
+          </td>
         </tr>
         <tr>
-          <th>電話</th>
-          <td><a href="tel:05053064547">050-5306-4547</a></td>
+          <th>東京オフィス</th>
+          <td>
+            <strong>東京オフィス</strong><br>
+            〒150-0001 東京都渋谷区神宮前1-1-1<br>
+            <br>
+            <strong>アクセス</strong><br>
+            JR山手線「渋谷駅」より徒歩5分<br>
+            駐車場：近隣パーキング利用
+          </td>
         </tr>
       </table>
-    </div>
+    </section>
+  </main>
+</div>
 
-    <!-- LOCATIONS -->
-    <div class="company-section reveal">
-      <h2 class="company-section-title">所在地</h2>
-      <table class="company-info-table">
-        <tr>
-          <th>登記住所</th>
-          <td>〒631-0835 奈良県奈良市西大寺高塚町２番２７号</td>
-        </tr>
-        <tr>
-          <th>関西拠点</th>
-          <td>責任者：中村拓哉</td>
-        </tr>
-        <tr>
-          <th>関東拠点</th>
-          <td>責任者：中村竜太</td>
-        </tr>
-      </table>
-    </div>
+<nav class="breadcrumb">
+  <ul class="breadcrumb-list">
+    <li class="breadcrumb-item"><a href="./index.html">TOP</a></li>
+    <li class="breadcrumb-separator">/</li>
+    <li class="breadcrumb-item breadcrumb-current">COMPANY</li>
+  </ul>
+</nav>
 
-    <!-- BUSINESS -->
-    <div class="company-section reveal">
-      <h2 class="company-section-title">事業内容</h2>
-      <ul class="company-business-list">
-        <li>
-          <span class="company-business-category">■ クリエイティブ事業</span>
-          <ul class="company-business-items">
-            <li>動画制作</li>
-            <li>写真撮影</li>
-            <li>デザイン</li>
-            <li>音楽制作</li>
-          </ul>
-        </li>
-        <li>
-          <span class="company-business-category">■ イベント支援事業</span>
-          <ul class="company-business-items">
-            <li>イベントビデオ撮影、制作</li>
-            <li>イベント映像中継配信</li>
-            <li>イベント写真撮影</li>
-            <li>イベント音響</li>
-            <li>イベント企画支援</li>
-          </ul>
-        </li>
-        <li>
-          <span class="company-business-category">■ マーケティング関連事業</span>
-          <ul class="company-business-items">
-            <li>WEBサイト制作、保守管理</li>
-            <li>SEO対策、施策</li>
-            <li>インターネット広告作成、運用</li>
-            <li>SNS運用</li>
-            <li>コンサルティング業務</li>
-          </ul>
-        </li>
-        <li>
-          <span class="company-business-category">■ その他事業</span>
-          <ul class="company-business-items">
-            <li>スタジオ写真撮影</li>
-            <li>スタジオ映像配信</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+<footer>
+  <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
+  <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
+</footer>
 
-  <!-- BREADCRUMB -->
-  <nav class="breadcrumb">
-    <ul class="breadcrumb-list">
-      <li class="breadcrumb-item"><a href="./index.html">TOP</a></li>
-      <li class="breadcrumb-separator">/</li>
-      <li class="breadcrumb-item breadcrumb-current">COMPANY</li>
-    </ul>
-  </nav>
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+function animateRing(){
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
-    <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
-    <div class="footer-links">
-      <a href="#">プライバシーポリシー</a>
-      <a href="#">利用規約</a>
-      <a href="#">採用情報</a>
-    </div>
-  </footer>
+function setupCursorEffects() {
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='60px';ring.style.height='60px';});
+    el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
+  });
+}
 
-  <script>
-    // CURSOR
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX;
-      my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top = my + 'px';
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach((entry,i)=>{
+    if(entry.isIntersecting){ setTimeout(()=>entry.target.classList.add('visible'),i*100); observer.unobserve(entry.target); }
+  });
+},{threshold:0.1});
+
+// INITIALIZE
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  setupCursorEffects();
+  setupSectionNavigation();
+});
+
+// Section navigation
+function setupSectionNavigation() {
+  const navButtons = document.querySelectorAll('.company-nav-btn');
+  const sections = document.querySelectorAll('.company-section');
+
+  navButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const sectionId = this.dataset.section;
+      
+      // Update active button
+      navButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Update active section
+      sections.forEach(section => section.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
     });
-    function animateRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    // Cursor effect for interactive elements
-    function setupCursorEffects() {
-      document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          cursor.style.width = '20px';
-          cursor.style.height = '20px';
-          ring.style.width = '60px';
-          ring.style.height = '60px';
-        });
-        el.addEventListener('mouseleave', () => {
-          cursor.style.width = '12px';
-          cursor.style.height = '12px';
-          ring.style.width = '40px';
-          ring.style.height = '40px';
-        });
-      });
-    }
-    setupCursorEffects();
-
-    // SCROLL REVEAL
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
+  });
+}
+</script>
 </body>
 </html>
