@@ -148,20 +148,29 @@
     .blog-card {
       position: relative;
       overflow: hidden;
-      background: var(--mid);
+      background: var(--gray);
       cursor: none;
-      aspect-ratio: 16 / 9;
-      min-height: 200px;
+      border: 1px solid var(--mid);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      height: 100%;
+    }
+
+    .blog-card:hover {
+      border-color: var(--acid);
+      box-shadow: 0 8px 32px rgba(62, 204, 0, 0.1);
     }
 
     .blog-bg {
-      position: absolute;
-      inset: 0;
+      position: relative;
+      width: 100%;
+      height: 200px;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      z-index: 1;
+      overflow: hidden;
     }
 
     .blog-card:hover .blog-bg {
@@ -169,16 +178,15 @@
     }
 
     .blog-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+      position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
       padding: 24px;
-      opacity: 0;
+      flex: 1;
+      opacity: 1;
       transition: opacity 0.4s;
       z-index: 2;
+      background: var(--gray);
     }
 
     .blog-card:hover .blog-overlay {
@@ -191,15 +199,44 @@
       letter-spacing: 0.2em;
       color: var(--acid);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      display: inline-block;
+      padding: 4px 8px;
+      background: rgba(62, 204, 0, 0.1);
+      border-radius: 2px;
+      width: fit-content;
     }
 
     .blog-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       letter-spacing: 0.05em;
       color: var(--white);
-      line-height: 1.1;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .blog-excerpt {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-dim);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
     }
 
     /* MODAL */
@@ -456,12 +493,19 @@ function createBlogCard(post) {
   }
   const id = post.id;
 
+  const publishDate = post.publishedAt 
+    ? new Date(post.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.')
+    : '';
+  const excerpt = post.content ? post.content.substring(0, 80) + '...' : '';
+
   return `
     <div class="blog-card" data-blog-id="${id}" data-category="${categoryName}">
       <div class="blog-bg" style="background-image: url('${thumbnail}');"></div>
       <div class="blog-overlay">
         <span class="blog-cat">${categoryName}</span>
         <h3 class="blog-title">${title}</h3>
+        <p class="blog-date">${publishDate}</p>
+        <p class="blog-excerpt">${excerpt}</p>
       </div>
     </div>
   `;
