@@ -233,82 +233,7 @@
       display: none;
     }
 
-    /* MODAL */
-    .blog-modal { 
-      position: fixed; 
-      inset: 0; 
-      background: rgba(0,0,0,0.9); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      z-index: 1000; 
-    }
-
-    .blog-modal-content { 
-      background: var(--gray); 
-      border: 1px solid var(--mid); 
-      max-width: 900px; 
-      width: 90%; 
-      max-height: 90vh; 
-      overflow-y: auto; 
-      position: relative; 
-      padding: 48px; 
-    }
-
-    .blog-modal-close { 
-      position: absolute; 
-      top: 24px; 
-      right: 24px; 
-      background: none; 
-      border: none; 
-      font-size: 2.5rem; 
-      color: var(--white); 
-      cursor: pointer; 
-      transition: color 0.3s; 
-      line-height: 1;
-    }
-
-    .blog-modal-close:hover { color: var(--acid); }
-
-    .blog-modal-img { 
-      width: 100%; 
-      height: auto; 
-      margin-bottom: 32px; 
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-    }
-
-    .blog-modal-category { 
-      font-family: 'Space Mono', monospace; 
-      font-size: 0.7rem; 
-      color: var(--acid); 
-      text-transform: uppercase; 
-      letter-spacing: 0.2em; 
-      display: block; 
-      margin-bottom: 16px; 
-    }
-
-    .blog-modal-title { 
-      font-family: 'Bebas Neue', sans-serif; 
-      font-size: 2.5rem; 
-      color: var(--white); 
-      margin-bottom: 16px; 
-      letter-spacing: 0.05em; 
-    }
-
-    .blog-modal-date { 
-      font-family: 'Space Mono', monospace; 
-      font-size: 0.8rem; 
-      color: var(--text-dim); 
-      margin-bottom: 32px; 
-      display: block; 
-    }
-
-    .blog-modal-content-text { 
-      font-size: 1rem; 
-      line-height: 1.8; 
-      color: var(--white); 
-    }
+    /* MODAL REMOVED - Using separate page for details */
 
     /* REVEAL */
     .reveal { 
@@ -584,50 +509,8 @@ function attachBlogCardListeners(posts) {
   cards.forEach(card => {
     card.addEventListener('click', function() {
       const blogId = this.dataset.blogId;
-      const post = posts.find(p => p.id === blogId);
-      if (post) {
-        showBlogDetail(post);
-      }
+      window.location.href = `./blog-detail.html?id=${blogId}`;
     });
-  });
-}
-
-function showBlogDetail(post) {
-  let categoryName = 'Other';
-  if (post.category && post.category.name) {
-    categoryName = post.category.name;
-  }
-
-  const thumbnail = post.eyecatch?.url || 'https://via.placeholder.com/600x400';
-  const publishDate = post.publishedAt 
-    ? new Date(post.publishedAt).toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit'}).replace(/\//g, '.')
-    : '';
-
-  const modal = document.createElement('div');
-  modal.className = 'blog-modal';
-  modal.innerHTML = `
-    <div class="blog-modal-content">
-      <button class="blog-modal-close">&times;</button>
-      <img src="${thumbnail}" alt="${post.title}" class="blog-modal-img">
-      <div class="blog-modal-info">
-        <span class="blog-modal-category">${categoryName}</span>
-        <h2 class="blog-modal-title">${post.title}</h2>
-        <p class="blog-modal-date">${publishDate}</p>
-        <div class="blog-modal-content-text">${post.content || ''}</div>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  modal.querySelector('.blog-modal-close').addEventListener('click', () => {
-    modal.remove();
-  });
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.remove();
-    }
   });
 }
 </script>
