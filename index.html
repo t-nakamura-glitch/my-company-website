@@ -273,7 +273,8 @@
   .contact-bg-text { position: absolute; font-family: 'Bebas Neue',sans-serif; font-size: 25vw; color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; letter-spacing: -0.05em; }
   #contact .section-title { font-size: clamp(4rem,10vw,9rem); margin-bottom: 24px; }
   #contact p { color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; max-width: 800px; margin: 0 auto 60px; position: relative; }
-  .contact-btn { display: inline-flex; align-items: center; gap: 16px; font-family: 'Bebas Neue',sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; background: var(--acid); color: var(--black); padding: 20px 56px; text-decoration: none; transition: all 0.3s; clip-path: polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%); }
+  .contact-btns { display: flex; gap: 24px; justify-content: center; margin: 40px auto 60px; flex-wrap: wrap; max-width: 1000px; }
+  .contact-btn { display: inline-flex; align-items: center; justify-content: center; gap: 16px; font-family: 'Bebas Neue',sans-serif; font-size: 1.2rem; letter-spacing: 0.1em; background: var(--acid); color: var(--black); padding: 20px 40px; text-decoration: none; transition: all 0.3s; clip-path: polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%); flex: 1; min-width: 280px; }
   .contact-btn:hover { background: var(--white); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(62,204,0,0.3); }
   .contact-btn-arrow { font-size: 1.2rem; transition: transform 0.3s; }
   .contact-btn:hover .contact-btn-arrow { transform: translateX(6px); }
@@ -847,9 +848,14 @@
   <div class="section-label reveal">— GET IN TOUCH —</div>
   <h2 class="section-title reveal">LET'S<br><span style="color:var(--acid)">WORK</span><br>TOGETHER</h2>
   <p class="reveal">ご相談、お見積もりはお気軽にどうぞ。<br>３営業日内を目安にご返信いたします</p>
-  <a href="mailto:info@sentic.jp" class="contact-btn reveal">
-    お問い合わせはこちら <span class="contact-btn-arrow">→</span>
-  </a>
+  <div class="contact-btns reveal">
+    <a href="tel:05053064547" class="contact-btn">
+      お電話・ミーティング <span class="contact-btn-arrow">→</span>
+    </a>
+    <a href="mailto:info@sentic.jp" class="contact-btn">
+      フォームでのお問い合わせ <span class="contact-btn-arrow">→</span>
+    </a>
+  </div>
   <div class="contact-info reveal">
     <div class="contact-item">EMAIL<br><a href="mailto:info@sentic.jp">info@sentic.jp</a></div>
     <div class="contact-item">TEL<br><a href="tel:05053064547">050-5306-4547</a></div>
