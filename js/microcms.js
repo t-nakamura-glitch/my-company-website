@@ -147,7 +147,7 @@ function generateFilterButtons() {
   const allButton = document.createElement('button');
   allButton.className = 'filter-btn active';
   allButton.dataset.filter = 'ALL';
-  allButton.textContent = isWorksPage ? 'ALL PROJECTS' : 'ALL';
+  allButton.textContent = isWorksPage ? 'すべて' : 'ALL';
   filterContainer.appendChild(allButton);
 
   // カテゴリーボタンを追加
