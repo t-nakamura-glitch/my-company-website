@@ -102,26 +102,94 @@
   section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
   .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--acid); margin-bottom: 40px; border-bottom: 1px solid var(--mid); padding-bottom: 10px; }
   
+  /* FEATURES SECTION - with images */
   .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 60px; }
-  .feature-item { background: var(--gray); padding: 40px; border-left: 4px solid var(--acid); }
-  .feature-item h3 { font-size: 1.5rem; margin-bottom: 20px; color: var(--white); }
-  .feature-item p { font-size: 0.95rem; line-height: 1.8; color: var(--text-dim); }
+  .feature-item { background: var(--gray); overflow: hidden; border: 1px solid var(--mid); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .feature-item:hover { border-color: var(--acid); box-shadow: 0 20px 40px rgba(62,204,0,0.1); transform: translateY(-5px); }
+  .feature-image { width: 100%; height: 200px; background: linear-gradient(135deg, rgba(62,204,0,0.1), rgba(62,204,0,0.05)); display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden; position: relative; }
+  .feature-image::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(45deg, transparent 30%, rgba(62,204,0,0.1) 50%, transparent 70%); animation: shimmer 3s infinite; }
+  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .feature-content { padding: 30px; }
+  .feature-item h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--white); font-weight: 700; }
+  .feature-item p { font-size: 0.9rem; line-height: 1.8; color: var(--text-dim); }
 
-  .strength-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .strength-card { border: 1px solid var(--mid); padding: 30px; transition: all 0.3s; }
-  .strength-card:hover { border-color: var(--acid); background: rgba(62, 204, 0, 0.05); }
-  .strength-card h4 { font-size: 1.1rem; color: var(--acid); margin-bottom: 15px; }
-  .strength-card p { font-size: 0.85rem; line-height: 1.6; color: var(--text-dim); }
+  /* STRENGTHS SECTION - with flat icons */
+  .strength-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .strength-card { background: transparent; border: 1px solid var(--mid); padding: 30px 20px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
+  .strength-card::before { content: ''; position: absolute; inset: 0; background: rgba(62,204,0,0.05); transform: scaleY(0); transition: transform 0.4s; z-index: 0; }
+  .strength-card:hover::before { transform: scaleY(1); }
+  .strength-card:hover { border-color: var(--acid); }
+  .strength-icon { width: 50px; height: 50px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; background: rgba(62,204,0,0.1); border-radius: 8px; font-size: 1.8rem; position: relative; z-index: 1; transition: all 0.3s; }
+  .strength-card:hover .strength-icon { background: rgba(62,204,0,0.2); transform: scale(1.1); }
+  .strength-card h4 { font-size: 1rem; color: var(--white); margin-bottom: 12px; position: relative; z-index: 1; font-weight: 700; }
+  .strength-card p { font-size: 0.8rem; line-height: 1.6; color: var(--text-dim); position: relative; z-index: 1; }
 
   .genre-list { display: flex; flex-wrap: wrap; gap: 15px; }
   .genre-tag { background: var(--mid); color: var(--white); padding: 8px 20px; font-size: 0.9rem; border-radius: 2px; }
 
-  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .price-card { background: var(--gray); padding: 40px; text-align: center; border: 1px solid transparent; transition: 0.3s; }
-  .price-card:hover { border-color: var(--acid); transform: translateY(-5px); }
-  .price-card h4 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--acid); margin-bottom: 10px; }
-  .price-card .amount { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; }
-  .price-card .desc { font-size: 0.85rem; color: var(--text-dim); }
+  /* PRICING SECTION - enhanced cards */
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+  .price-card { 
+    background: linear-gradient(135deg, var(--gray) 0%, rgba(26,26,26,0.8) 100%);
+    padding: 40px 30px;
+    text-align: center;
+    border: 1px solid var(--mid);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--acid), transparent);
+    transition: left 0.6s;
+  }
+  .price-card:hover::before { left: 100%; }
+  .price-card:hover {
+    border-color: var(--acid);
+    box-shadow: 0 20px 60px rgba(62,204,0,0.15);
+    transform: translateY(-10px);
+  }
+  .price-card h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--acid);
+    margin-bottom: 15px;
+    letter-spacing: 0.1em;
+  }
+  .price-card .amount {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+  }
+  .price-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .price-card .cta-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    border: 1px solid var(--acid);
+    color: var(--acid);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    transition: all 0.3s;
+    margin-top: 10px;
+  }
+  .price-card:hover .cta-btn {
+    background: var(--acid);
+    color: var(--black);
+  }
 
   /* WORKS SECTION */
   .works-section { background: var(--black); padding: 100px 48px; border-top: 1px solid var(--mid); }
@@ -145,9 +213,13 @@
   .work-modal-content-text { line-height: 1.8; color: var(--text-dim); }
 
   @media (max-width: 768px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .strength-grid { grid-template-columns: repeat(2, 1fr); }
+    .price-grid { grid-template-columns: 1fr; }
     .works-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 480px) {
+    .strength-grid { grid-template-columns: 1fr; }
     .works-grid { grid-template-columns: 1fr; }
   }
 
@@ -163,7 +235,6 @@
     .nav-links { display: none; }
     .sub-hero { padding: 120px 24px 40px; }
     section { padding: 60px 24px; }
-    .feature-grid, .strength-grid, .price-grid { grid-template-columns: 1fr; }
     .breadcrumb { padding: 20px 24px; }
   }
 </style>
@@ -204,20 +275,32 @@
   <h2 class="section-title reveal">FEATURES</h2>
   <div class="feature-grid">
     <div class="feature-item reveal">
-      <h3>多彩な専門スタッフ</h3>
-      <p>関西、関東の事業所より、ディレクター、撮影スタッフ、編集担当、CG/VFXスタッフ等の社員を制作プロジェクトにアサイン可能。規模やご予算に合わせ最適なチームを編成致します。</p>
+      <div class="feature-image">👥</div>
+      <div class="feature-content">
+        <h3>多彩な専門スタッフ</h3>
+        <p>関西、関東の事業所より、ディレクター、撮影スタッフ、編集担当、CG/VFXスタッフ等の社員を制作プロジェクトにアサイン可能。規模やご予算に合わせ最適なチームを編成致します。</p>
+      </div>
     </div>
     <div class="feature-item reveal">
-      <h3>豊富な設備と技術</h3>
-      <p>撮影、音響、演出の機材を自社所有しているため、豊かな映像表現、コストパフォーマンスある収録が可能です。また録音スタジオも完備しており、提携ナレーターの音声収録が可能です。</p>
+      <div class="feature-image">🎬</div>
+      <div class="feature-content">
+        <h3>豊富な設備と技術</h3>
+        <p>撮影、音響、演出の機材を自社所有しているため、豊かな映像表現、コストパフォーマンスある収録が可能です。また録音スタジオも完備しており、提携ナレーターの音声収録が可能です。</p>
+      </div>
     </div>
     <div class="feature-item reveal">
-      <h3>編集・録音環境</h3>
-      <p>実写、アニメーション、3DCG、モーショングラフィックスなど自社スタッフで制作しております。専用の編集、モニター環境にて適正な放送規格の映像制作が可能です。</p>
+      <div class="feature-image">🎨</div>
+      <div class="feature-content">
+        <h3>編集・録音環境</h3>
+        <p>実写、アニメーション、3DCG、モーショングラフィックスなど自社スタッフで制作しております。専用の編集、モニター環境にて適正な放送規格の映像制作が可能です。</p>
+      </div>
     </div>
     <div class="feature-item reveal">
-      <h3>多彩な表現で</h3>
-      <p>ナレーターやカメラマン、CGクリエイター、ドローンオペレーターなど各分野に精通したスタッフが社内に。目的、用途、コンセプトに沿った最適な映像表現で動画制作が可能です。</p>
+      <div class="feature-image">✨</div>
+      <div class="feature-content">
+        <h3>多彩な表現で</h3>
+        <p>ナレーターやカメラマン、CGクリエイター、ドローンオペレーターなど各分野に精通したスタッフが社内に。目的、用途、コンセプトに沿った最適な映像表現で動画制作が可能です。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -226,42 +309,52 @@
   <h2 class="section-title reveal">STRENGTHS</h2>
   <div class="strength-grid">
     <div class="strength-card reveal">
+      <div class="strength-icon">💰</div>
       <h4>ご予算配分</h4>
       <p>余計な代理店コストをかけることなく、ご予算を全て制作費に充てることで価格相応の制作が可能です。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">💡</div>
       <h4>企画構成</h4>
       <p>数多くの制作経験から、お客様の目的に合わせた最適な動画表現を構成致します。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">⏱️</div>
       <h4>納期</h4>
       <p>最短３営業日仕上げから対応可能。制作会社ワンストップならではの機動力を活かした制作が可能です。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">⚡</div>
       <h4>機動性</h4>
       <p>外注やクリエイター等に丸投げすることなく、自社社員による撮影制作で機動性の高いプロセスを実現。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">📹</div>
       <h4>撮影</h4>
       <p>用途に合わせた機材、付帯設備をご用意致します。スタッフも１名〜と予算に合わせ柔軟に対応です。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">🎭</div>
       <h4>キャスティング</h4>
       <p>ナレーターやモデル、著名人、コーディネーター等の専門家を提携会社、登録パートナーより手配可能。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">✂️</div>
       <h4>編集・制作</h4>
       <p>実写からアニメーション、グラフィックス、CGまで幅広いスキルを持った社員が対応可能です。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">✅</div>
       <h4>修正</h4>
       <p>動画か完成するまで修正もスムーズに対応。最終的な仕上がりにご満足いただけるよう努めております。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">💵</div>
       <h4>低価格</h4>
       <p>都心離れた郊外にて機材庫を保有し、編集作業等を実施、営業部等もなく、制作部門のみで運営することで大幅なコストダウンを実現。</p>
     </div>
     <div class="strength-card reveal">
+      <div class="strength-icon">📊</div>
       <h4>広告配信・運用</h4>
       <p>創業以来営業部を持たず、WEBマーケティングで集客を行ってきた経験を活かし、ビジネスモデルに合わせた最適な広告配信が可能。</p>
     </div>
@@ -305,31 +398,37 @@
       <h4>MINIMUM</h4>
       <div class="amount">¥30,000〜</div>
       <div class="desc">SNSコンテンツ、広告等の編集に</div>
+      <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
     </div>
     <div class="price-card reveal">
       <h4>SIMPLE</h4>
       <div class="amount">¥150,000〜</div>
       <div class="desc">小規模な撮影＋編集が可能</div>
+      <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
     </div>
     <div class="price-card reveal">
       <h4>STANDARD</h4>
       <div class="amount">¥300,000〜</div>
       <div class="desc">無駄を省いて充実の仕上がりに</div>
+      <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
     </div>
     <div class="price-card reveal">
       <h4>ADVANCE</h4>
       <div class="amount">¥500,000〜</div>
       <div class="desc">構成、撮影編集まで充実の内容で</div>
+      <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
     </div>
     <div class="price-card reveal">
       <h4>HIGH-GRADE</h4>
       <div class="amount">¥750,000〜</div>
       <div class="desc">＋αで一つ上の仕上がりを</div>
+      <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
     </div>
     <div class="price-card reveal">
       <h4>ORDER-MADE</h4>
       <div class="amount">¥1,000,000〜</div>
       <div class="desc">あらゆる制作を実現</div>
+      <a href="../index.html#contact" class="cta-btn">お問い合わせ</a>
     </div>
   </div>
 </section>
