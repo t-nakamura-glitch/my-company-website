@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サービス — SENTIC</title>
+<link rel="icon" type="image/jpeg" href="./assets/images/favicon.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --white: #f5f0e8;
+    --acid: #3ecc00;
+    --red: #888;
+    --gray: #1a1a1a;
+    --mid: #333;
+    --text-dim: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; scrollbar-gutter: stable; }
+  body {
+    background: var(--black); color: var(--white);
+    font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+    overflow-x: hidden; cursor: none; width: 100%; margin: 0; padding: 0;
+  }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--acid); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; width: 40px; height: 40px;
+    border: 1px solid rgba(62,204,0,0.5); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%); transition: all 0.15s ease;
+  }
+
+  /* NOISE */
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9990; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 48px;
+    background: var(--black);
+    backdrop-filter: none;
+    width: 100%; max-width: 100vw; box-sizing: border-box; overflow: hidden;
+  }
+  .nav-logo { display: flex; align-items: center; text-decoration: none; height: 40px; }
+  .nav-logo img { height: 100%; width: auto; max-width: 150px; }
+  .nav-logo span { color: var(--acid); }
+  .nav-links { display: flex; gap: 40px; align-items: center; }
+  .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--acid); }
+
+  /* MEGA MENU */
+  .nav-item-has-mega { position: relative; height: 100%; display: flex; align-items: center; }
+  .mega-menu {
+    position: fixed; top: 88px; left: 0; width: 100%; background: rgba(5, 5, 5, 0.95);
+    border-bottom: 1px solid var(--mid); padding: 60px 48px;
+    opacity: 0; visibility: hidden; transform: translateY(-10px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 90; display: grid; grid-template-columns: 240px 1fr; gap: 80px;
+    backdrop-filter: blur(10px);
+  }
+  .nav-item-has-mega:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+  .mega-title { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--acid); line-height: 1; }
+  .mega-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+  .mega-list { list-style: none; }
+  .mega-list-title { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.2em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--mid); }
+  .mega-list li { margin-bottom: 12px; }
+  .mega-list a { font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; color: var(--white); text-transform: none; letter-spacing: 0.05em; transition: all 0.3s; display: block; }
+  .mega-list a:hover { color: var(--acid); padding-left: 10px; }
+  .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--acid); color: var(--acid); padding: 10px 24px; text-decoration: none; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+  .nav-cta:hover { background: var(--acid); color: var(--black); }
+
+  /* SUB-HERO */
+  .sub-hero {
+    padding: 180px 48px 60px;
+    background: var(--black);
+  }
+  .sub-hero-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--acid); letter-spacing: 0.3em; margin-bottom: 16px; }
+  .sub-hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; }
+
+  /* SERVICES SECTION */
+  .services-section {
+    background: var(--black);
+    padding: 80px 48px;
+  }
+  .services-intro {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 80px;
+    margin-bottom: 80px;
+    max-width: 1000px;
+  }
+  .services-intro p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-dim);
+  }
+  .services-intro p strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  /* SERVICES GRID */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--mid);
+    border: 1px solid var(--mid);
+  }
+
+  /* SERVICE CARD */
+  .service-card {
+    background: var(--black);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 450px;
+    border: 1px solid transparent;
+  }
+  .service-card:hover {
+    border-color: var(--acid);
+    box-shadow: 0 20px 40px rgba(62,204,0,0.15);
+    z-index: 2;
+  }
+  .service-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    filter: brightness(0.9);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .service-card:hover .service-img {
+    filter: brightness(1.1);
+    transform: scale(1.1);
+  }
+  .service-content {
+    padding: 32px;
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--acid);
+    transform: translateY(101%);
+    transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+    z-index: 0;
+  }
+  .service-card:hover::before {
+    transform: translateY(0);
+  }
+  .service-card:hover .service-num,
+  .service-card:hover .service-name,
+  .service-card:hover .service-desc,
+  .service-card:hover .service-arrow,
+  .service-card:hover .service-en {
+    color: var(--black);
+  }
+  .service-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .service-name-wrap {
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .service-name {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    display: block;
+    transition: color 0.3s;
+  }
+  .service-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--acid);
+    display: block;
+    margin-top: 2px;
+    transition: color 0.3s;
+  }
+  .service-desc {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+    position: relative;
+    transition: color 0.3s;
+    flex-grow: 1;
+  }
+  .service-arrow {
+    font-size: 1.2rem;
+    color: var(--acid);
+    position: relative;
+    display: block;
+    margin-top: 20px;
+    transition: color 0.3s, transform 0.3s;
+  }
+  .service-card:hover .service-arrow {
+    transform: translate(4px, -4px);
+  }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* BREADCRUMB */
+  .breadcrumb {
+    background: var(--black);
+    border-top: 1px solid var(--mid);
+    border-bottom: 1px solid var(--mid);
+    padding: 20px 48px;
+    position: relative;
+    z-index: 50;
+  }
+  .breadcrumb-list {
+    list-style: none;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+  }
+  .breadcrumb-item a {
+    color: var(--acid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .breadcrumb-item a:hover {
+    color: var(--white);
+  }
+  .breadcrumb-separator {
+    color: var(--text-dim);
+    margin: 0 8px;
+  }
+  .breadcrumb-current {
+    color: var(--white);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--mid);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    height: 30px;
+  }
+  .footer-logo img {
+    height: 100%;
+    width: auto;
+    max-width: 120px;
+  }
+  .footer-logo span {
+    color: var(--acid);
+  }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .footer-links {
+    display: flex;
+    gap: 32px;
+  }
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover {
+    color: var(--acid);
+  }
+
+  /* MOBILE MENU TOGGLE */
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 200;
+    padding: 10px;
+  }
+  .mobile-menu-toggle span {
+    display: block;
+    width: 28px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: center;
+  }
+  .mobile-menu-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+    background: var(--acid);
+  }
+  .mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  .mobile-menu-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    background: var(--acid);
+  }
+
+  /* MOBILE OVERLAY */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .mobile-overlay.active {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .mobile-overlay-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.98);
+    backdrop-filter: blur(15px);
+    transform: translateY(-100%);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .mobile-overlay.active .mobile-overlay-bg {
+    transform: translateY(0);
+  }
+
+  .mobile-nav-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 120px 40px 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s 0.3s;
+    overflow-y: auto;
+  }
+  .mobile-overlay.active .mobile-nav-container {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-nav-links {
+    flex: 1;
+  }
+  .mobile-nav-item {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .mobile-nav-header {
+    display: flex;
+    align-items: center;
+    padding: 24px 0;
+    text-decoration: none;
+    color: var(--white);
+    cursor: pointer;
+  }
+  .mobile-nav-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--acid);
+    margin-right: 20px;
+  }
+  .mobile-nav-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .mobile-nav-arrow {
+    margin-left: auto;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid var(--text-dim);
+    border-bottom: 2px solid var(--text-dim);
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+    margin-right: 10px;
+  }
+  .mobile-nav-header.active .mobile-nav-arrow {
+    transform: rotate(-135deg);
+    border-color: var(--acid);
+  }
+
+  .mobile-sub-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .mobile-sub-menu.active {
+    max-height: 800px;
+  }
+  .mobile-sub-grid {
+    padding: 10px 0 30px 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .mobile-sub-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .mobile-sub-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+  }
+  .mobile-sub-col a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  .mobile-sub-col a:hover {
+    color: var(--acid);
+  }
+
+  .mobile-footer {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mobile-social {
+    display: flex;
+    gap: 24px;
+  }
+  .mobile-social a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+  }
+  .mobile-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  @media (max-width: 768px) {
+    html, body {
+      width: 100vw;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+    * {
+      max-width: 100vw;
+    }
+    nav {
+      padding: 20px 24px;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    .nav-links {
+      display: none;
+    }
+    .nav-cta {
+      display: none;
+    }
+    .mobile-menu-toggle {
+      display: flex;
+    }
+    .sub-hero {
+      padding: 120px 24px 40px;
+    }
+    .services-section {
+      padding: 60px 24px;
+    }
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+    .breadcrumb {
+      padding: 20px 24px;
+    }
+    footer {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .footer-links {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="./index.html" class="nav-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></a>
+  <div class="nav-links">
+    <div class="nav-item-has-mega">
+      <a href="./service.html" style="color: var(--acid);">サービス</a>
+      <div class="mega-menu">
+        <div class="mega-info">
+          <h3 class="mega-title">OUR<br>SERVICES</h3>
+          <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 20px; line-height: 1.6;">映像、WEB、AI、マーケティングの領域を横断したクリエイティブサービスを提供しています。</p>
+        </div>
+        <div class="mega-grid">
+          <div class="mega-list">
+            <h4 class="mega-list-title">CREATIVE</h4>
+            <ul>
+              <li><a href="./service.html">動画制作</a></li>
+              <li><a href="./service.html">写真撮影</a></li>
+              <li><a href="./service.html">イベントビデオ</a></li>
+              <li><a href="./service.html">イベント写真</a></li>
+            </ul>
+          </div>
+          <div class="mega-list">
+            <h4 class="mega-list-title">MEDIA</h4>
+            <ul>
+              <li><a href="./service.html">ライブ配信</a></li>
+              <li><a href="./service.html">録音・音楽制作</a></li>
+              <li><a href="./service.html">WEB制作</a></li>
+              <li><a href="./service.html">デザイン</a></li>
+            </ul>
+          </div>
+          <div class="mega-list">
+            <h4 class="mega-list-title">MARKETING</h4>
+            <ul>
+              <li><a href="./service.html">広告運用</a></li>
+              <li><a href="./service.html">デジタルマーケティング</a></li>
+              <li><a href="./service.html">AI導入支援</a></li>
+              <li><a href="./service.html">システム開発</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="./works.html">実績</a>
+    <a href="./company.html">会社概要</a>
+    <a href="./blog-list.html">ブログ</a>
+  </div>
+  <a href="./index.html#contact" class="nav-cta">お問い合わせ</a>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<div class="mobile-overlay" id="mobileOverlay">
+  <div class="mobile-overlay-bg"></div>
+  <div class="mobile-nav-container">
+    <div class="mobile-nav-links">
+      <div class="mobile-nav-item">
+        <div class="mobile-nav-header" data-target="mobile-services">
+          <span class="mobile-nav-num">01</span>
+          <span class="mobile-nav-text">SERVICE</span>
+          <span class="mobile-nav-arrow"></span>
+        </div>
+        <div class="mobile-sub-menu" id="mobile-services">
+          <div class="mobile-sub-grid">
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">CREATIVE</span>
+              <a href="./service.html">動画制作</a>
+              <a href="./service.html">写真撮影</a>
+              <a href="./service.html">イベントビデオ</a>
+              <a href="./service.html">イベント写真</a>
+            </div>
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">MEDIA</span>
+              <a href="./service.html">ライブ配信</a>
+              <a href="./service.html">録音・音楽制作</a>
+              <a href="./service.html">WEB制作</a>
+              <a href="./service.html">デザイン</a>
+            </div>
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">MARKETING</span>
+              <a href="./service.html">広告運用</a>
+              <a href="./service.html">デジタルマーケティング</a>
+              <a href="./service.html">AI導入支援</a>
+              <a href="./service.html">システム開発</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-nav-item">
+        <a href="./works.html" class="mobile-nav-header">
+          <span class="mobile-nav-num">02</span>
+          <span class="mobile-nav-text">WORKS</span>
+        </a>
+      </div>
+      <div class="mobile-nav-item">
+        <a href="./company.html" class="mobile-nav-header">
+          <span class="mobile-nav-num">03</span>
+          <span class="mobile-nav-text">COMPANY</span>
+        </a>
+      </div>
+      <div class="mobile-nav-item">
+        <a href="./blog-list.html" class="mobile-nav-header">
+          <span class="mobile-nav-num">04</span>
+          <span class="mobile-nav-text">BLOG</span>
+        </a>
+      </div>
+    </div>
+    <div class="mobile-footer">
+      <div class="mobile-social">
+        <a href="mailto:info@sentic.jp">EMAIL</a>
+        <a href="tel:05053064547">TEL</a>
+      </div>
+      <div class="mobile-copy">© 2024 SENTIC LLC.</div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-hero">
+  <div class="sub-hero-label reveal">— SERVICES —</div>
+  <h1 class="sub-hero-title reveal">OUR<br><span style="color: var(--acid);">SERVICES</span></h1>
+</div>
+
+<section class="services-section">
+  <div class="services-intro reveal">
+    <p>私たちは、<strong>映像・WEB・AI・マーケティング</strong>の領域を横断するクリエイティブ集団です。単なる制作会社に留まらず、戦略立案から実行・改善まで一貫してサポートします。</p>
+  </div>
+  <div class="services-grid reveal">
+    <!-- 01 動画制作 -->
+    <div class="service-card">
+      <img src="./assets/images/filming.webp" alt="動画制作" class="service-img">
+      <div class="service-content">
+        <div class="service-num">01 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">動画制作</span>
+          <span class="service-en">Film Production</span>
+        </div>
+        <p class="service-desc">企業VP、ブランディングムービー、SNS広告動画など、目的に応じた最適な映像表現を追求。企画構成から撮影、編集までワンストップで提供します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 02 写真撮影 -->
+    <div class="service-card">
+      <img src="./assets/images/photo.webp" alt="写真撮影" class="service-img">
+      <div class="service-content">
+        <div class="service-num">02 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">写真撮影</span>
+          <span class="service-en">Picture Production</span>
+        </div>
+        <p class="service-desc">カタログ・EC用の商品撮影、建築写真、ビジネスプロフィール、イベント記録など、プロの技術と感性でブランドの魅力を最大限に引き出します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 03 イベントビデオ -->
+    <div class="service-card">
+      <img src="./assets/images/eventviode.webp" alt="イベントビデオ" class="service-img">
+      <div class="service-content">
+        <div class="service-num">03 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">イベントビデオ</span>
+          <span class="service-en">EVENT Shooting</span>
+        </div>
+        <p class="service-desc">展示会、セミナー、式典、ライブパフォーマンス等の記録撮影。複数台のカメラによるマルチアングル撮影や、当日のダイジェスト編集にも対応します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 04 イベント写真 -->
+    <div class="service-card">
+      <img src="./assets/images/eventphoto.webp" alt="イベント写真" class="service-img">
+      <div class="service-content">
+        <div class="service-num">04 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">イベント写真</span>
+          <span class="service-en">EVENT PHOTO</span>
+        </div>
+        <p class="service-desc">イベントの熱量を切り取るスチール撮影。記録用から広報用まで、現場の空気感を伝える高品質な写真を提供します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 05 ライブ配信 -->
+    <div class="service-card">
+      <img src="./assets/images/streming.webp" alt="ライブ配信" class="service-img">
+      <div class="service-content">
+        <div class="service-num">05 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">ライブ配信</span>
+          <span class="service-en">LIVE STREAMING</span>
+        </div>
+        <p class="service-desc">オンラインセミナー、社内向け配信、音楽ライブ等のリアルタイム配信。安定したネットワーク構築から、テロップ挿入、スイッチングまでトータルで運営します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 06 録音・音楽制作 -->
+    <div class="service-card">
+      <img src="./assets/images/music.webp" alt="録音・音楽制作" class="service-img">
+      <div class="service-content">
+        <div class="service-num">06 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">録音・音楽制作</span>
+          <span class="service-en">MUSIC</span>
+        </div>
+        <p class="service-desc">楽曲制作、ナレーション録音、MA編集。映像の魅力を引き立てるサウンドデザインと、高品質なオーディオ制作を実現します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 07 WEB制作 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="WEB制作" class="service-img">
+      <div class="service-content">
+        <div class="service-num">07 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">WEB制作</span>
+          <span class="service-en">WEB DEVELOPMENT</span>
+        </div>
+        <p class="service-desc">コーポレートサイト、LP、ECサイトの構築。microCMS、WordPressを活用し、運用しやすく、かつ高速でセキュアなWebサイトを実現します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 08 デザイン -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80" alt="デザイン" class="service-img">
+      <div class="service-content">
+        <div class="service-num">08 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">デザイン</span>
+          <span class="service-en">Design</span>
+        </div>
+        <p class="service-desc">ロゴ、グラフィック、UI/UXデザイン。ブランドのアイデンティティを視覚化し、ユーザー体験を最適化するクリエイティブを提供します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 09 広告運用 -->
+    <div class="service-card">
+      <img src="./assets/images/ad.webp" alt="広告運用" class="service-img">
+      <div class="service-content">
+        <div class="service-num">09 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">広告運用</span>
+          <span class="service-en">AD OPERATION</span>
+        </div>
+        <p class="service-desc">リスティング広告、SNS広告、動画広告の運用代行。詳細なターゲティングと継続的なABテストにより、獲得単価の最適化とROIの最大化を図ります。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 10 デジタルマーケティング -->
+    <div class="service-card">
+      <img src="./assets/images/marketing.webp" alt="デジタルマーケティング" class="service-img">
+      <div class="service-content">
+        <div class="service-num">10 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">デジタルマーケティング</span>
+          <span class="service-en">DIGITAL MARKETING</span>
+        </div>
+        <p class="service-desc">市場調査から戦略立案、実行支援まで。SEO対策やSNS運用、コンテンツマーケティングを統合し、持続的な集客とブランド価値向上を支援します。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 11 AI導入支援 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI導入支援" class="service-img">
+      <div class="service-content">
+        <div class="service-num">11 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">AI導入支援</span>
+          <span class="service-en">AI CONSULTING</span>
+        </div>
+        <p class="service-desc">AIを活用した業務効率化コンサルティング。社内ガイドラインの策定から、独自AIツールの開発、導入研修まで幅広くサポートします。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+    <!-- 12 システム開発・販売 -->
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" alt="システム開発・販売" class="service-img">
+      <div class="service-content">
+        <div class="service-num">12 —</div>
+        <div class="service-name-wrap">
+          <span class="service-name">システム開発・販売</span>
+          <span class="service-en">SYSTEM DEVELOPMENT</span>
+        </div>
+        <p class="service-desc">顧客管理システム(CRM)や予約・受付システム、独自SaaSの開発。また、業務を効率化する自社開発ツールの販売・カスタマイズ提供も行っています。</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="breadcrumb">
+  <ul class="breadcrumb-list">
+    <li class="breadcrumb-item"><a href="./index.html">TOP</a></li>
+    <li class="breadcrumb-separator">/</li>
+    <li class="breadcrumb-item breadcrumb-current">SERVICE</li>
+  </ul>
+</nav>
+
+<footer>
+  <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
+  <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
+  <div class="footer-links">
+    <a href="#">プライバシーポリシー</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+function animateRing(){
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+function setupCursorEffects() {
+  document.querySelectorAll('a,button,.service-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='60px';ring.style.height='60px';});
+    el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
+  });
+}
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach((entry,i)=>{
+    if(entry.isIntersecting){ setTimeout(()=>entry.target.classList.add('visible'),i*100); observer.unobserve(entry.target); }
+  });
+},{threshold:0.1});
+
+// INITIALIZE
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  setupCursorEffects();
+});
+
+// MOBILE MENU LOGIC
+const menuToggle = document.getElementById('mobileMenuToggle');
+const overlay = document.getElementById('mobileOverlay');
+const overlayBg = document.querySelector('.mobile-overlay-bg');
+const body = document.body;
+
+function closeMenu() {
+  menuToggle.classList.remove('active');
+  overlay.classList.remove('active');
+  body.style.overflow = '';
+}
+
+menuToggle.addEventListener('click', () => {
+  const isActive = menuToggle.classList.toggle('active');
+  overlay.classList.toggle('active');
+  body.style.overflow = isActive ? 'hidden' : '';
+});
+
+if (overlayBg) {
+  overlayBg.addEventListener('click', closeMenu);
+}
+
+// Mobile Accordion
+document.querySelectorAll('.mobile-nav-header[data-target]').forEach(header => {
+  header.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = header.getAttribute('data-target');
+    const targetMenu = document.getElementById(targetId);
+    
+    const isOpening = !header.classList.contains('active');
+    
+    // Close others
+    document.querySelectorAll('.mobile-nav-header.active').forEach(h => {
+      if (h !== header) {
+        h.classList.remove('active');
+        const targetId = h.getAttribute('data-target');
+        if (targetId) {
+          document.getElementById(targetId).classList.remove('active');
+        }
+      }
+    });
+    
+    header.classList.toggle('active');
+    targetMenu.classList.toggle('active');
+  });
+});
+
+// Close menu on link click
+document.querySelectorAll('.mobile-overlay a').forEach(link => {
+  link.addEventListener('click', () => {
+    closeMenu();
+  });
+});
+</script>
+</body>
+</html>
