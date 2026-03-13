@@ -59,21 +59,18 @@ function createWorkCard(work) {
   const isWorksPage = window.location.pathname.includes('works.html');
 
   if (isWorksPage) {
-    // works.html用の新しいレイアウト（<img>タグを使用し、object-fit: coverで16:9を実現）
+    // works.html用：index.htmlのSelected Worksと同じ構造（背景画像 + オーバーレイ）
     return `
       <div class="work-item" data-work-id="${id}" data-category="${categoryName}">
-        <div class="work-img-wrapper">
-          <img src="${thumbnail}" alt="${title}" class="work-img" loading="lazy">
-          ${(!work.thumbnail?.url && !work.eyecatch?.url) ? '<div class="work-img-placeholder">📷</div>' : ''}
-        </div>
-        <div class="work-info">
+        <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
+        <div class="work-overlay">
           <span class="work-cat">${categoryName}</span>
           <h3 class="work-title">${title}</h3>
         </div>
       </div>
     `;
   } else {
-    // index.html用の既存レイアウト
+    // index.html用：既存の構造を維持
     return `
       <div class="work-item" data-work-id="${id}" data-category="${categoryName}" style="cursor: pointer;">
         <div class="work-bg" style="background-image: url('${thumbnail}'); background-size: cover; background-position: center;"></div>

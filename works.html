@@ -139,231 +139,146 @@
     transform: translateY(-50%) scaleX(1);
   }
 
-  /* WORKS GRID */
+  /* WORKS GRID - index.htmlのスタイルを踏襲 */
   .works-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 48px 32px;
+    gap: 20px;
   }
 
-  /* WORK ITEM CARD */
+  /* WORK ITEM - index.htmlの実装をベースに16:9比率を強制 */
   .work-item {
     position: relative;
-    width: 100%;
     overflow: hidden;
-    background: transparent;
-    cursor: pointer;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    transition: transform 0.3s ease;
+    background: var(--mid);
+    cursor: none;
+    aspect-ratio: 16 / 9; /* 実績一覧ではすべて16:9で統一 */
+    min-height: 200px;
   }
 
-  /* アイキャッチ画像コンテナ - 16:9比率を強制 */
-  .work-img-wrapper {
-    position: relative;
-    width: 100%;
-    /* aspect-ratio 非対応ブラウザ用のフォールバック */
-    padding-top: 56.25%; /* 16:9 = 9 / 16 * 100 */
-    overflow: hidden;
-    background: var(--gray);
-    border: 1px solid var(--mid);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  
-  /* aspect-ratio が使える場合はそちらを優先 */
-  @supports (aspect-ratio: 16/9) {
-    .work-img-wrapper {
-      aspect-ratio: 16 / 9;
-      padding-top: 0;
-    }
-  }
-
-  .work-item:hover .work-img-wrapper {
-    border-color: var(--acid);
-    box-shadow: 0 12px 32px rgba(62, 204, 0, 0.15);
-  }
-
-  /* 画像タグ - 枠いっぱいに広げる */
-  .work-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    display: block; /* インライン要素の隙間を排除 */
-  }
-
-  .work-item:hover .work-img {
-    transform: scale(1.08);
-  }
-
-  /* 画像がない場合のプレースホルダー */
-  .work-img-placeholder {
+  .work-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(62, 204, 0, 0.1) 0%, rgba(62, 204, 0, 0.05) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: var(--text-dim);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 1;
   }
 
-  /* カード情報セクション */
-  .work-info {
+  .work-item:hover .work-bg {
+    transform: scale(1.06);
+  }
+
+  .work-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 24px 0;
-    background: transparent;
+    justify-content: flex-end;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 2;
   }
 
-  /* カテゴリーバッジ */
+  .work-item:hover .work-overlay {
+    opacity: 1;
+  }
+
   .work-cat {
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
     color: var(--acid);
-    letter-spacing: 0.25em;
     text-transform: uppercase;
-    display: inline-block;
-    font-weight: 500;
-    padding: 6px 12px;
-    border: 1px solid var(--acid);
-    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
-    width: fit-content;
-    transition: all 0.3s;
+    margin-bottom: 8px;
   }
 
-  .work-item:hover .work-cat {
-    background: var(--acid);
-    color: var(--black);
-  }
-
-  /* タイトル */
   .work-title {
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 700;
-    font-size: 1.25rem;
-    line-height: 1.6;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
     color: var(--white);
-    transition: color 0.3s;
-    letter-spacing: 0.02em;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    line-height: 1.1;
   }
 
-  .work-item:hover .work-title {
-    color: var(--acid);
-  }
-
-  /* MODAL */
+  /* MODAL - index.htmlの実装を踏襲 */
   .work-modal { 
     position: fixed; 
     inset: 0; 
-    background: rgba(0,0,0,0.95); 
-    z-index: 1000; 
+    background: rgba(0,0,0,0.9); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    padding: 40px; 
-    cursor: auto;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    z-index: 1000; 
   }
 
   .work-modal-content { 
-    background: var(--black); 
-    width: 100%; 
-    max-width: 1000px; 
+    background: var(--gray); 
+    border: 1px solid var(--mid); 
+    max-width: 900px; 
+    width: 90%; 
     max-height: 90vh; 
     overflow-y: auto; 
     position: relative; 
-    border: 1px solid var(--mid);
-    animation: slideUp 0.3s ease;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    padding: 48px; 
   }
 
   .work-modal-close { 
     position: absolute; 
-    top: 20px; 
-    right: 20px; 
-    background: transparent; 
+    top: 24px; 
+    right: 24px; 
+    background: none; 
     border: none; 
+    font-size: 2.5rem; 
     color: var(--white); 
-    font-size: 2rem; 
     cursor: pointer; 
-    z-index: 10;
-    transition: color 0.3s;
+    transition: color 0.3s; 
+    line-height: 1;
   }
 
-  .work-modal-close:hover {
-    color: var(--acid);
-  }
+  .work-modal-close:hover { color: var(--acid); }
 
   .work-modal-img { 
     width: 100%; 
     height: auto; 
-    display: block;
+    margin-bottom: 32px; 
     aspect-ratio: 16 / 9;
     object-fit: cover;
   }
 
-  .work-modal-info { 
-    padding: 48px; 
-  }
-
   .work-modal-category { 
     font-family: 'Space Mono', monospace; 
-    font-size: 0.8rem; 
+    font-size: 0.7rem; 
     color: var(--acid); 
+    text-transform: uppercase; 
     letter-spacing: 0.2em; 
-    display: inline-block;
-    margin-bottom: 16px;
-    padding: 6px 12px;
-    border: 1px solid var(--acid);
-    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    display: block; 
+    margin-bottom: 16px; 
   }
 
   .work-modal-title { 
-    font-family: 'Noto Sans JP', sans-serif; 
+    font-family: 'Bebas Neue', sans-serif; 
     font-size: 2.5rem; 
-    margin-bottom: 24px;
-    font-weight: 700;
+    color: var(--white); 
+    margin-bottom: 16px; 
+    letter-spacing: 0.05em; 
   }
 
   .work-modal-date { 
     font-family: 'Space Mono', monospace; 
+    font-size: 0.8rem; 
     color: var(--text-dim); 
-    margin-bottom: 32px;
-    font-size: 0.9rem;
+    margin-bottom: 32px; 
+    display: block; 
   }
 
   .work-modal-content-text { 
+    font-size: 1rem; 
     line-height: 1.8; 
-    color: var(--text-dim);
-    font-size: 1rem;
-  }
-
-  .work-modal-content-text img { 
-    max-width: 100%; 
-    height: auto; 
-    margin: 20px 0;
+    color: var(--white); 
   }
 
   /* REVEAL */
@@ -387,83 +302,25 @@
     align-items: center; 
     gap: 40px; 
   }
-  .footer-logo img { 
-    height: 40px; 
-  }
-  .footer-copy { 
-    font-family: 'Space Mono', monospace; 
-    font-size: 0.65rem; 
-    color: var(--text-dim); 
-    letter-spacing: 0.1em; 
-  }
-  .footer-links { 
-    display: flex; 
-    gap: 32px; 
-  }
-  .footer-links a { 
-    font-size: 0.75rem; 
-    color: var(--text-dim); 
-    text-decoration: none; 
-    transition: color 0.3s; 
-  }
-  .footer-links a:hover { 
-    color: var(--acid); 
-  }
+  .footer-logo img { height: 40px; }
+  .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; }
 
   /* レスポンシブ */
-  @media (max-width: 1200px) {
-    .works-grid { 
-      grid-template-columns: repeat(2, 1fr); 
-    }
+  @media (max-width: 1024px) {
+    .works-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
-  @media (max-width: 900px) {
-    .works-container { 
-      grid-template-columns: 1fr; 
-      gap: 40px; 
-      padding: 20px 24px 80px; 
-    }
-    .works-sidebar { 
-      position: static; 
-    }
-    .works-filter { 
-      flex-direction: row; 
-      flex-wrap: wrap; 
-    }
-    .sidebar-title { 
-      margin-bottom: 16px; 
-    }
+  @media (max-width: 768px) {
+    .works-container { grid-template-columns: 1fr; padding: 20px 24px 80px; }
+    .works-sidebar { position: static; margin-bottom: 40px; }
+    .works-filter { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+    .nav-links { display: none; }
   }
 
-  @media (max-width: 600px) {
-    nav { 
-      padding: 20px; 
-    }
-    .nav-links { 
-      display: none; 
-    }
-    .sub-hero { 
-      padding: 140px 24px 40px; 
-    }
-    .works-grid { 
-      grid-template-columns: 1fr; 
-      gap: 32px 0;
-    }
-    .work-modal { 
-      padding: 0; 
-    }
-    .work-modal-info { 
-      padding: 24px; 
-    }
-    .work-modal-title { 
-      font-size: 1.8rem; 
-    }
-    .work-info {
-      padding: 16px 0;
-    }
-    .work-title {
-      font-size: 1.1rem;
-    }
+  @media (max-width: 480px) {
+    .works-grid { grid-template-columns: 1fr; }
+    .sub-hero-title { font-size: 3.5rem; }
+    .work-modal-content { padding: 32px 24px; }
   }
 </style>
 </head>
@@ -495,7 +352,6 @@
     <h2 class="sidebar-title">Categories</h2>
     <div class="works-filter" id="worksFilter">
       <button class="filter-btn active" data-filter="ALL">ALL PROJECTS</button>
-      <!-- Dynamic categories will be inserted here -->
     </div>
   </aside>
 
@@ -509,11 +365,6 @@
 <footer>
   <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
   <div class="footer-copy">© 2024 SENTIC LLC. ALL RIGHTS RESERVED.</div>
-  <div class="footer-links">
-    <a href="#">プライバシーポリシー</a>
-    <a href="#">利用規約</a>
-    <a href="#">採用情報</a>
-  </div>
 </footer>
 
 <script>
