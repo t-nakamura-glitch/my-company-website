@@ -41,13 +41,16 @@ async function fetchCategoriesFromMicroCMS() {
 
 // 実績データをHTMLに変換する関数
 function createWorkCard(work) {
-  const thumbnail = work.thumbnail?.url || 'https://via.placeholder.com/600x400?text=No+Image';
+  // thumbnail または eyecatch プロパティから画像URLを取得
+  const thumbnail = work.thumbnail?.url || work.eyecatch?.url || 'https://via.placeholder.com/600x400?text=No+Image';
   const title = work.title || 'Untitled';
   
   // カテゴリーがオブジェクトの場合、nameを取得
   let categoryName = 'Other';
   if (work.categories && work.categories.name) {
     categoryName = work.categories.name;
+  } else if (work.category && work.category.name) {
+    categoryName = work.category.name;
   }
   
   const id = work.id;
@@ -61,7 +64,7 @@ function createWorkCard(work) {
       <div class="work-item" data-work-id="${id}" data-category="${categoryName}">
         <div class="work-img-wrapper">
           <img src="${thumbnail}" alt="${title}" class="work-img" loading="lazy">
-          ${!work.thumbnail?.url ? '<div class="work-img-placeholder">📷</div>' : ''}
+          ${(!work.thumbnail?.url && !work.eyecatch?.url) ? '<div class="work-img-placeholder">📷</div>' : ''}
         </div>
         <div class="work-info">
           <span class="work-cat">${categoryName}</span>
@@ -185,6 +188,8 @@ function setupFilterButtons() {
         const filteredWorks = allWorks.filter(work => {
           if (work.categories && work.categories.name) {
             return work.categories.name === filterValue;
+          } else if (work.category && work.category.name) {
+            return work.category.name === filterValue;
           }
           return false;
         });
@@ -214,14 +219,18 @@ function showWorkDetail(work) {
   let categoryName = 'Other';
   if (work.categories && work.categories.name) {
     categoryName = work.categories.name;
+  } else if (work.category && work.category.name) {
+    categoryName = work.category.name;
   }
+
+  const thumbnail = work.thumbnail?.url || work.eyecatch?.url || 'https://via.placeholder.com/600x400';
 
   const modal = document.createElement('div');
   modal.className = 'work-modal';
   modal.innerHTML = `
     <div class="work-modal-content">
       <button class="work-modal-close">&times;</button>
-      <img src="${work.thumbnail?.url || 'https://via.placeholder.com/600x400'}" alt="${work.title}" class="work-modal-img">
+      <img src="${thumbnail}" alt="${work.title}" class="work-modal-img">
       <div class="work-modal-info">
         <span class="work-modal-category">${categoryName}</span>
         <h2 class="work-modal-title">${work.title}</h2>
@@ -233,7 +242,7 @@ function showWorkDetail(work) {
             <div class="related-works-grid">
               ${work.related_works.map(relatedWork => `
                 <div class="related-work-card">
-                  <img src="${relatedWork.thumbnail?.url || 'https://via.placeholder.com/300x200'}" alt="${relatedWork.title}">
+                  <img src="${relatedWork.thumbnail?.url || relatedWork.eyecatch?.url || 'https://via.placeholder.com/300x200'}" alt="${relatedWork.title}">
                   <p>${relatedWork.title}</p>
                 </div>
               `).join('')}
