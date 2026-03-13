@@ -52,14 +52,16 @@ function createWorkCard(work) {
   
   const id = work.id;
 
-  // index.htmlとworks.htmlで構造を分ける（works.htmlには.work-infoがある）
+  // index.htmlとworks.htmlで構造を分ける
   const isWorksPage = window.location.pathname.includes('works.html');
 
   if (isWorksPage) {
+    // works.html用の新しいレイアウト（16:9画像 + タイトル + カテゴリー）
     return `
       <div class="work-item" data-work-id="${id}" data-category="${categoryName}">
         <div class="work-img-wrapper">
           <div class="work-bg" style="background-image: url('${thumbnail}');"></div>
+          ${!work.thumbnail?.url ? '<div class="work-img-placeholder">📷</div>' : ''}
         </div>
         <div class="work-info">
           <span class="work-cat">${categoryName}</span>
