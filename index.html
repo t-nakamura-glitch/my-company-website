@@ -367,6 +367,13 @@
   .mobile-sub-col a { color: var(--white); text-decoration: none; font-size: 1rem; transition: color 0.3s; }
   .mobile-sub-col a:hover { color: var(--acid); }
   
+  .mobile-close-btn { position: fixed; top: 24px; right: 24px; z-index: 201; background: none; border: none; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s; }
+  .mobile-overlay.active .mobile-close-btn { opacity: 1; pointer-events: auto; }
+  .mobile-close-btn::before, .mobile-close-btn::after { content: ''; position: absolute; width: 24px; height: 2px; background: var(--acid); transition: all 0.3s; }
+  .mobile-close-btn::before { transform: rotate(45deg); }
+  .mobile-close-btn::after { transform: rotate(-45deg); }
+  .mobile-close-btn:hover::before, .mobile-close-btn:hover::after { width: 28px; }
+
   .mobile-footer { margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
   .mobile-social { display: flex; gap: 24px; }
   .mobile-social a { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.1em; }
@@ -479,6 +486,7 @@
 </nav>
 
 <div class="mobile-overlay" id="mobileOverlay">
+  <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Close menu"></button>
   <div class="mobile-overlay-bg"></div>
   <div class="mobile-nav-container">
     <div class="mobile-nav-links">
@@ -1209,6 +1217,12 @@ function handleBlogNavigation() {
 	  overlay.classList.toggle('active');
 	  body.style.overflow = isActive ? 'hidden' : '';
 	});
+
+	// Close button event listener
+	const closeBtn = document.getElementById('mobileCloseBtn');
+	if (closeBtn) {
+	  closeBtn.addEventListener('click', closeMenu);
+	}
 
 	// Close menu when clicking on background
 	if (overlayBg) {
