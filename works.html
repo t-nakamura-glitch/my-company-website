@@ -456,10 +456,35 @@ const observer = new IntersectionObserver((entries)=>{
   });
 },{threshold:0.1});
 
+// URLパラメータによる初期フィルター設定
+function applyInitialFilter() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category');
+  
+  if (category) {
+    // カテゴリーデータが読み込まれるのを待つ必要があるため、少し遅延させるか
+    // microcms.js の updatePortfolioSection 完了後に実行されるようにする
+    const checkInterval = setInterval(() => {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      if (filterButtons.length > 1) { // ALL以外のボタンが生成されたら
+        clearInterval(checkInterval);
+        const targetBtn = Array.from(filterButtons).find(btn => btn.dataset.filter === category);
+        if (targetBtn) {
+          targetBtn.click();
+        }
+      }
+    }, 100);
+    
+    // 5秒経ってもボタンが出ない場合は諦める
+    setTimeout(() => clearInterval(checkInterval), 5000);
+  }
+}
+
 // INITIALIZE
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   setupCursorEffects();
+  applyInitialFilter();
 });
 </script>
 </body>

@@ -61,9 +61,28 @@
   .nav-logo { display: flex; align-items: center; text-decoration: none; height: 40px; }
   .nav-logo img { height: 100%; width: auto; max-width: 150px; }
   .nav-logo span { color: var(--acid); }
-  .nav-links { display: flex; gap: 40px; }
+  .nav-links { display: flex; gap: 40px; align-items: center; }
   .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
   .nav-links a:hover { color: var(--acid); }
+
+  /* MEGA MENU */
+  .nav-item-has-mega { position: relative; height: 100%; display: flex; align-items: center; }
+  .mega-menu {
+    position: fixed; top: 88px; left: 0; width: 100%; background: rgba(5, 5, 5, 0.95);
+    border-bottom: 1px solid var(--mid); padding: 60px 48px;
+    opacity: 0; visibility: hidden; transform: translateY(-10px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 90; display: grid; grid-template-columns: 240px 1fr; gap: 80px;
+    backdrop-filter: blur(10px);
+  }
+  .nav-item-has-mega:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+  .mega-title { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--acid); line-height: 1; }
+  .mega-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+  .mega-list { list-style: none; }
+  .mega-list-title { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.2em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--mid); }
+  .mega-list li { margin-bottom: 12px; }
+  .mega-list a { font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; color: var(--white); text-transform: none; letter-spacing: 0.05em; transition: all 0.3s; display: block; }
+  .mega-list a:hover { color: var(--acid); padding-left: 10px; }
   .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--acid); color: var(--acid); padding: 10px 24px; text-decoration: none; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
   .nav-cta:hover { background: var(--acid); color: var(--black); }
 
@@ -335,7 +354,24 @@
   <a href="#" class="nav-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></a>
   <div class="nav-links">
     <a href="#services">サービス</a>
-    <a href="#works">実績</a>
+    <div class="nav-item-has-mega">
+      <a href="./works.html">実績</a>
+      <div class="mega-menu">
+        <div class="mega-info">
+          <h3 class="mega-title">SELECTED<br>WORKS</h3>
+          <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 20px; line-height: 1.6;">SENTICが手掛けた最新の実績をジャンル別にご覧いただけます。</p>
+        </div>
+        <div class="mega-grid">
+          <div class="mega-list">
+            <h4 class="mega-list-title">CATEGORIES</h4>
+            <ul id="megaCategoryList">
+              <!-- Categories will be loaded here -->
+              <li><a href="./works.html">すべて見る</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
     <a href="./company.html">会社概要</a>
     <a href="./blog-list.html">ブログ</a>
   </div>

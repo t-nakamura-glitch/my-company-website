@@ -265,5 +265,30 @@ function showWorkDetail(work) {
   });
 }
 
+// メガメニューのカテゴリーを読み込む関数
+async function setupMegaMenu() {
+  const megaList = document.getElementById('megaCategoryList');
+  if (!megaList) return;
+
+  const categories = await fetchCategoriesFromMicroCMS();
+  
+  // 「すべて見る」を残してクリア
+  megaList.innerHTML = '<li><a href="./works.html">すべて見る</a></li>';
+  
+  categories.forEach(cat => {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="./works.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+    megaList.appendChild(li);
+  });
+
+  // 新しく追加されたリンクにもカーソルエフェクトを適用
+  if (typeof setupCursorEffects === 'function') {
+    setupCursorEffects();
+  }
+}
+
 // ページ読み込み時に実行
-document.addEventListener('DOMContentLoaded', updatePortfolioSection);
+document.addEventListener('DOMContentLoaded', () => {
+  updatePortfolioSection();
+  setupMegaMenu();
+});
