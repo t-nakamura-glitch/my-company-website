@@ -324,11 +324,53 @@
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* MOBILE MENU TOGGLE */
+  .mobile-menu-toggle { display: none; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; z-index: 200; padding: 10px; }
+  .mobile-menu-toggle span { display: block; width: 28px; height: 2px; background: var(--white); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); transform-origin: center; }
+  .mobile-menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); background: var(--acid); }
+  .mobile-menu-toggle.active span:nth-child(2) { opacity: 0; transform: translateX(10px); }
+  .mobile-menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); background: var(--acid); }
+
+  /* MOBILE OVERLAY */
+  .mobile-overlay { position: fixed; inset: 0; z-index: 150; visibility: hidden; pointer-events: none; overflow: hidden; }
+  .mobile-overlay.active { visibility: visible; pointer-events: auto; }
+  .mobile-overlay-bg { position: absolute; inset: 0; background: rgba(5, 5, 5, 0.98); backdrop-filter: blur(15px); transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+  .mobile-overlay.active .mobile-overlay-bg { transform: translateY(0); }
+  
+  .mobile-nav-container { position: relative; height: 100%; display: flex; flex-direction: column; padding: 120px 40px 60px; opacity: 0; transform: translateY(20px); transition: all 0.5s 0.3s; overflow-y: auto; }
+  .mobile-overlay.active .mobile-nav-container { opacity: 1; transform: translateY(0); }
+  
+  .mobile-nav-links { flex: 1; }
+  .mobile-nav-item { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .mobile-nav-header { display: flex; align-items: center; padding: 24px 0; text-decoration: none; color: var(--white); cursor: pointer; }
+  .mobile-nav-num { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--acid); margin-right: 20px; }
+  .mobile-nav-text { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.05em; }
+  .mobile-nav-arrow { margin-left: auto; width: 12px; height: 12px; border-right: 2px solid var(--text-dim); border-bottom: 2px solid var(--text-dim); transform: rotate(45deg); transition: transform 0.3s; margin-right: 10px; }
+  .mobile-nav-header.active .mobile-nav-arrow { transform: rotate(-135deg); border-color: var(--acid); }
+  
+  .mobile-sub-menu { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+  .mobile-sub-menu.active { max-height: 800px; }
+  .mobile-sub-grid { padding: 10px 0 30px 35px; display: flex; flex-direction: column; gap: 30px; }
+  .mobile-sub-col { display: flex; flex-direction: column; gap: 12px; }
+  .mobile-sub-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.2em; margin-bottom: 8px; }
+  .mobile-sub-col a { color: var(--white); text-decoration: none; font-size: 1rem; transition: color 0.3s; }
+  .mobile-sub-col a:hover { color: var(--acid); }
+  
+  .mobile-footer { margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+  .mobile-social { display: flex; gap: 24px; }
+  .mobile-social a { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.1em; }
+  .mobile-copy { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: rgba(255,255,255,0.2); }
+
   @media (max-width: 768px) {
     html, body { width: 100vw; overflow-x: hidden; margin: 0; padding: 0; position: relative; }
     * { max-width: 100vw; }
-    nav { padding: 20px 24px; width: 100%; max-width: 100vw; box-sizing: border-box; } .nav-links { display: none; }
-    section { padding: 80px 24px; width: 100%; max-width: 100vw; box-sizing: border-box; margin: 0; } .hero { padding: 0 24px 60px; width: 100%; max-width: 100vw; box-sizing: border-box; margin: 0; }
+    nav { padding: 20px 24px; width: 100%; max-width: 100vw; box-sizing: border-box; } 
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .mobile-menu-toggle { display: flex; }
+    
+    section { padding: 80px 24px; width: 100%; max-width: 100vw; box-sizing: border-box; margin: 0; } 
+    .hero { padding: 0 24px 60px; width: 100%; max-width: 100vw; box-sizing: border-box; margin: 0; }
     .hero-ticker { width: 100%; max-width: 100vw; overflow: hidden; }
     .hero-grid { width: 100%; max-width: 100vw; overflow: hidden; }
     .hero-video-bg { max-width: 100vw; }
@@ -414,7 +456,96 @@
     <a href="./blog-list.html">ブログ</a>
   </div>
   <a href="#contact" class="nav-cta">お問い合わせ</a>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<div class="mobile-overlay" id="mobileOverlay">
+  <div class="mobile-overlay-bg"></div>
+  <div class="mobile-nav-container">
+    <div class="mobile-nav-links">
+      <div class="mobile-nav-item">
+        <div class="mobile-nav-header" data-target="mobile-services">
+          <span class="mobile-nav-num">01</span>
+          <span class="mobile-nav-text">SERVICE</span>
+          <span class="mobile-nav-arrow"></span>
+        </div>
+        <div class="mobile-sub-menu" id="mobile-services">
+          <div class="mobile-sub-grid">
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">CREATIVE</span>
+              <a href="#services">動画制作</a>
+              <a href="#services">写真撮影</a>
+              <a href="#services">イベントビデオ</a>
+              <a href="#services">イベント写真</a>
+            </div>
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">MEDIA</span>
+              <a href="#services">ライブ配信</a>
+              <a href="#services">録音・音楽制作</a>
+              <a href="#services">WEB制作</a>
+              <a href="#services">デザイン</a>
+            </div>
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">MARKETING</span>
+              <a href="#services">広告運用</a>
+              <a href="#services">デジタルマーケティング</a>
+              <a href="#services">AI導入支援</a>
+              <a href="#services">システム開発</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-nav-item">
+        <div class="mobile-nav-header" data-target="mobile-works">
+          <span class="mobile-nav-num">02</span>
+          <span class="mobile-nav-text">WORKS</span>
+          <span class="mobile-nav-arrow"></span>
+        </div>
+        <div class="mobile-sub-menu" id="mobile-works">
+          <div class="mobile-sub-grid">
+            <div class="mobile-sub-col">
+              <span class="mobile-sub-label">CATEGORIES</span>
+              <div id="mobileCategoryList">
+                <!-- Categories will be loaded here -->
+                <a href="./works.html">すべて見る</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-nav-item">
+        <a href="./company.html" class="mobile-nav-header">
+          <span class="mobile-nav-num">03</span>
+          <span class="mobile-nav-text">COMPANY</span>
+        </a>
+      </div>
+      <div class="mobile-nav-item">
+        <a href="./blog-list.html" class="mobile-nav-header">
+          <span class="mobile-nav-num">04</span>
+          <span class="mobile-nav-text">BLOG</span>
+        </a>
+      </div>
+      <div class="mobile-nav-item">
+        <a href="#contact" class="mobile-nav-header">
+          <span class="mobile-nav-num">05</span>
+          <span class="mobile-nav-text">CONTACT</span>
+        </a>
+      </div>
+    </div>
+    
+    <div class="mobile-footer">
+      <div class="mobile-social">
+        <a href="mailto:info@sentic.jp">MAIL</a>
+        <a href="tel:05053064547">TEL</a>
+      </div>
+      <div class="mobile-copy">© 2024 SENTIC LLC.</div>
+    </div>
+  </div>
+</div>
 
 <section class="hero">
   <img class="hero-video-bg" src="./assets/images/hero-bg.webp" alt="Hero Background">
@@ -1010,12 +1141,53 @@ function handleBlogNavigation() {
   }
 }
 
-// ページロード時に実行
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', handleBlogNavigation);
-} else {
-  handleBlogNavigation();
-}
-</script>
+	// ページロード時に実行
+	if (document.readyState === 'loading') {
+	  document.addEventListener('DOMContentLoaded', handleBlogNavigation);
+	} else {
+	  handleBlogNavigation();
+	}
+
+	// MOBILE MENU LOGIC
+	const menuToggle = document.getElementById('mobileMenuToggle');
+	const overlay = document.getElementById('mobileOverlay');
+	const body = document.body;
+
+	menuToggle.addEventListener('click', () => {
+	  const isActive = menuToggle.classList.toggle('active');
+	  overlay.classList.toggle('active');
+	  body.style.overflow = isActive ? 'hidden' : '';
+	});
+
+	// Mobile Accordion
+	document.querySelectorAll('.mobile-nav-header[data-target]').forEach(header => {
+	  header.addEventListener('click', () => {
+	    const targetId = header.getAttribute('data-target');
+	    const targetMenu = document.getElementById(targetId);
+	    
+	    const isOpening = !header.classList.contains('active');
+	    
+	    // Close others
+	    document.querySelectorAll('.mobile-nav-header.active').forEach(h => {
+	      if (h !== header) {
+	        h.classList.remove('active');
+	        document.getElementById(h.getAttribute('data-target')).classList.remove('active');
+	      }
+	    });
+	    
+	    header.classList.toggle('active');
+	    targetMenu.classList.toggle('active');
+	  });
+	});
+
+	// Close menu on link click
+	document.querySelectorAll('.mobile-overlay a').forEach(link => {
+	  link.addEventListener('click', () => {
+	    menuToggle.classList.remove('active');
+	    overlay.classList.remove('active');
+	    body.style.overflow = '';
+	  });
+	});
+	</script>
 </body>
 </html>
