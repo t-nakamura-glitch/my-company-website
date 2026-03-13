@@ -237,6 +237,15 @@
       gap: 12px;
     }
 
+    /* BREADCRUMB */
+    .breadcrumb { background: var(--black); border-top: 1px solid var(--mid); border-bottom: 1px solid var(--mid); padding: 20px 48px; }
+    .breadcrumb-list { list-style: none; display: flex; gap: 12px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-dim); }
+    .breadcrumb-item { display: flex; align-items: center; }
+    .breadcrumb-item a { color: var(--acid); text-decoration: none; transition: color 0.3s; }
+    .breadcrumb-item a:hover { color: var(--white); }
+    .breadcrumb-separator { color: var(--text-dim); margin: 0 8px; }
+    .breadcrumb-current { color: var(--white); }
+
     /* FOOTER */
     footer {
       background: var(--gray); padding: 60px 48px; text-align: center;
@@ -399,6 +408,17 @@
     </div>
   </div>
 
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb">
+    <ul class="breadcrumb-list">
+      <li class="breadcrumb-item"><a href="./index.html">TOP</a></li>
+      <li class="breadcrumb-separator">/</li>
+      <li class="breadcrumb-item"><a href="./blog-list.html">BLOG</a></li>
+      <li class="breadcrumb-separator">/</li>
+      <li class="breadcrumb-item breadcrumb-current" id="breadcrumb-article">記事</li>
+    </ul>
+  </nav>
+
   <!-- FOOTER -->
   <footer>
     <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
@@ -514,6 +534,12 @@
         console.log('[DEBUG] Updating page with article:', article.title);
         // ページタイトルを更新
         document.title = `${article.title} - SENTIC`;
+        
+        // パンくずリストを更新
+        const breadcrumbArticle = document.getElementById('breadcrumb-article');
+        if (breadcrumbArticle) {
+          breadcrumbArticle.textContent = article.title || '記事';
+        }
         
         // ヒーローセクションを更新
         updateHeroSection(article);

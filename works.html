@@ -282,6 +282,15 @@
   }
 
   /* REVEAL */
+  /* BREADCRUMB */
+  .breadcrumb { background: var(--black); border-top: 1px solid var(--mid); border-bottom: 1px solid var(--mid); padding: 20px 48px; }
+  .breadcrumb-list { list-style: none; display: flex; gap: 12px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-dim); }
+  .breadcrumb-item { display: flex; align-items: center; }
+  .breadcrumb-item a { color: var(--acid); text-decoration: none; transition: color 0.3s; }
+  .breadcrumb-item a:hover { color: var(--white); }
+  .breadcrumb-separator { color: var(--text-dim); margin: 0 8px; }
+  .breadcrumb-current { color: var(--white); }
+
   .reveal { 
     opacity: 0; 
     transform: translateY(30px); 
@@ -361,6 +370,14 @@
     </div>
   </main>
 </div>
+
+<nav class="breadcrumb">
+  <ul class="breadcrumb-list">
+    <li class="breadcrumb-item"><a href="./index.html">TOP</a></li>
+    <li class="breadcrumb-separator">/</li>
+    <li class="breadcrumb-item breadcrumb-current">WORKS</li>
+  </ul>
+</nav>
 
 <footer>
   <div class="footer-logo"><img src="./assets/images/senticllc_logo_s.png" alt="SENTIC Logo"></div>
